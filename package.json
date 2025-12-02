@@ -9,9 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.5.24"
+    "@iconify/vue": "^5.0.0",
+    "element-plus": "^2.11.9",
+    "unplugin-icons": "^22.5.0",
+    "vue": "^3.5.24",
+    "vue-router": "4"
   },
   "devDependencies": {
+    "@iconify-json/ep": "^1.2.3",
     "@types/node": "^24.10.1",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.8.1",
