@@ -30,8 +30,8 @@ import LayNavbar from "@/layout/components/lay-navbar/index.vue";
   flex: 1;
   height: 100%;
   overflow: auto;
-  background: #0f172a;
-  color: #e5e7eb;
+  background: #00000050;
+  color: #000000;
   padding: 16px;
   box-sizing: border-box;
 }
