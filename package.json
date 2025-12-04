@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@iconify/vue": "^5.0.0",
+    "axios": "^1.13.2",
     "element-plus": "^2.11.9",
     "unplugin-icons": "^22.5.0",
     "vue": "^3.5.24",
