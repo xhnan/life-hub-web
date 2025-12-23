@@ -50,7 +50,8 @@ defineOptions({
   name: 'LayNavbar'
 })
 </script>
-<style scoped>
+<style scoped lang="scss">
+@use "@/styles/variables" as *;
 .lay-navbar {
   height: 100%;
   width: 100%;
@@ -81,5 +82,22 @@ defineOptions({
 /* 去掉选中项左侧的突出条（如果需要你也可以保留或自定义）*/
 .el-menu-vertical-demo .el-menu-item.is-active::after {
   display: none;
+}
+
+/* 作用到所有内联子菜单（含多层嵌套） */
+:deep(.el-menu--inline) {
+  background:  $menu-background-color;
+}
+
+/* 如果还看到单个项颜色不一致，再把默认项也统一 */
+:deep(.el-menu-item) {
+  background: $menu-background-color;
+  transition: background-color 0.15s ease;
+}
+
+/* 悬停时的统一浅色背景 */
+:deep(.el-menu-item:hover),
+:deep(.el-submenu__title:hover) {
+  background: lighten($menu-background-color, 6%);
 }
 </style>

@@ -1,8 +1,7 @@
 import { http } from "@/utils/http";
 
-
-
+const prefix = '/sys/user'
 
 export function testUserApi(){
-    return http.get('/user/test');
+    return http.get(`${prefix}/test`);
 }

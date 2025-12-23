@@ -20,9 +20,16 @@ export default defineConfig({
         port: 5173,
         proxy: {
             '/api': {
-                target: 'http://localhost:8080', // 后端地址
+                target: 'http://localhost:9000', // 后端地址
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/api/, '')
+            }
+        }
+    },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                additionalData:  `@use "@/styles/variables" as *;`
             }
         }
     }

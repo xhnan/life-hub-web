@@ -12,7 +12,11 @@
 import LayContent from "@/layout/components/lay-content/index.vue";
 import LayNavbar from "@/layout/components/lay-navbar/index.vue";
 </script>
-<style scoped>
+<style scoped lang="scss">
+@use "@/styles/variables" as *;
+
+
+
 .layout {
   display: flex;
   height: 100vh;
@@ -21,16 +25,16 @@ import LayNavbar from "@/layout/components/lay-navbar/index.vue";
 .navbar {
   flex: 0 0 240px;
   height: 100%;
-  background: rgba(0, 0, 0, 0);
+  background: $menu-background-color;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   box-sizing: border-box;
 }
 
 .content {
   flex: 1;
-  height: 100%;
+  height: 100vh;
   overflow: auto;
-  background: #00000050;
+  background: $center-background-color;
   color: #000000;
   padding: 16px;
   box-sizing: border-box;
