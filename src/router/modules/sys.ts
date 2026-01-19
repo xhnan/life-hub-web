@@ -24,6 +24,24 @@ export default {
                 title: "菜单管理",
                 icon: "mdi:menu"
             }
+        },
+        {
+            path: "/sys/role",
+            name: "SysRole",
+            component: () => import('@/views/sys/role/index.vue'),
+            meta: {
+                title: "角色管理",
+                icon: "mdi:account-key"
+            }
+        },
+        {
+            path: "/sys/permission",
+            name: "SysPermission",
+            component: () => import('@/views/sys/permission/index.vue'),
+            meta: {
+                title: "权限管理",
+                icon: "mdi:shield-lock"
+            }
         }
     ]
 }

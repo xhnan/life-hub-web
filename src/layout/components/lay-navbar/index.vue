@@ -98,6 +98,6 @@ defineOptions({
 /* 悬停时的统一浅色背景 */
 :deep(.el-menu-item:hover),
 :deep(.el-submenu__title:hover) {
-  background: lighten($menu-background-color, 6%);
+  background: $menu-background-color;
 }
 </style>

@@ -35,7 +35,13 @@ service.interceptors.request.use(
 
 // 响应拦截器
 service.interceptors.response.use(
-    (response: AxiosResponse<ApiResponse>) => {
+    (response: AxiosResponse<ApiResponse<any>>) => {
+        // 下载等二进制响应不走业务 code 结构
+        const responseType = response.config?.responseType;
+        if (responseType === 'blob' || responseType === 'arraybuffer') {
+            return response;
+        }
+
         const res = response.data;
 
         // 根据后端约定的 code 判断请求是否成功
@@ -57,6 +63,8 @@ service.interceptors.response.use(
             return Promise.reject(new Error(res.message || '请求失败'));
         }
 
+        // 这里保持返回 AxiosResponse，避免 axios 拦截器类型爆红。
+        // 业务数据在 http.get/post/... 中统一解包为 res.data。
         return response;
     },
     (error) => {
@@ -102,29 +110,29 @@ service.interceptors.response.use(
 // 封装请求方法
 export const http = {
     get<T = any>(url: string, params?: object, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
-        return service.get(url, { params, ...config });
+        return service.get<ApiResponse<T>>(url, { params, ...config }).then((r) => r.data);
     },
 
     post<T = any>(url: string, data?: object, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
-        return service.post(url, data, config);
+        return service.post<ApiResponse<T>>(url, data, config).then((r) => r.data);
     },
 
     put<T = any>(url: string, data?: object, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
-        return service.put(url, data, config);
+        return service.put<ApiResponse<T>>(url, data, config).then((r) => r.data);
     },
 
     delete<T = any>(url: string, params?: object, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
-        return service.delete(url, { params, ...config });
+        return service.delete<ApiResponse<T>>(url, { params, ...config }).then((r) => r.data);
     },
 
     // 上传文件
     upload<T = any>(url: string, file: File, fieldName = 'file', config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
         const formData = new FormData();
         formData.append(fieldName, file);
-        return service.post(url, formData, {
+        return service.post<ApiResponse<T>>(url, formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
             ...config
-        });
+        }).then((r) => r.data);
     },
 
     // 下载文件
@@ -132,8 +140,8 @@ export const http = {
         return service.get(url, {
             params,
             responseType: 'blob'
-        }).then((res: any) => {
-            const blob = new Blob([res]);
+        }).then((res: AxiosResponse<Blob>) => {
+            const blob = new Blob([res.data]);
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
             link.download = fileName || 'download';
