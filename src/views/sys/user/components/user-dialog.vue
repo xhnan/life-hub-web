@@ -2,7 +2,7 @@
   <el-dialog
     v-model="dialogVisible"
     :title="title"
-    width="600px"
+    width="700px"
     @close="handleClose"
   >
     <div v-loading="dataLoading">
@@ -50,11 +50,12 @@
         </el-form-item>
 
         <el-form-item label="状态" prop="status">
-          <el-radio-group v-model="formData.status">
-            <el-radio :value="true">启用</el-radio>
-            <el-radio :value="false">禁用</el-radio>
-          </el-radio-group>
-        </el-form-item>
+        <el-select v-model="formData.status" placeholder="请选择状态">
+          <el-option label="正常" value="active" />
+          <el-option label="停用" value="inactive" />
+          <el-option label="禁用" value="banned" />
+        </el-select>
+      </el-form-item>
 
         <el-form-item label="备注" prop="remark">
           <el-input 
@@ -107,7 +108,7 @@ const formData = reactive<Partial<UserRow & { password?: string }>>({
   email: '',
   phone: '',
   gender: 0,
-  status: true,
+  status: 'active',
   remark: ''
 })
 
@@ -134,20 +135,20 @@ watch(() => props.modelValue, async (val) => {
   dialogVisible.value = val
   if (val) {
     // 打开对话框时初始化表单数据
-    if (props.isEdit && props.userData?.id) {
+    if (props.isEdit && props.userData?.userId) {
       // 编辑模式：从后端获取完整数据
       dataLoading.value = true
       try {
-        const res = await getUserDetailApi(props.userData.id)
+        const res = await getUserDetailApi(props.userData.userId)
         const userDetail = res.data
         Object.assign(formData, {
-          id: userDetail.id,
+          userId: userDetail.userId,
           username: userDetail.username,
           nickname: userDetail.nickname || '',
           email: userDetail.email || '',
           phone: userDetail.phone || '',
           gender: userDetail.gender ?? 0,
-          status: userDetail.status ?? true,
+          status: userDetail.status ?? 'active',
           remark: userDetail.remark || ''
         })
       } catch (error: any) {
@@ -178,7 +179,7 @@ const resetForm = () => {
     email: '',
     phone: '',
     gender: 0,
-    status: true,
+    status: 'active',
     remark: ''
   })
   formRef.value?.clearValidate()
@@ -202,18 +203,23 @@ const handleSubmit = async () => {
 
   submitLoading.value = true
   try {
-    let result
+    let userId: string | number
     if (props.isEdit) {
       // 编辑用户
       const { password, ...editData } = formData
-      result = await updateUserApi(editData)
+      const result = await updateUserApi(editData)
       ElMessage.success('修改成功')
+      userId = result.data.id
     } else {
       // 新增用户
-      result = await addUserApi(formData)
+      const result = await addUserApi(formData)
       ElMessage.success('新增成功')
+      userId = result.data.id
     }
-    emit('success', result.data)
+    
+    // 重新获取用户数据
+    const userRes = await getUserDetailApi(userId)
+    emit('success', userRes.data)
     handleClose()
   } catch (error: any) {
     ElMessage.error(error?.message || '操作失败')
@@ -223,5 +229,9 @@ const handleSubmit = async () => {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+:deep(.el-checkbox) {
+  margin-right: 0;
+  width: 100%;
+}
 </style>

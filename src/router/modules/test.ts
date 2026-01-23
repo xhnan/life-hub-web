@@ -25,6 +25,15 @@ export default {
                 title: "测试页面2",
                 icon: "streamline-kameleon-color:test-tube-duo",
             }
-        }
+        },
+        {
+            path: "/test/tts",
+            name: "testTTs",
+            component: () => import('@/views/test/tts.vue'),
+            meta: {
+                icon: "twemoji:test-tube",
+                title: "语音合成测试",
+            }
+        },
     ]
 }

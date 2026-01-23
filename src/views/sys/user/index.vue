@@ -10,9 +10,10 @@
           <el-input v-model="searchForm.nickname" placeholder="请输入昵称" clearable style="width: 200px" />
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 120px">
-            <el-option label="启用" :value="true" />
-            <el-option label="禁用" :value="false" />
+          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 200px">
+            <el-option label="正常" value="active" />
+            <el-option label="停用" value="inactive" />
+            <el-option label="禁用" value="banned" />
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -33,7 +34,8 @@
         style="width: 100%"
       >
         <el-table-column prop="userId" label="ID" width="80" />
-        <el-table-column prop="username" label="用户名" width="150" />
+        <el-table-column prop="username" label="用户名" width="120" />
+        <el-table-column prop="nickname" label="昵称" width="120" />
         <el-table-column prop="email" label="邮箱" width="200" />
         <el-table-column prop="phone" label="手机号" width="150" />
         <el-table-column prop="gender" label="性别" width="80">
@@ -45,13 +47,16 @@
         </el-table-column>
         <el-table-column prop="status" label="状态" width="80">
           <template #default="{ row }">
-            <el-tag v-if="row.status" type="success">启用</el-tag>
-            <el-tag v-else type="danger">禁用</el-tag>
+            <el-tag v-if="row.status === 'active'" type="success">正常</el-tag>
+            <el-tag v-else-if="row.status === 'inactive'" type="info">停用</el-tag>
+            <el-tag v-else-if="row.status === 'banned'" type="danger">禁用</el-tag>
+            <el-tag v-else type="info">未知</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="createdAt" label="创建时间" width="180" />
-        <el-table-column label="操作" width="180" fixed="right">
+        <el-table-column label="操作" width="260" fixed="right">
           <template #default="{ row }">
+            <el-button type="success" size="small" @click="handleAssignRole(row)">分配角色</el-button>
             <el-button type="primary" size="small" @click="handleEdit(row)">编辑</el-button>
             <el-button type="danger" size="small" @click="handleDelete(row)">删除</el-button>
           </template>
@@ -79,6 +84,12 @@
       :user-data="dialogUserData"
       @success="handleDialogSuccess"
     />
+
+    <!-- 角色分配弹窗 -->
+    <user-role-dialog
+      ref="userRoleDialogRef"
+      @success="loadUserList"
+    />
   </div>
 </template>
 
@@ -86,8 +97,8 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import UserDialog from '@/views/sys/user/components/user-dialog.vue'
-import {type UserRow, type PageParams, getUserListPageApi} from '@/api/userApi'
-import {  deleteUserApi } from '@/api/userApi'
+import UserRoleDialog from './components/user-role-dialog.vue'
+import { type UserRow, type PageParams, getUserListPageApi, deleteUserApi, resetUserPasswordApi, updateStatusApi } from '@/api/userApi'
 
 const loading = ref(false)
 const tableData = ref<UserRow[]>([])
@@ -98,10 +109,11 @@ const pageParams = reactive<PageParams>({
   pageSize: 10
 })
 
+// 搜索表单
 const searchForm = reactive({
   username: '',
   nickname: '',
-  status: undefined as boolean | undefined
+  status: '' as string | undefined
 })
 
 // 对话框相关
@@ -109,6 +121,9 @@ const dialogVisible = ref(false)
 const dialogTitle = ref('')
 const isEdit = ref(false)
 const dialogUserData = ref<UserRow | null>(null)
+
+// 角色分配对话框
+const userRoleDialogRef = ref()
 
 // 加载用户列表
 const loadUserList = async () => {
@@ -164,6 +179,11 @@ const handleDialogSuccess = () => {
   loadUserList()
 }
 
+// 分配角色
+const handleAssignRole = (row: UserRow) => {
+  userRoleDialogRef.value?.openDialog(row)
+}
+
 // 删除
 const handleDelete = async (row: UserRow) => {
   try {
@@ -177,7 +197,7 @@ const handleDelete = async (row: UserRow) => {
       }
     )
     
-    await deleteUserApi(row.id)
+    await deleteUserApi(row.userId)
     ElMessage.success('删除成功')
     await loadUserList()
   } catch (error: any) {
