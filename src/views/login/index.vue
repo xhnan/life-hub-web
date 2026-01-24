@@ -86,9 +86,13 @@ const handleLogin = async () => {
 			const res = await loginApi(loginForm);
 			if (res.code === 200 && res.data) {
 				localStorage.setItem('token', res.data.token);
-				if (res.data.userInfo) {
-					localStorage.setItem('userInfo', JSON.stringify(res.data.userInfo));
-				}
+				// 构造 userInfo 对象
+				const userInfo = {
+					username: res.data.username,
+					avatar: res.data.avatar
+				};
+				localStorage.setItem('userInfo', JSON.stringify(userInfo));
+				
 				ElMessage.success('登录成功');
 				router.push('/');
 			}

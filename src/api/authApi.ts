@@ -9,12 +9,10 @@ export interface LoginForm {
 
 export interface LoginResponse {
 	token: string;
-	userInfo?: {
-		userId: number | string;
-		username: string;
-		nickname?: string;
-		avatar?: string;
-	};
+	tokenType: string;
+	expiresIn: number;
+	username: string;
+	avatar?: string;
 }
 
 export const loginApi = (data: LoginForm) => {
