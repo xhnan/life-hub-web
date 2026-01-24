@@ -22,6 +22,20 @@ service.interceptors.request.use(
     (config) => {
         // 从 localStorage 获取 token
         const token = localStorage.getItem('token');
+        const tokenExpiresAt = localStorage.getItem('tokenExpiresAt');
+
+        // 检查 token 是否过期
+        if (token && tokenExpiresAt) {
+            const now = Date.now();
+            if (now > Number(tokenExpiresAt)) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('tokenExpiresAt');
+                localStorage.removeItem('userInfo');
+                window.location.href = '/#/login';
+                return Promise.reject(new Error('Token expired'));
+            }
+        }
+
         if (token && config.headers) {
             config.headers['Authorization'] = `Bearer ${token}`;
         }
@@ -56,6 +70,8 @@ service.interceptors.response.use(
                     type: 'warning'
                 }).then(() => {
                     localStorage.removeItem('token');
+                    localStorage.removeItem('tokenExpiresAt');
+                    localStorage.removeItem('userInfo');
                     window.location.href = '/#/login';
                 });
             }
@@ -81,6 +97,8 @@ service.interceptors.response.use(
             case 401:
                 message = '未授权，请登录';
                 localStorage.removeItem('token');
+                localStorage.removeItem('tokenExpiresAt');
+                localStorage.removeItem('userInfo');
                 window.location.href = '/#/login';
                 break;
             case 403:

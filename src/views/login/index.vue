@@ -86,6 +86,10 @@ const handleLogin = async () => {
 			const res = await loginApi(loginForm);
 			if (res.code === 200 && res.data) {
 				localStorage.setItem('token', res.data.token);
+				// 存储 token 过期时间
+				const expiresAt = Date.now() + res.data.expiresIn * 1000;
+				localStorage.setItem('tokenExpiresAt', expiresAt.toString());
+
 				// 构造 userInfo 对象
 				const userInfo = {
 					username: res.data.username,

@@ -31,8 +31,20 @@ const whiteList = ['/login'];
 
 router.beforeEach((to, _, next) => {
     const token = localStorage.getItem('token');
-    
-    if (token) {
+    const tokenExpiresAt = localStorage.getItem('tokenExpiresAt');
+
+    // 检查是否过期
+    let isExpired = false;
+    if (token && tokenExpiresAt) {
+        if (Date.now() > Number(tokenExpiresAt)) {
+            isExpired = true;
+            localStorage.removeItem('token');
+            localStorage.removeItem('tokenExpiresAt');
+            localStorage.removeItem('userInfo');
+        }
+    }
+
+    if (token && !isExpired) {
         if (to.path === '/login') {
             next('/');
         } else {
