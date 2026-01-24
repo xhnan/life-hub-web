@@ -148,7 +148,7 @@ class PCMPlayer {
     
     for (let i = 0; i < int16Data.length; i++) {
       // Normalize to [-1.0, 1.0]
-      float32Data[i] = int16Data[i] / 32768.0
+      float32Data[i] = (int16Data[i] ?? 0) / 32768.0
     }
 
     // Resume audio context if suspended (browser policy)

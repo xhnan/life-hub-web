@@ -209,12 +209,12 @@ const handleSubmit = async () => {
       const { password, ...editData } = formData
       const result = await updateUserApi(editData)
       ElMessage.success('修改成功')
-      userId = result.data.id
+      userId = result.data.userId
     } else {
       // 新增用户
       const result = await addUserApi(formData)
       ElMessage.success('新增成功')
-      userId = result.data.id
+      userId = result.data.userId
     }
     
     // 重新获取用户数据

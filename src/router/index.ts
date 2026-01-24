@@ -27,4 +27,24 @@ const router = createRouter({
     routes:constantRoutes,
 });
 
+const whiteList = ['/login'];
+
+router.beforeEach((to, _, next) => {
+    const token = localStorage.getItem('token');
+    
+    if (token) {
+        if (to.path === '/login') {
+            next('/');
+        } else {
+            next();
+        }
+    } else {
+        if (whiteList.includes(to.path)) {
+            next();
+        } else {
+            next('/login');
+        }
+    }
+});
+
 export default router;

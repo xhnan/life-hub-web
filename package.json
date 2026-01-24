@@ -9,12 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
     "@iconify/vue": "^5.0.0",
     "axios": "^1.13.2",
     "element-plus": "^2.11.9",
     "unplugin-icons": "^22.5.0",
     "vue": "^3.5.24",
-    "vue-router": "4"
+    "vue-router": "^4.6.4"
   },
   "devDependencies": {
     "@iconify-json/ep": "^1.2.3",

@@ -26,17 +26,7 @@
           clearable
         />
       </el-form-item>
-      <el-form-item label="父级角色" prop="parentId">
-        <el-select v-model="formData.parentId" placeholder="请选择父级角色" clearable style="width: 100%">
-          <el-option
-            v-for="item in roleOptions"
-            :key="item.id"
-            :label="item.roleName"
-            :value="item.id"
-            :disabled="item.id === formData.id"
-          />
-        </el-select>
-      </el-form-item>
+
       <el-form-item label="角色描述" prop="description">
         <el-input
           v-model="formData.description"
@@ -68,7 +58,7 @@
 import { ref, reactive, watch } from 'vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import type { RoleRow } from '@/api/roleApi'
-import { addRoleApi, updateRoleApi, getRoleListPageApi } from '@/api/roleApi'
+import { addRoleApi, updateRoleApi } from '@/api/roleApi'
 
 interface Props {
   modelValue: boolean
@@ -91,15 +81,13 @@ const emit = defineEmits<{
 
 const formRef = ref<FormInstance>()
 const loading = ref(false)
-const roleOptions = ref<RoleRow[]>([])
 
 const formData = reactive<Partial<RoleRow>>({
   id: undefined,
   roleCode: '',
   roleName: '',
   description: '',
-  status: true,
-  parentId: undefined
+  status: true
 })
 
 const rules: FormRules = {
@@ -112,21 +100,9 @@ const rules: FormRules = {
   ]
 }
 
-// 加载角色列表（用于父级角色选择）
-const loadRoleList = async () => {
-  try {
-    const res = await getRoleListPageApi({ pageNum: 1, pageSize: 1000 })
-    roleOptions.value = res.data?.records || []
-  } catch (error) {
-    console.error('获取角色列表失败', error)
-  }
-}
-
 // 监听对话框打开
 watch(() => props.modelValue, async (val) => {
   if (val) {
-    await loadRoleList()
-    
     if (props.isEdit && props.roleData) {
       Object.assign(formData, props.roleData)
     } else {
@@ -138,7 +114,6 @@ watch(() => props.modelValue, async (val) => {
 // 重置表单
 const resetForm = () => {
   formData.id = undefined
-  formData.parentId = undefined
   formData.roleCode = ''
   formData.roleName = ''
   formData.description = ''

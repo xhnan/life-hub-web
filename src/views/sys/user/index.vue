@@ -98,7 +98,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import UserDialog from '@/views/sys/user/components/user-dialog.vue'
 import UserRoleDialog from './components/user-role-dialog.vue'
-import { type UserRow, type PageParams, getUserListPageApi, deleteUserApi, resetUserPasswordApi, updateStatusApi } from '@/api/userApi'
+import { type UserRow, type PageParams, getUserListPageApi, deleteUserApi } from '@/api/userApi'
 
 const loading = ref(false)
 const tableData = ref<UserRow[]>([])

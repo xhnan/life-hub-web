@@ -62,8 +62,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, computed } from 'vue'
-import { ElMessage, type ElTree } from 'element-plus'
+import { ref, watch, computed } from 'vue'
+import { ElMessage } from 'element-plus'
 import type { RoleRow } from '@/api/roleApi'
 import { getRolePermissionIdsApi, assignRolePermissionsApi } from '@/api/roleApi'
 import { getAllPermissionListApi, type PermissionRow } from '@/api/permissionApi'
