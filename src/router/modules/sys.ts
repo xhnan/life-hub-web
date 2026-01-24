@@ -4,7 +4,8 @@ export default {
     meta: {
         icon: "streamline-freehand-color:settings-cog",
         title: "系统管理",
-        rank: 800
+        rank: 800,
+        roles: ['admin']
     },
     children: [
         {

@@ -1,5 +1,6 @@
-import {onMounted, ref} from 'vue';
-import {useRouter} from "vue-router";
+import { onMounted, ref, watch } from 'vue';
+import type { RouteRecordRaw } from "vue-router";
+import { permissionStore } from "@/store/permission";
 
 export interface MenuItem {
     id: string;
@@ -8,86 +9,73 @@ export interface MenuItem {
     icon?: string;
     children?: MenuItem[];
     order?: number;
-
 }
 
 export const useNav = () => {
-
-
     const menuData = ref<MenuItem[]>([])
+    
     const handleOpen = (key: string, keyPath: string[]) => {
         console.log('open:', key, keyPath);
     }
     const handleClose = (key: string, keyPath: string[]) => {
         console.log('close:', key, keyPath);
     }
-    const loadMenuData = () => {
-        const router = useRouter();
-        const routes = router
-            .getRoutes()
-            .filter(r => {
-                const m = r.meta as any;
-                return m && m.title && !r.path.includes(':') && r.path !== '/';
-            });
 
-        const map = new Map<string, MenuItem>();
+    const transformRouteToMenu = (routes: RouteRecordRaw[]): MenuItem[] => {
+        return routes
+            .filter(route => !route.meta?.hidden && route.meta?.title)
+            .map(route => {
+                const item: MenuItem = {
+                    id: route.path,
+                    label: (route.meta?.title as string) || '',
+                    path: route.path,
+                    icon: (route.meta?.icon as string) || undefined,
+                    order: (route.meta?.rank as number) || 0,
+                    children: []
+                };
 
-        routes.forEach(r => {
-            const meta = r.meta as any;
-            const path = r.path;
-            const seg = path.split('/').filter(Boolean);
-            if (seg.length === 0) return;
-
-            const topKey = '/' + seg[0];
-
-            if (!map.has(topKey)) {
-                const topRoute = routes.find(rt => rt.path === topKey);
-                map.set(topKey, {
-                    id: topKey,
-                    label: topRoute ? (topRoute.meta as any).title : seg[0],
-                    path: topRoute ? topRoute.path : topKey,
-                    icon: topRoute ? (topRoute.meta as any).icon : undefined,
-                    children: [],
-                    order: topRoute ? (topRoute.meta as any).rank ?? 0 : 0
-                });
-            }
-
-            const entry = map.get(topKey)!;
-
-            if (seg.length === 1) {
-                entry.label = meta.title || entry.label;
-                entry.path = path || entry.path;
-                entry.icon = meta.icon || entry.icon;
-                entry.order = meta.rank ?? entry.order;
-            } else {
-                if (!entry.children!.some(c => c.path === path)) {
-                    entry.children!.push({
-                        id: path,
-                        label: meta.title,
-                        path,
-                        icon: meta.icon,
-                        order: meta.rank ?? 0
-                    });
+                if (route.children && route.children.length > 0) {
+                    item.children = transformRouteToMenu(route.children);
                 }
-            }
-        });
-
-        // 转数组并排序
-        menuData.value = Array.from(map.values())
-            .map(item => {
-                if (item.children && item.children.length) {
-                    item.children.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-                }
+                
                 return item;
             })
             .sort((a, b) => {
-                // /welcome 始终第一
-                if (a.path === '/welcome') return -1;
-                if (b.path === '/welcome') return 1;
-                return (a.order ?? 0) - (b.order ?? 0);
+                 if (a.path === '/welcome') return -1;
+                 if (b.path === '/welcome') return 1;
+                 return (a.order || 0) - (b.order || 0);
             });
     };
 
+    const loadMenuData = () => {
+        // 尝试从 sessionStorage 获取
+        const storedMenu = sessionStorage.getItem('menuData');
+        if (storedMenu) {
+             menuData.value = JSON.parse(storedMenu);
+             // 如果 store 里没有路由（刷新情况），可能需要重新生成以确保同步？
+             // 但这里假设 store 已经通过 router guard 初始化了。
+             // 实际上 router guard 可能会比 onMounted 慢吗？不会，guard 阻塞导航。
+             // 但是如果只是单纯的页面刷新，router guard 执行完后，store 就有了。
+        }
+
+        const buildMenu = () => {
+             const menus = transformRouteToMenu(permissionStore.routes);
+             menuData.value = menus;
+             sessionStorage.setItem('menuData', JSON.stringify(menus));
+        }
+        
+        if (permissionStore.routes.length > 0) {
+            buildMenu();
+        } else {
+            // 监听路由变化（如登录后）
+            const stop = watch(() => permissionStore.routes, (newRoutes) => {
+                if (newRoutes.length > 0) {
+                    buildMenu();
+                    stop(); // 只需构建一次
+                }
+            }, { immediate: true });
+        }
+    };
 
     onMounted(() => {
         loadMenuData();
@@ -98,6 +86,4 @@ export const useNav = () => {
         handleClose,
         menuData
     }
-
-
 };

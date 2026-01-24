@@ -29,6 +29,13 @@
       </template>
 
     </el-menu>
+
+    <div class="logout-container">
+      <el-button text class="logout-btn" @click="handleLogout">
+        <el-icon style="margin-right: 5px;"><Icon icon="mdi:logout" /></el-icon>
+        <span>退出登录</span>
+      </el-button>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -39,11 +46,29 @@ import {
 import { useRoute } from 'vue-router';
 import MenuItem from "@/layout/components/lay-navbar/MenuItem.vue";
 import { Icon } from '@iconify/vue';
+import { logoutApi } from '@/api/authApi';
 
 
 const { handleOpen, handleClose, menuData } = useNav();
 
 const route = useRoute();
+
+const handleLogout = async () => {
+    try {
+        await logoutApi();
+    } catch (e) {
+        console.error(e);
+    } finally {
+        localStorage.removeItem('token');
+        localStorage.removeItem('tokenExpiresAt');
+        localStorage.removeItem('userInfo');
+        sessionStorage.removeItem('userRoles');
+        sessionStorage.removeItem('userPermissions');
+        sessionStorage.removeItem('menuData');
+        window.location.href = '/#/login';
+        window.location.reload();
+    }
+}
 
 
 defineOptions({
@@ -55,7 +80,8 @@ defineOptions({
 .lay-navbar {
   height: 100%;
   width: 100%;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   padding: 16px 0;
 }
@@ -63,6 +89,23 @@ defineOptions({
 .el-menu-vertical-demo {
   border-right: none;
   background: transparent;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.logout-container {
+    padding: 10px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logout-btn {
+    width: 100%;
+    color: #fff;
+    justify-content: flex-start;
+    
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
 }
 
 /* 选中/悬停样式：更明显的背景色和主色高亮 */

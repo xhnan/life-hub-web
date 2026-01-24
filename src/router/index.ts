@@ -8,28 +8,37 @@ const modules: Record<string, any> = import.meta.glob(
     }
 );
 
+const constantRouteList: RouteRecordRaw[] = [];
+const asyncRouteList: RouteRecordRaw[] = [];
 
-// const routes  = [];
+Object.keys(modules).forEach((key) => {
+    const name = key.match(/\.\/modules\/(.*)\.ts$/)?.[1];
+    const mod = modules[key]?.default;
+    if (!mod) return;
+    const modList = Array.isArray(mod) ? mod : [mod];
 
-const routesSource: RouteRecordRaw[] = Object.keys(modules).flatMap((key) => {
-    const d = modules[key]?.default;
-    if (!d) return [];
-    return Array.isArray(d) ? d : [d];
-}) as RouteRecordRaw[];
-export const constantRoutes: Array<RouteRecordRaw> = formatRouter(
-    routesSource
-);
+    if (name === 'login' || name === 'home') {
+        constantRouteList.push(...modList);
+    } else {
+        asyncRouteList.push(...modList);
+    }
+});
 
-
+export const constantRoutes: Array<RouteRecordRaw> = formatRouter(constantRouteList);
+export const asyncRoutes: Array<RouteRecordRaw> = formatRouter(asyncRouteList);
 
 const router = createRouter({
     history: createWebHashHistory(),
-    routes:constantRoutes,
+    routes: constantRoutes,
 });
+
+import { getUserInfoApi } from "@/api/authApi";
+import { userStore, setUserInfo } from "@/store/user";
+import { generateRoutes } from "@/store/permission";
 
 const whiteList = ['/login'];
 
-router.beforeEach((to, _, next) => {
+router.beforeEach(async (to, _, next) => {
     const token = localStorage.getItem('token');
     const tokenExpiresAt = localStorage.getItem('tokenExpiresAt');
 
@@ -41,6 +50,9 @@ router.beforeEach((to, _, next) => {
             localStorage.removeItem('token');
             localStorage.removeItem('tokenExpiresAt');
             localStorage.removeItem('userInfo');
+            sessionStorage.removeItem('userRoles');
+            sessionStorage.removeItem('userPermissions');
+            sessionStorage.removeItem('menuData');
         }
     }
 
@@ -48,7 +60,53 @@ router.beforeEach((to, _, next) => {
         if (to.path === '/login') {
             next('/');
         } else {
-            next();
+            // 判断是否已加载权限路由
+            if (userStore.roles && userStore.roles.length > 0) {
+                next();
+            } else {
+                try {
+                    // 尝试从 sessionStorage 获取角色信息
+                    const storedRoles = sessionStorage.getItem('userRoles');
+                    const storedPermissions = sessionStorage.getItem('userPermissions');
+                    
+                    let roles: string[] = [];
+                    let permissions: string[] = [];
+
+                    if (storedRoles && storedPermissions) {
+                        roles = JSON.parse(storedRoles);
+                        permissions = JSON.parse(storedPermissions);
+                    } else {
+                        // 调用接口获取
+                        const { data } = await getUserInfoApi();
+                        roles = data.roles;
+                        permissions = data.permissions;
+                        
+                        // 存入 sessionStorage
+                        sessionStorage.setItem('userRoles', JSON.stringify(roles));
+                        sessionStorage.setItem('userPermissions', JSON.stringify(permissions));
+                    }
+                    
+                    setUserInfo(roles, permissions);
+                    
+                    // 生成并添加路由
+                    const accessRoutes = generateRoutes(roles);
+                    accessRoutes.forEach(route => {
+                        router.addRoute(route);
+                    });
+                    
+                    next({ ...to, replace: true });
+                } catch (error) {
+                    console.error(error);
+                    // 出错需重置
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('tokenExpiresAt');
+                    localStorage.removeItem('userInfo');
+                    sessionStorage.removeItem('userRoles');
+                    sessionStorage.removeItem('userPermissions');
+                    sessionStorage.removeItem('menuData');
+                    next('/login');
+                }
+            }
         }
     } else {
         if (whiteList.includes(to.path)) {

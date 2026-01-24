@@ -28,12 +28,15 @@ service.interceptors.request.use(
         if (token && tokenExpiresAt) {
             const now = Date.now();
             if (now > Number(tokenExpiresAt)) {
-                localStorage.removeItem('token');
-                localStorage.removeItem('tokenExpiresAt');
-                localStorage.removeItem('userInfo');
-                window.location.href = '/#/login';
-                return Promise.reject(new Error('Token expired'));
-            }
+                 localStorage.removeItem('token');
+                 localStorage.removeItem('tokenExpiresAt');
+                 localStorage.removeItem('userInfo');
+                 sessionStorage.removeItem('userRoles');
+                 sessionStorage.removeItem('userPermissions');
+                 sessionStorage.removeItem('menuData');
+                 window.location.href = '/#/login';
+                 return Promise.reject(new Error('Token expired'));
+             }
         }
 
         if (token && config.headers) {
@@ -72,6 +75,9 @@ service.interceptors.response.use(
                     localStorage.removeItem('token');
                     localStorage.removeItem('tokenExpiresAt');
                     localStorage.removeItem('userInfo');
+                    sessionStorage.removeItem('userRoles');
+                    sessionStorage.removeItem('userPermissions');
+                    sessionStorage.removeItem('menuData');
                     window.location.href = '/#/login';
                 });
             }
@@ -99,6 +105,9 @@ service.interceptors.response.use(
                 localStorage.removeItem('token');
                 localStorage.removeItem('tokenExpiresAt');
                 localStorage.removeItem('userInfo');
+                sessionStorage.removeItem('userRoles');
+                sessionStorage.removeItem('userPermissions');
+                sessionStorage.removeItem('menuData');
                 window.location.href = '/#/login';
                 break;
             case 403:
