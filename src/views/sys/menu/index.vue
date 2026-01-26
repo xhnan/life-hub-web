@@ -29,8 +29,9 @@
           <el-descriptions :column="1" border>
             <el-descriptions-item label="菜单ID">{{ selectedMenu.id }}</el-descriptions-item>
             <el-descriptions-item label="菜单名称">{{ selectedMenu.menuName }}</el-descriptions-item>
+            <el-descriptions-item label="路由名称">{{ selectedMenu.routerName || '无' }}</el-descriptions-item>
             <el-descriptions-item label="父级ID">{{ selectedMenu.parentId || '无' }}</el-descriptions-item>
-            <el-descriptions-item label="权限标识">{{ selectedMenu.menuCode || '无' }}</el-descriptions-item>
+            <el-descriptions-item label="权限标识">{{ selectedMenu.permission || '无' }}</el-descriptions-item>
             <el-descriptions-item label="路径">{{ selectedMenu.path }}</el-descriptions-item>
             <el-descriptions-item label="组件">{{ selectedMenu.component || '无' }}</el-descriptions-item>
             <el-descriptions-item label="类型">

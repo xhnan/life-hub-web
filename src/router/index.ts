@@ -35,6 +35,7 @@ const router = createRouter({
 import { getUserInfoApi } from "@/api/authApi";
 import { userStore, setUserInfo } from "@/store/user";
 import { generateRoutes } from "@/store/permission";
+import { hasPermission } from "@/utils/auth";
 
 const whiteList = ['/login'];
 
@@ -62,6 +63,10 @@ router.beforeEach(async (to, _, next) => {
         } else {
             // 判断是否已加载权限路由
             if (userStore.roles && userStore.roles.length > 0) {
+                if (to.meta?.permissions && !hasPermission(to.meta.permissions as string[])) {
+                     next('/404');
+                     return;
+                }
                 next();
             } else {
                 try {
@@ -89,14 +94,28 @@ router.beforeEach(async (to, _, next) => {
                     setUserInfo(roles, permissions);
                     
                     // 生成并添加路由
-                    const accessRoutes = generateRoutes(roles);
+                    // generateRoutes 已经修改为 async，需要 await
+                    const accessRoutes = await generateRoutes(roles);
                     accessRoutes.forEach(route => {
-                        router.addRoute(route);
+                        if (!route.name || !router.hasRoute(route.name)) {
+                            router.addRoute(route);
+                        }
                     });
                     
+                    // 确保 404 路由最后添加
+                    const catchAllRouteName = 'CatchAll';
+                    if (!router.hasRoute(catchAllRouteName)) {
+                        router.addRoute({ 
+                            path: '/:pathMatch(.*)*', 
+                            name: catchAllRouteName,
+                            redirect: '/404', 
+                            meta: { hidden: true } 
+                        } as any);
+                    }
+
                     next({ ...to, replace: true });
                 } catch (error) {
-                    console.error(error);
+                    console.error('Failed to generate routes:', error);
                     // 出错需重置
                     localStorage.removeItem('token');
                     localStorage.removeItem('tokenExpiresAt');

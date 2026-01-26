@@ -1,6 +1,7 @@
 import { onMounted, ref, watch } from 'vue';
 import type { RouteRecordRaw } from "vue-router";
 import { permissionStore } from "@/store/permission";
+import {hasPermission} from "@/utils/auth.ts";
 
 export interface MenuItem {
     id: string;
@@ -23,7 +24,12 @@ export const useNav = () => {
 
     const transformRouteToMenu = (routes: RouteRecordRaw[]): MenuItem[] => {
         return routes
-            .filter(route => !route.meta?.hidden && route.meta?.title)
+            .filter(route => {
+                if (route.meta?.hidden) return false;
+                if (!route.meta?.title) return false;
+                if (route.meta?.permissions && !hasPermission(route.meta.permissions as string[])) return false;
+                return true;
+            })
             .map(route => {
                 const item: MenuItem = {
                     id: route.path,
@@ -48,33 +54,18 @@ export const useNav = () => {
     };
 
     const loadMenuData = () => {
-        // 尝试从 sessionStorage 获取
-        const storedMenu = sessionStorage.getItem('menuData');
-        if (storedMenu) {
-             menuData.value = JSON.parse(storedMenu);
-             // 如果 store 里没有路由（刷新情况），可能需要重新生成以确保同步？
-             // 但这里假设 store 已经通过 router guard 初始化了。
-             // 实际上 router guard 可能会比 onMounted 慢吗？不会，guard 阻塞导航。
-             // 但是如果只是单纯的页面刷新，router guard 执行完后，store 就有了。
-        }
-
         const buildMenu = () => {
              const menus = transformRouteToMenu(permissionStore.routes);
              menuData.value = menus;
              sessionStorage.setItem('menuData', JSON.stringify(menus));
         }
         
-        if (permissionStore.routes.length > 0) {
-            buildMenu();
-        } else {
-            // 监听路由变化（如登录后）
-            const stop = watch(() => permissionStore.routes, (newRoutes) => {
-                if (newRoutes.length > 0) {
-                    buildMenu();
-                    stop(); // 只需构建一次
-                }
-            }, { immediate: true });
-        }
+        // 始终监听路由变化，确保动态路由加载后能更新菜单
+        watch(() => permissionStore.routes, (newRoutes) => {
+            if (newRoutes.length > 0) {
+                buildMenu();
+            }
+        }, { immediate: true, deep: true });
     };
 
     onMounted(() => {

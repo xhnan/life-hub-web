@@ -31,6 +31,18 @@
 						:prefix-icon="Lock"
 					/>
 				</el-form-item>
+                <div class="login-options">
+                    <el-checkbox v-model="loginForm.rememberMe">记住我</el-checkbox>
+                    <el-link type="primary" :underline="false">忘记密码？</el-link>
+                </div>
+                <el-alert
+                    v-if="errorMessage"
+                    :title="errorMessage"
+                    type="error"
+                    show-icon
+                    :closable="false"
+                    class="login-error"
+                />
 				<el-form-item>
 					<el-button
 						type="primary"
@@ -58,10 +70,12 @@ const router = useRouter();
 
 const loginFormRef = ref<FormInstance>();
 const loading = ref(false);
+const errorMessage = ref('');
 
 const loginForm = reactive<LoginForm>({
 	username: '',
-	password: ''
+	password: '',
+    rememberMe: false
 });
 
 const loginRules: FormRules = {
@@ -82,6 +96,7 @@ const handleLogin = async () => {
 		if (!valid) return;
 
 		loading.value = true;
+        errorMessage.value = '';
 		try {
 			const res = await loginApi(loginForm);
 			if (res.code === 200 && res.data) {
@@ -99,9 +114,12 @@ const handleLogin = async () => {
 				
 				ElMessage.success('登录成功');
 				router.push('/');
-			}
-		} catch (error) {
+			} else {
+                errorMessage.value = res.message || '登录失败，请检查账号密码';
+            }
+		} catch (error: any) {
 			console.error('登录失败:', error);
+            errorMessage.value = error.message || '登录发生错误，请稍后重试';
 		} finally {
 			loading.value = false;
 		}
@@ -151,6 +169,17 @@ const handleLogin = async () => {
 	:deep(.el-input__wrapper) {
 		padding: 12px 15px;
 	}
+}
+
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.login-error {
+    margin-bottom: 24px;
 }
 
 .login-button {

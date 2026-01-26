@@ -5,6 +5,7 @@ const prefix = '/auth'
 export interface LoginForm {
 	username: string;
 	password: string;
+    rememberMe?: boolean;
 }
 
 export interface LoginResponse {
@@ -25,19 +26,7 @@ export const loginApi = (data: LoginForm) => {
 };
 
 export const getUserInfoApi = () => {
-	// 模拟获取用户信息接口
-	return new Promise<{ code: number; data: UserInfo; message: string }>((resolve) => {
-		setTimeout(() => {
-			resolve({
-				code: 200,
-				data: {
-					roles: ['admin'], // 默认返回 admin 角色
-					permissions: ['sys:user:add', 'sys:user:edit']
-				},
-				message: 'success'
-			});
-		}, 100);
-	});
+	return http.get<UserInfo>(`${prefix}/info`);
 };
 
 export const logoutApi = () => {

@@ -27,8 +27,11 @@
       <el-form-item label="菜单名称" prop="menuName">
         <el-input v-model="formData.menuName" placeholder="请输入菜单名称" />
       </el-form-item>
-      <el-form-item label="权限标识" prop="menuCode">
-        <el-input v-model="formData.menuCode" placeholder="请输入权限标识" />
+      <el-form-item label="路由名称" prop="routerName">
+        <el-input v-model="formData.routerName" placeholder="请输入路由名称（英文标识）" />
+      </el-form-item>
+      <el-form-item label="权限标识" prop="permission">
+        <el-input v-model="formData.permission" placeholder="请输入权限标识" />
       </el-form-item>
       <el-form-item label="菜单路径" prop="path">
         <el-input v-model="formData.path" placeholder="请输入路径" />
@@ -107,7 +110,8 @@ const treeProps = {
 const formData = reactive<Partial<MenuRow>>({
   parentId: 0,
   menuName: '',
-  menuCode: '',
+  routerName: '',
+  permission: '',
   path: '',
   component: '',
   menuType: 2,
@@ -120,6 +124,7 @@ const formData = reactive<Partial<MenuRow>>({
 
 const formRules: FormRules = {
   menuName: [{ required: true, message: '请输入菜单名称', trigger: 'blur' }],
+  routerName: [{ required: true, message: '请输入路由名称', trigger: 'blur' }],
   path: [{ required: true, message: '请输入路径', trigger: 'blur' }],
   menuType: [{ required: true, message: '请选择菜单类型', trigger: 'change' }]
 }
@@ -139,7 +144,8 @@ watch(() => props.modelValue, async (val) => {
           id: menuDetail.id,
           parentId: menuDetail.parentId || 0,
           menuName: menuDetail.menuName,
-          menuCode: menuDetail.menuCode || '',
+          routerName: menuDetail.routerName || '',
+          permission: menuDetail.permission || '',
           path: menuDetail.path,
           component: menuDetail.component || '',
           menuType: menuDetail.menuType,
@@ -161,7 +167,8 @@ watch(() => props.modelValue, async (val) => {
         id: undefined,
         parentId: props.menuData?.id || 0, // 如果有 menuData，说明是添加子菜单
         menuName: '',
-        menuCode: '',
+        routerName: '',
+        permission: '',
         path: '',
         component: '',
         menuType: 2,

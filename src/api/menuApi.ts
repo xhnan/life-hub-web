@@ -7,7 +7,8 @@ export interface MenuRow {
 	id: number | string;
 	parentId?: number; // 父菜单ID，0表示根菜单
 	menuName: string; // 菜单名称
-	menuCode?: string; // 菜单权限标识
+    routerName?: string; // 路由名称
+	permission?: string; // 菜单权限标识
 	menuType: number; // 菜单类型：1目录 2菜单 3按钮
 	path: string; // 前端路由路径
 	component?: string; // 前端组件路径
