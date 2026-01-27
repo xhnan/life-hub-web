@@ -65,6 +65,7 @@ import { useRouter } from 'vue-router';
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus';
 import { User, Lock } from '@element-plus/icons-vue';
 import { loginApi, type LoginForm } from '@/api/authApi';
+import { STORAGE_KEYS } from '@/utils/constants';
 
 const router = useRouter();
 
@@ -100,18 +101,18 @@ const handleLogin = async () => {
 		try {
 			const res = await loginApi(loginForm);
 			if (res.code === 200 && res.data) {
-				localStorage.setItem('life_hub_token', res.data.token);
+				localStorage.setItem(STORAGE_KEYS.TOKEN, res.data.token);
 				// 存储 token 过期时间
 				const expiresAt = Date.now() + res.data.expiresIn * 1000;
-				localStorage.setItem('life_hub_tokenExpiresAt', expiresAt.toString());
+				localStorage.setItem(STORAGE_KEYS.TOKEN_EXPIRES_AT, expiresAt.toString());
 
 				// 构造 userInfo 对象
 				const userInfo = {
 					username: res.data.username,
 					avatar: res.data.avatar
 				};
-				localStorage.setItem('life_hub_userInfo', JSON.stringify(userInfo));
-				
+				localStorage.setItem(STORAGE_KEYS.USER_INFO, JSON.stringify(userInfo));
+
 				ElMessage.success('登录成功');
 				router.push('/');
 			} else {

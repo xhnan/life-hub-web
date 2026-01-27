@@ -47,6 +47,8 @@ import { useRoute } from 'vue-router';
 import MenuItem from "@/layout/components/lay-navbar/MenuItem.vue";
 import { Icon } from '@iconify/vue';
 import { logoutApi } from '@/api/authApi';
+import { clearAuthData } from '@/utils/auth';
+import { ElMessage } from 'element-plus';
 
 
 const { handleOpen, handleClose, menuData } = useNav();
@@ -58,13 +60,9 @@ const handleLogout = async () => {
         await logoutApi();
     } catch (e) {
         console.error(e);
+        ElMessage.error('退出登录失败，请重试');
     } finally {
-        localStorage.removeItem('life_hub_token');
-        localStorage.removeItem('life_hub_tokenExpiresAt');
-        localStorage.removeItem('life_hub_userInfo');
-        sessionStorage.removeItem('life_hub_userRoles');
-        sessionStorage.removeItem('life_hub_userPermissions');
-        sessionStorage.removeItem('life_hub_menuData');
+        clearAuthData();
         window.location.href = '/#/login';
         window.location.reload();
     }

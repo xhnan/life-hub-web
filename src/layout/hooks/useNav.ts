@@ -2,6 +2,7 @@ import { onMounted, ref, watch } from 'vue';
 import type { RouteRecordRaw } from "vue-router";
 import { permissionStore } from "@/store/permission";
 import {hasPermission} from "@/utils/auth.ts";
+import { STORAGE_KEYS } from "@/utils/constants";
 
 export interface MenuItem {
     id: string;
@@ -57,7 +58,7 @@ export const useNav = () => {
         const buildMenu = () => {
              const menus = transformRouteToMenu(permissionStore.routes);
              menuData.value = menus;
-             sessionStorage.setItem('life_hub_menuData', JSON.stringify(menus));
+             sessionStorage.setItem(STORAGE_KEYS.MENU_DATA, JSON.stringify(menus));
         }
         
         // 始终监听路由变化，确保动态路由加载后能更新菜单

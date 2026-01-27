@@ -1,5 +1,7 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosResponse } from 'axios';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { clearAuthData } from '@/utils/auth';
+import { STORAGE_KEYS } from '@/utils/constants';
 
 // 响应数据结构
 export interface ApiResponse<T = any> {
@@ -21,19 +23,14 @@ const service: AxiosInstance = axios.create({
 service.interceptors.request.use(
     (config) => {
         // 从 localStorage 获取 token
-        const token = localStorage.getItem('life_hub_token');
-        const tokenExpiresAt = localStorage.getItem('life_hub_tokenExpiresAt');
+        const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
+        const tokenExpiresAt = localStorage.getItem(STORAGE_KEYS.TOKEN_EXPIRES_AT);
 
         // 检查 token 是否过期
         if (token && tokenExpiresAt) {
             const now = Date.now();
             if (now > Number(tokenExpiresAt)) {
-                 localStorage.removeItem('life_hub_token');
-                 localStorage.removeItem('life_hub_tokenExpiresAt');
-                 localStorage.removeItem('life_hub_userInfo');
-                 sessionStorage.removeItem('life_hub_userRoles');
-                 sessionStorage.removeItem('life_hub_userPermissions');
-                 sessionStorage.removeItem('life_hub_menuData');
+                 clearAuthData();
                  window.location.href = '/#/login';
                  return Promise.reject(new Error('Token expired'));
              }
@@ -72,12 +69,7 @@ service.interceptors.response.use(
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    localStorage.removeItem('life_hub_token');
-                    localStorage.removeItem('life_hub_tokenExpiresAt');
-                    localStorage.removeItem('life_hub_userInfo');
-                    sessionStorage.removeItem('life_hub_userRoles');
-                    sessionStorage.removeItem('life_hub_userPermissions');
-                    sessionStorage.removeItem('life_hub_menuData');
+                    clearAuthData();
                     window.location.href = '/#/login';
                 });
             }
@@ -102,12 +94,7 @@ service.interceptors.response.use(
                 break;
             case 401:
                 message = '未授权，请登录';
-                localStorage.removeItem('life_hub_token');
-                localStorage.removeItem('life_hub_tokenExpiresAt');
-                localStorage.removeItem('life_hub_userInfo');
-                sessionStorage.removeItem('life_hub_userRoles');
-                sessionStorage.removeItem('life_hub_userPermissions');
-                sessionStorage.removeItem('life_hub_menuData');
+                clearAuthData();
                 window.location.href = '/#/login';
                 break;
             case 403:

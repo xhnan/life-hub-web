@@ -35,25 +35,21 @@ const router = createRouter({
 import { getUserInfoApi } from "@/api/authApi";
 import { userStore, setUserInfo } from "@/store/user";
 import { generateRoutes } from "@/store/permission";
-import { hasPermission } from "@/utils/auth";
+import { hasPermission, clearAuthData } from "@/utils/auth";
+import { STORAGE_KEYS } from "@/utils/constants";
 
 const whiteList = ['/login'];
 
 router.beforeEach(async (to, _, next) => {
-    const token = localStorage.getItem('life_hub_token');
-    const tokenExpiresAt = localStorage.getItem('life_hub_tokenExpiresAt');
+    const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
+    const tokenExpiresAt = localStorage.getItem(STORAGE_KEYS.TOKEN_EXPIRES_AT);
 
     // 检查是否过期
     let isExpired = false;
     if (token && tokenExpiresAt) {
         if (Date.now() > Number(tokenExpiresAt)) {
             isExpired = true;
-            localStorage.removeItem('life_hub_token');
-            localStorage.removeItem('life_hub_tokenExpiresAt');
-            localStorage.removeItem('life_hub_userInfo');
-            sessionStorage.removeItem('life_hub_userRoles');
-            sessionStorage.removeItem('life_hub_userPermissions');
-            sessionStorage.removeItem('life_hub_menuData');
+            clearAuthData();
         }
     }
 
@@ -71,9 +67,9 @@ router.beforeEach(async (to, _, next) => {
             } else {
                 try {
                     // 尝试从 sessionStorage 获取角色信息
-                    const storedRoles = sessionStorage.getItem('life_hub_userRoles');
-                    const storedPermissions = sessionStorage.getItem('life_hub_userPermissions');
-                    
+                    const storedRoles = sessionStorage.getItem(STORAGE_KEYS.USER_ROLES);
+                    const storedPermissions = sessionStorage.getItem(STORAGE_KEYS.USER_PERMISSIONS);
+
                     let roles: string[] = [];
                     let permissions: string[] = [];
                     let isSuperAdmin = false;
@@ -90,7 +86,7 @@ router.beforeEach(async (to, _, next) => {
                         // 提取权限 code 列表 (后端返回的是 permissionKey)
                         permissions = data.permissions.map(p => p.permissionKey);
                         isSuperAdmin = data.isSuperAdmin;
-                        
+
                         // 如果是超级管理员，赋予一个特殊角色标识，方便后续权限判断
                         if (isSuperAdmin) {
                             roles.push('super_admin');
@@ -98,8 +94,8 @@ router.beforeEach(async (to, _, next) => {
                         }
 
                         // 存入 sessionStorage
-                        sessionStorage.setItem('life_hub_userRoles', JSON.stringify(roles));
-                        sessionStorage.setItem('life_hub_userPermissions', JSON.stringify(permissions));
+                        sessionStorage.setItem(STORAGE_KEYS.USER_ROLES, JSON.stringify(roles));
+                        sessionStorage.setItem(STORAGE_KEYS.USER_PERMISSIONS, JSON.stringify(permissions));
                     }
                     
                     setUserInfo(roles, permissions);
@@ -131,12 +127,7 @@ router.beforeEach(async (to, _, next) => {
                 } catch (error) {
                     console.error('Failed to generate routes:', error);
                     // 出错需重置
-                    localStorage.removeItem('life_hub_token');
-                    localStorage.removeItem('life_hub_tokenExpiresAt');
-                    localStorage.removeItem('life_hub_userInfo');
-                    sessionStorage.removeItem('life_hub_userRoles');
-                    sessionStorage.removeItem('life_hub_userPermissions');
-                    sessionStorage.removeItem('life_hub_menuData');
+                    clearAuthData();
                     next('/login');
                 }
             }
