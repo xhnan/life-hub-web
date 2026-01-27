@@ -2,14 +2,17 @@
   <el-dialog
     :model-value="modelValue"
     :title="title"
-    width="600px"
+    width="680px"
+    :close-on-click-modal="false"
     @close="handleClose"
+    class="permission-dialog"
   >
     <el-form
       ref="formRef"
       :model="formData"
       :rules="rules"
-      label-width="100px"
+      label-width="110px"
+      class="permission-form"
     >
       <el-form-item label="所属菜单" prop="menuId">
         <el-tree-select
@@ -20,16 +23,17 @@
           placeholder="请选择所属菜单"
           clearable
           node-key="id"
-          style="width: 100%"
+          class="form-input"
         />
       </el-form-item>
+
       <el-form-item label="应用编码" prop="appCode">
         <el-select
           v-model="formData.appCode"
           placeholder="请选择应用编码"
           clearable
           :disabled="isEdit"
-          style="width: 100%"
+          class="form-input"
         >
           <el-option
             v-for="code in appCodeList"
@@ -39,12 +43,14 @@
           />
         </el-select>
       </el-form-item>
+
       <el-form-item label="权限编码" prop="permissionCodeSuffix">
         <template v-if="isEdit">
           <el-input
             :model-value="fullPermissionCode"
             disabled
             placeholder="权限编码"
+            class="form-input"
           />
         </template>
         <template v-else>
@@ -52,23 +58,28 @@
             v-model="formData.permissionCodeSuffix"
             placeholder="请输入权限编码后缀"
             clearable
+            class="form-input"
           >
             <template #prepend>
-              <span>{{ formData.appCode || '应用编码' }}:</span>
+              <span class="input-prepend">{{ formData.appCode || '应用编码' }}:</span>
             </template>
           </el-input>
-          <div v-if="fullPermissionCode" style="margin-top: 4px; font-size: 12px; color: #909399">
-            完整编码: {{ fullPermissionCode }}
+          <div v-if="fullPermissionCode" class="permission-hint">
+            <el-icon><InfoFilled /></el-icon>
+            <span>完整编码: <code>{{ fullPermissionCode }}</code></span>
           </div>
         </template>
       </el-form-item>
+
       <el-form-item label="权限名称" prop="permissionName">
         <el-input
           v-model="formData.permissionName"
           placeholder="请输入权限名称"
           clearable
+          class="form-input"
         />
       </el-form-item>
+
       <el-form-item label="描述" prop="description">
         <el-input
           v-model="formData.description"
@@ -76,22 +87,35 @@
           :rows="3"
           placeholder="请输入权限描述"
           clearable
+          class="form-input"
+          show-word-limit
+          maxlength="200"
         />
       </el-form-item>
+
       <el-form-item label="状态" prop="status">
         <el-switch
           v-model="formData.status"
           active-text="启用"
           inactive-text="禁用"
+          :active-value="true"
+          :inactive-value="false"
+          class="status-switch"
         />
       </el-form-item>
     </el-form>
 
     <template #footer>
-      <el-button @click="handleClose">取消</el-button>
-      <el-button type="primary" :loading="loading" @click="handleSubmit">
-        确定
-      </el-button>
+      <div class="dialog-footer">
+        <el-button size="large" @click="handleClose">
+          <el-icon><Close /></el-icon>
+          <span>取消</span>
+        </el-button>
+        <el-button type="primary" size="large" :loading="loading" @click="handleSubmit">
+          <el-icon v-if="!loading"><Check /></el-icon>
+          <span>{{ loading ? '提交中...' : '确定' }}</span>
+        </el-button>
+      </div>
     </template>
   </el-dialog>
 </template>
@@ -99,6 +123,7 @@
 <script setup lang="ts">
 import { ref, reactive, watch, computed } from 'vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
+import { Close, Check, InfoFilled } from '@element-plus/icons-vue'
 import type { PermissionFormData } from '@/api/permissionApi'
 import { addPermissionApi, updatePermissionApi, getAppCodeListApi } from '@/api/permissionApi'
 import { getMenuTreeApi, type MenuRow } from '@/api/menuApi'
@@ -258,4 +283,164 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped lang="scss">
+.permission-dialog {
+  :deep(.el-dialog__header) {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    margin: 0;
+
+    .el-dialog__title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #303133;
+    }
+  }
+
+  :deep(.el-dialog__body) {
+    padding: 24px;
+  }
+
+  :deep(.el-dialog__footer) {
+    padding: 16px 24px;
+    border-top: 1px solid #f0f0f0;
+    margin: 0;
+  }
+}
+
+.permission-form {
+  :deep(.el-form-item) {
+    margin-bottom: 22px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  :deep(.el-form-item__label) {
+    font-weight: 500;
+    color: #606266;
+
+    &::before {
+      margin-right: 4px;
+    }
+  }
+
+  .form-input {
+    width: 100%;
+
+    :deep(.el-input__wrapper),
+    :deep(.el-textarea__inner),
+    :deep(.el-select__wrapper) {
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 0 1px #dcdfe6 inset;
+
+      &:hover {
+        box-shadow: 0 0 0 1px #c0c4cc inset;
+      }
+
+      &.is-focused {
+        box-shadow: 0 0 0 1px var(--el-color-primary) inset;
+      }
+    }
+
+    :deep(.el-textarea__inner) {
+      padding: 8px 12px;
+      resize: none;
+    }
+  }
+
+  .input-prepend {
+    font-weight: 500;
+    color: #606266;
+    background: #f5f7fa;
+    padding: 0 4px;
+  }
+
+  .permission-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8f4ff 100%);
+    border-radius: 6px;
+    font-size: 13px;
+    color: #606266;
+    transition: all 0.3s ease;
+
+    .el-icon {
+      color: #409eff;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    code {
+      display: inline-block;
+      padding: 2px 8px;
+      background: #fff;
+      border: 1px solid #e4e7ed;
+      border-radius: 4px;
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      font-size: 12px;
+      color: #409eff;
+      font-weight: 600;
+      margin-left: 4px;
+    }
+
+    &:hover {
+      background: linear-gradient(135deg, #e8f4ff 0%, #d9ecff 100%);
+      transform: translateX(2px);
+    }
+  }
+
+  .status-switch {
+    :deep(.el-switch__label) {
+      font-weight: 500;
+    }
+  }
+}
+
+// 对话框打开动画
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.permission-form {
+  animation: slideIn 0.3s ease;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+
+  .el-button {
+    min-width: 100px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+
+    .el-icon {
+      margin-right: 6px;
+      font-size: 16px;
+    }
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
 </style>
