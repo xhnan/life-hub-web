@@ -163,8 +163,25 @@ export const generateRoutes = async (roles: string[]) => {
             frontendRoutes = filterAsyncRoutes(asyncRoutes, roles);
         }
 
-        // 4. 合并路由 (后端 + 前端)
-        const accessedRoutes = [...backendRoutes, ...frontendRoutes];
+        // 4. 合并路由 (后端 + 前端) 并去重
+        const allRoutes = [...backendRoutes, ...frontendRoutes];
+        
+        // 使用 Map 进行去重，优先保留后端路由（假设后端配置优先级更高，或者根据实际需求调整）
+        // 键使用路由名称（name）或路径（path）
+        const uniqueRoutesMap = new Map<string, RouteRecordRaw>();
+        
+        allRoutes.forEach(route => {
+            // 优先使用 name 作为唯一标识，其次是 path
+            const key = (route.name as string) || route.path;
+            if (!uniqueRoutesMap.has(key)) {
+                uniqueRoutesMap.set(key, route);
+            } else {
+                // 如果已存在，可以选择合并或跳过。这里选择保留第一个（即 backendRoutes 优先）
+                console.warn(`Duplicate route detected and skipped: ${key}`);
+            }
+        });
+
+        const accessedRoutes = Array.from(uniqueRoutesMap.values());
 
         permissionStore.addRoutes = accessedRoutes;
         permissionStore.routes = constantRoutes.concat(accessedRoutes);

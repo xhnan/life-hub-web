@@ -26,7 +26,7 @@ export interface MenuRow {
 
 // 获取菜单树
 export const getMenuTreeApi = () => {
-	return http.get<MenuRow[]>(`${prefix}/tree`);
+	return http.get<MenuRow[]>(`${prefix}/user/tree`);
 };
 
 // 获取所有菜单列表

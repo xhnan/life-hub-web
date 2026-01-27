@@ -97,21 +97,24 @@ router.beforeEach(async (to, _, next) => {
                     // generateRoutes 已经修改为 async，需要 await
                     const accessRoutes = await generateRoutes(roles);
                     accessRoutes.forEach(route => {
-                        if (!route.name || !router.hasRoute(route.name)) {
-                            router.addRoute(route);
-                        }
+                        // 移除之前的 router.hasRoute 检查，因为 addRoute 会自动覆盖同名路由（但最好还是保持单一来源）
+                        // 由于 permissionStore 已经做了去重，这里直接添加即可
+                        // 注意：如果路由名称重复，Vue Router 会覆盖旧路由，并输出警告
+                        router.addRoute(route);
                     });
                     
                     // 确保 404 路由最后添加
                     const catchAllRouteName = 'CatchAll';
-                    if (!router.hasRoute(catchAllRouteName)) {
-                        router.addRoute({ 
-                            path: '/:pathMatch(.*)*', 
-                            name: catchAllRouteName,
-                            redirect: '/404', 
-                            meta: { hidden: true } 
-                        } as any);
+                    // 先移除旧的 404 路由（如果存在），确保它始终在最后
+                    if (router.hasRoute(catchAllRouteName)) {
+                        router.removeRoute(catchAllRouteName);
                     }
+                    router.addRoute({ 
+                        path: '/:pathMatch(.*)*', 
+                        name: catchAllRouteName,
+                        redirect: '/404', 
+                        meta: { hidden: true } 
+                    } as any);
 
                     next({ ...to, replace: true });
                 } catch (error) {
