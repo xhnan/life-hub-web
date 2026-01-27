@@ -16,9 +16,25 @@ export interface LoginResponse {
 	avatar?: string;
 }
 
-export interface UserInfo {
-	roles: string[];
-	permissions: string[];
+export interface SysRole {
+    id: number;
+    roleName: string;
+    roleCode: string;
+    description?: string;
+}
+
+export interface SysPermission {
+    id: number;
+    name: string; // 后端返回的是 name
+    permissionKey: string; // 后端返回的是 permissionKey
+    description?: string;
+}
+
+export interface UserPermissionsDTO {
+    userId: number;
+    isSuperAdmin: boolean;
+    roles: SysRole[];
+    permissions: SysPermission[];
 }
 
 export const loginApi = (data: LoginForm) => {
@@ -26,7 +42,8 @@ export const loginApi = (data: LoginForm) => {
 };
 
 export const getUserInfoApi = () => {
-	return http.get<UserInfo>(`${prefix}/info`);
+	// 调用新的后端接口
+	return http.get<UserPermissionsDTO>('/sys/permission/user/current');
 };
 
 export const logoutApi = () => {

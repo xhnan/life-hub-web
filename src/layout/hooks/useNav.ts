@@ -57,7 +57,7 @@ export const useNav = () => {
         const buildMenu = () => {
              const menus = transformRouteToMenu(permissionStore.routes);
              menuData.value = menus;
-             sessionStorage.setItem('menuData', JSON.stringify(menus));
+             sessionStorage.setItem('life_hub_menuData', JSON.stringify(menus));
         }
         
         // 始终监听路由变化，确保动态路由加载后能更新菜单

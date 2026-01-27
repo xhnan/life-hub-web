@@ -10,6 +10,9 @@ export const hasPermission = (value: string | string[]): boolean => {
     const permissions = userStore.permissions;
     if (!permissions) return false;
     
+    // 超级管理员拥有所有权限
+    if (permissions.includes('*:*:*')) return true;
+
     const requiredPermissions = Array.isArray(value) ? value : [value];
     return requiredPermissions.some(p => permissions.includes(p));
 };

@@ -100,17 +100,17 @@ const handleLogin = async () => {
 		try {
 			const res = await loginApi(loginForm);
 			if (res.code === 200 && res.data) {
-				localStorage.setItem('token', res.data.token);
+				localStorage.setItem('life_hub_token', res.data.token);
 				// 存储 token 过期时间
 				const expiresAt = Date.now() + res.data.expiresIn * 1000;
-				localStorage.setItem('tokenExpiresAt', expiresAt.toString());
+				localStorage.setItem('life_hub_tokenExpiresAt', expiresAt.toString());
 
 				// 构造 userInfo 对象
 				const userInfo = {
 					username: res.data.username,
 					avatar: res.data.avatar
 				};
-				localStorage.setItem('userInfo', JSON.stringify(userInfo));
+				localStorage.setItem('life_hub_userInfo', JSON.stringify(userInfo));
 				
 				ElMessage.success('登录成功');
 				router.push('/');

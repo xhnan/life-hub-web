@@ -40,20 +40,20 @@ import { hasPermission } from "@/utils/auth";
 const whiteList = ['/login'];
 
 router.beforeEach(async (to, _, next) => {
-    const token = localStorage.getItem('token');
-    const tokenExpiresAt = localStorage.getItem('tokenExpiresAt');
+    const token = localStorage.getItem('life_hub_token');
+    const tokenExpiresAt = localStorage.getItem('life_hub_tokenExpiresAt');
 
     // 检查是否过期
     let isExpired = false;
     if (token && tokenExpiresAt) {
         if (Date.now() > Number(tokenExpiresAt)) {
             isExpired = true;
-            localStorage.removeItem('token');
-            localStorage.removeItem('tokenExpiresAt');
-            localStorage.removeItem('userInfo');
-            sessionStorage.removeItem('userRoles');
-            sessionStorage.removeItem('userPermissions');
-            sessionStorage.removeItem('menuData');
+            localStorage.removeItem('life_hub_token');
+            localStorage.removeItem('life_hub_tokenExpiresAt');
+            localStorage.removeItem('life_hub_userInfo');
+            sessionStorage.removeItem('life_hub_userRoles');
+            sessionStorage.removeItem('life_hub_userPermissions');
+            sessionStorage.removeItem('life_hub_menuData');
         }
     }
 
@@ -71,24 +71,35 @@ router.beforeEach(async (to, _, next) => {
             } else {
                 try {
                     // 尝试从 sessionStorage 获取角色信息
-                    const storedRoles = sessionStorage.getItem('userRoles');
-                    const storedPermissions = sessionStorage.getItem('userPermissions');
+                    const storedRoles = sessionStorage.getItem('life_hub_userRoles');
+                    const storedPermissions = sessionStorage.getItem('life_hub_userPermissions');
                     
                     let roles: string[] = [];
                     let permissions: string[] = [];
+                    let isSuperAdmin = false;
 
                     if (storedRoles && storedPermissions) {
                         roles = JSON.parse(storedRoles);
                         permissions = JSON.parse(storedPermissions);
+                        // 兼容旧的 sessionStorage 数据结构（假设没有 isSuperAdmin 字段则为 false，或者需要清理旧缓存）
                     } else {
                         // 调用接口获取
                         const { data } = await getUserInfoApi();
-                        roles = data.roles;
-                        permissions = data.permissions;
+                        // 提取角色 code 列表
+                        roles = data.roles.map(r => r.roleCode);
+                        // 提取权限 code 列表 (后端返回的是 permissionKey)
+                        permissions = data.permissions.map(p => p.permissionKey);
+                        isSuperAdmin = data.isSuperAdmin;
                         
+                        // 如果是超级管理员，赋予一个特殊角色标识，方便后续权限判断
+                        if (isSuperAdmin) {
+                            roles.push('super_admin');
+                            permissions.push('*:*:*'); // 超级权限标识
+                        }
+
                         // 存入 sessionStorage
-                        sessionStorage.setItem('userRoles', JSON.stringify(roles));
-                        sessionStorage.setItem('userPermissions', JSON.stringify(permissions));
+                        sessionStorage.setItem('life_hub_userRoles', JSON.stringify(roles));
+                        sessionStorage.setItem('life_hub_userPermissions', JSON.stringify(permissions));
                     }
                     
                     setUserInfo(roles, permissions);
@@ -120,12 +131,12 @@ router.beforeEach(async (to, _, next) => {
                 } catch (error) {
                     console.error('Failed to generate routes:', error);
                     // 出错需重置
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('tokenExpiresAt');
-                    localStorage.removeItem('userInfo');
-                    sessionStorage.removeItem('userRoles');
-                    sessionStorage.removeItem('userPermissions');
-                    sessionStorage.removeItem('menuData');
+                    localStorage.removeItem('life_hub_token');
+                    localStorage.removeItem('life_hub_tokenExpiresAt');
+                    localStorage.removeItem('life_hub_userInfo');
+                    sessionStorage.removeItem('life_hub_userRoles');
+                    sessionStorage.removeItem('life_hub_userPermissions');
+                    sessionStorage.removeItem('life_hub_menuData');
                     next('/login');
                 }
             }

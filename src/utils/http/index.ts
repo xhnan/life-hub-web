@@ -21,19 +21,19 @@ const service: AxiosInstance = axios.create({
 service.interceptors.request.use(
     (config) => {
         // 从 localStorage 获取 token
-        const token = localStorage.getItem('token');
-        const tokenExpiresAt = localStorage.getItem('tokenExpiresAt');
+        const token = localStorage.getItem('life_hub_token');
+        const tokenExpiresAt = localStorage.getItem('life_hub_tokenExpiresAt');
 
         // 检查 token 是否过期
         if (token && tokenExpiresAt) {
             const now = Date.now();
             if (now > Number(tokenExpiresAt)) {
-                 localStorage.removeItem('token');
-                 localStorage.removeItem('tokenExpiresAt');
-                 localStorage.removeItem('userInfo');
-                 sessionStorage.removeItem('userRoles');
-                 sessionStorage.removeItem('userPermissions');
-                 sessionStorage.removeItem('menuData');
+                 localStorage.removeItem('life_hub_token');
+                 localStorage.removeItem('life_hub_tokenExpiresAt');
+                 localStorage.removeItem('life_hub_userInfo');
+                 sessionStorage.removeItem('life_hub_userRoles');
+                 sessionStorage.removeItem('life_hub_userPermissions');
+                 sessionStorage.removeItem('life_hub_menuData');
                  window.location.href = '/#/login';
                  return Promise.reject(new Error('Token expired'));
              }
@@ -72,12 +72,12 @@ service.interceptors.response.use(
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('tokenExpiresAt');
-                    localStorage.removeItem('userInfo');
-                    sessionStorage.removeItem('userRoles');
-                    sessionStorage.removeItem('userPermissions');
-                    sessionStorage.removeItem('menuData');
+                    localStorage.removeItem('life_hub_token');
+                    localStorage.removeItem('life_hub_tokenExpiresAt');
+                    localStorage.removeItem('life_hub_userInfo');
+                    sessionStorage.removeItem('life_hub_userRoles');
+                    sessionStorage.removeItem('life_hub_userPermissions');
+                    sessionStorage.removeItem('life_hub_menuData');
                     window.location.href = '/#/login';
                 });
             }
@@ -102,12 +102,12 @@ service.interceptors.response.use(
                 break;
             case 401:
                 message = '未授权，请登录';
-                localStorage.removeItem('token');
-                localStorage.removeItem('tokenExpiresAt');
-                localStorage.removeItem('userInfo');
-                sessionStorage.removeItem('userRoles');
-                sessionStorage.removeItem('userPermissions');
-                sessionStorage.removeItem('menuData');
+                localStorage.removeItem('life_hub_token');
+                localStorage.removeItem('life_hub_tokenExpiresAt');
+                localStorage.removeItem('life_hub_userInfo');
+                sessionStorage.removeItem('life_hub_userRoles');
+                sessionStorage.removeItem('life_hub_userPermissions');
+                sessionStorage.removeItem('life_hub_menuData');
                 window.location.href = '/#/login';
                 break;
             case 403:

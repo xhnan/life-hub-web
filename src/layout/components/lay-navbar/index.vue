@@ -59,12 +59,12 @@ const handleLogout = async () => {
     } catch (e) {
         console.error(e);
     } finally {
-        localStorage.removeItem('token');
-        localStorage.removeItem('tokenExpiresAt');
-        localStorage.removeItem('userInfo');
-        sessionStorage.removeItem('userRoles');
-        sessionStorage.removeItem('userPermissions');
-        sessionStorage.removeItem('menuData');
+        localStorage.removeItem('life_hub_token');
+        localStorage.removeItem('life_hub_tokenExpiresAt');
+        localStorage.removeItem('life_hub_userInfo');
+        sessionStorage.removeItem('life_hub_userRoles');
+        sessionStorage.removeItem('life_hub_userPermissions');
+        sessionStorage.removeItem('life_hub_menuData');
         window.location.href = '/#/login';
         window.location.reload();
     }

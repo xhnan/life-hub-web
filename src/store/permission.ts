@@ -146,6 +146,8 @@ export const generateRoutes = async (roles: string[]) => {
     try {
         // 1. 获取后端菜单
         const { data: menuTree } = await getMenuTreeApi();
+        
+        console.log('Backend Menu Tree:', menuTree); // DEBUG LOG
 
         if (!Array.isArray(menuTree)) {
              console.warn('Backend returned invalid menu data:', menuTree);
@@ -154,6 +156,7 @@ export const generateRoutes = async (roles: string[]) => {
         
         // 2. 转换为路由配置 (后端路由)
         const backendRoutes = transformMenuToRoutes(menuTree || []);
+        console.log('Transformed Backend Routes:', backendRoutes); // DEBUG LOG
 
         // 3. 处理前端静态异步路由 (src/router/modules)
         let frontendRoutes: RouteRecordRaw[] = [];
