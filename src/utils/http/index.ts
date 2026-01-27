@@ -1,5 +1,6 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosResponse } from 'axios';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import JSONBig from 'json-bigint';
 import { clearAuthData } from '@/utils/auth';
 import { STORAGE_KEYS } from '@/utils/constants';
 
@@ -16,7 +17,21 @@ const service: AxiosInstance = axios.create({
     timeout: 15000,
     headers: {
         'Content-Type': 'application/json'
-    }
+    },
+    // 使用 json-bigint 处理大整数精度丢失问题
+    transformResponse: [
+        (data) => {
+            try {
+                // 如果是空字符串，直接返回
+                if (!data) return data;
+                // 使用 JSONBig 解析，将长整数转换为字符串
+                return JSONBig({ storeAsString: true }).parse(data);
+            } catch (err) {
+                // 解析失败则返回原数据
+                return data;
+            }
+        }
+    ]
 });
 
 // 请求拦截器
