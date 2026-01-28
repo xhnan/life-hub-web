@@ -6,7 +6,7 @@ export default {
     component: Layout,
     redirect: "/welcome",
     meta: {
-        icon: "mdi:menu",
+        icon: "mdi:home",
         title: "首页",
         rank: 0
     },

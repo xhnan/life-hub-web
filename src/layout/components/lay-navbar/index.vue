@@ -1,144 +1,270 @@
 <template>
   <div class="lay-navbar">
-    <el-menu :default-active="route.path" class="el-menu-vertical-demo" router @open="handleOpen" @close="handleClose"
-      :unique-opened="true">
+    <!-- Logo Area -->
+    <div class="logo-container">
+      <div class="logo-icon">
+        <el-icon :size="24" color="#fff"><Promotion /></el-icon>
+      </div>
+      <span class="logo-text">LifeHub</span>
+    </div>
 
-      <!-- <el-menu-item
-        v-for="menu in menuData"
-        :key="menu.id || menu.path"
-        :index="menu.path"
-      >
-        <span>{{menu.label}}</span>
-      </el-menu-item> -->
-        <template v-for="menu in menuData" :key="menu.id || menu.path">
-        <!-- 有子菜单：使用 el-sub-menu -->
+    <!-- Menu Area -->
+    <el-menu
+      :default-active="route.path"
+      class="el-menu-vertical-custom"
+      router
+      @open="handleOpen"
+      @close="handleClose"
+      :unique-opened="true"
+      :collapse-transition="false"
+      background-color="transparent"
+      text-color="#94a3b8"
+      active-text-color="#ffffff"
+    >
+      <template v-for="menu in menuData" :key="menu.id || menu.path">
+        <!-- Sub Menu -->
         <el-sub-menu v-if="menu.children && menu.children.length > 0" :index="menu.path">
           <template #title>
-            <el-icon v-if="menu.icon"><Icon :icon="menu.icon" /></el-icon>
-            <span>{{ menu.label }}</span>
+            <el-icon v-if="menu.icon" class="menu-icon"><Icon :icon="menu.icon" /></el-icon>
+            <span class="menu-label">{{ menu.label }}</span>
           </template>
-          <!-- 递归渲染子菜单 -->
           <menu-item v-for="child in menu.children" :key="child.id || child.path" :item="child" />
         </el-sub-menu>
 
-        <!-- 无子菜单：使用 el-menu-item -->
+        <!-- Leaf Menu Item -->
         <el-menu-item v-else :index="menu.path">
-          <el-icon v-if="menu.icon"><Icon :icon="menu.icon" /></el-icon>
-          <span>{{ menu.label }}</span>
+          <el-icon v-if="menu.icon" class="menu-icon"><Icon :icon="menu.icon" /></el-icon>
+          <template #title>
+            <span class="menu-label">{{ menu.label }}</span>
+          </template>
         </el-menu-item>
       </template>
-
     </el-menu>
 
-    <div class="logout-container">
-      <el-button text class="logout-btn" @click="handleLogout">
-        <el-icon style="margin-right: 5px;"><Icon icon="mdi:logout" /></el-icon>
-        <span>退出登录</span>
-      </el-button>
+    <!-- User/Footer Area -->
+    <div class="navbar-footer">
+      <div class="user-profile" v-if="userInfo">
+        <el-avatar :size="32" :src="userInfo.avatar || 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'" />
+        <div class="user-info">
+          <span class="username">{{ userInfo.username || 'User' }}</span>
+          <span class="role-badge">Admin</span>
+        </div>
+      </div>
+      
+      <div class="action-buttons">
+        <el-tooltip content="退出登录" placement="top">
+          <el-button text circle class="icon-btn" @click="handleLogout">
+            <el-icon><SwitchButton /></el-icon>
+          </el-button>
+        </el-tooltip>
+      </div>
     </div>
   </div>
 </template>
-<script setup lang="ts">
 
-import {
-  useNav
-} from '@/layout/hooks/useNav.ts';
+<script setup lang="ts">
+import { useNav } from '@/layout/hooks/useNav.ts';
 import { useRoute } from 'vue-router';
 import MenuItem from "@/layout/components/lay-navbar/MenuItem.vue";
 import { Icon } from '@iconify/vue';
 import { logoutApi } from '@/api/authApi';
 import { clearAuthData } from '@/utils/auth';
 import { ElMessage } from 'element-plus';
-
+import { Promotion, SwitchButton } from '@element-plus/icons-vue';
+import { ref, onMounted } from 'vue';
+import { STORAGE_KEYS } from '@/utils/constants';
 
 const { handleOpen, handleClose, menuData } = useNav();
-
 const route = useRoute();
+const userInfo = ref<any>(null);
+
+onMounted(() => {
+  const storedUser = localStorage.getItem(STORAGE_KEYS.USER_INFO);
+  if (storedUser) {
+    try {
+      userInfo.value = JSON.parse(storedUser);
+    } catch (e) {
+      console.error('Failed to parse user info', e);
+    }
+  }
+});
 
 const handleLogout = async () => {
-    try {
-        await logoutApi();
-    } catch (e) {
-        console.error(e);
-        ElMessage.error('退出登录失败，请重试');
-    } finally {
-        clearAuthData();
-        window.location.href = '/#/login';
-        window.location.reload();
-    }
+  try {
+    await logoutApi();
+  } catch (e) {
+    console.error(e);
+  } finally {
+    clearAuthData();
+    ElMessage.success('已安全退出');
+    window.location.href = '/#/login';
+    window.location.reload();
+  }
 }
-
 
 defineOptions({
   name: 'LayNavbar'
 })
 </script>
+
 <style scoped lang="scss">
-@use "@/styles/variables" as *;
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600&display=swap');
+
 .lay-navbar {
   height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
-  padding: 16px 0;
+  background: #0f172a; /* Slate 900 */
+  font-family: 'Fira Sans', sans-serif;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 10;
 }
 
-.el-menu-vertical-demo {
-  border-right: none;
-  background: transparent;
-  flex: 1;
-  overflow-y: auto;
-}
+/* Logo Section */
+.logo-container {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 10px;
 
-.logout-container {
-    padding: 10px 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #4f46e5, #ec4899);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  }
 
-.logout-btn {
-    width: 100%;
+  .logo-text {
+    font-size: 20px;
+    font-weight: 700;
     color: #fff;
-    justify-content: flex-start;
+    letter-spacing: 0.5px;
+    background: linear-gradient(to right, #fff, #94a3b8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* Menu Section */
+.el-menu-vertical-custom {
+  flex: 1;
+  border-right: none !important;
+  padding: 0 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* Scrollbar Styling */
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+  }
+
+  :deep(.el-sub-menu__title),
+  :deep(.el-menu-item) {
+    height: 48px;
+    line-height: 48px;
+    border-radius: 8px;
+    margin-bottom: 4px;
     
     &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.05) !important;
+      color: #fff !important;
     }
+  }
+
+  :deep(.el-menu-item.is-active) {
+    background: linear-gradient(90deg, rgba(79, 70, 229, 0.15), rgba(79, 70, 229, 0.05)) !important;
+    color: #818cf8 !important; /* Indigo 400 */
+    font-weight: 600;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 20px;
+      width: 3px;
+      background: #818cf8;
+      border-radius: 0 2px 2px 0;
+    }
+  }
+
+  .menu-icon {
+    font-size: 18px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  .menu-label {
+    vertical-align: middle;
+  }
 }
 
-/* 选中/悬停样式：更明显的背景色和主色高亮 */
-.el-menu-vertical-demo .el-menu-item.is-active,
-.el-menu-vertical-demo .el-submenu.is-active>.el-submenu__title {
-  background-color: #6d9ed6 !important;
-  /* 更明显的浅蓝背景 */
-  color: #f5f5f5 !important;
-  /* 主色文字 */
-}
+/* Footer Section */
+.navbar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-.el-menu-vertical-demo .el-menu-item:hover,
-.el-menu-vertical-demo .el-submenu__title:hover {
-  background-color: rgba(31, 111, 235, 0.06);
-}
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
 
-/* 去掉选中项左侧的突出条（如果需要你也可以保留或自定义）*/
-.el-menu-vertical-demo .el-menu-item.is-active::after {
-  display: none;
-}
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      
+      .username {
+        color: #fff;
+        font-size: 14px;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 80px;
+      }
+      
+      .role-badge {
+        font-size: 10px;
+        color: #94a3b8;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 1px 6px;
+        border-radius: 4px;
+        align-self: flex-start;
+      }
+    }
+  }
 
-/* 作用到所有内联子菜单（含多层嵌套） */
-:deep(.el-menu--inline) {
-  background:  $menu-background-color;
-}
-
-/* 如果还看到单个项颜色不一致，再把默认项也统一 */
-:deep(.el-menu-item) {
-  background: $menu-background-color;
-  transition: background-color 0.15s ease;
-}
-
-/* 悬停时的统一浅色背景 */
-:deep(.el-menu-item:hover),
-:deep(.el-submenu__title:hover) {
-  background: $menu-background-color;
+  .action-buttons {
+    .icon-btn {
+      color: #94a3b8;
+      font-size: 18px;
+      padding: 8px;
+      
+      &:hover {
+        color: #ef4444; /* Red 500 */
+        background: rgba(239, 68, 68, 0.1);
+      }
+    }
+  }
 }
 </style>

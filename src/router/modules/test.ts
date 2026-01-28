@@ -3,7 +3,7 @@ export default {
     path: "/test",
     redirect: "/test/test",
     meta: {
-        icon: "material-icon-theme:test-js",
+        icon: "ep:files",
         title: "测试页面",
         rank: 999
     },
@@ -13,7 +13,7 @@ export default {
             name: "测试页面",
             component: () => import('@/views/test/test1.vue'),
             meta: {
-                icon: "twemoji:test-tube",
+                icon: "mdi:flask-empty",
                 title: "测试页面1",
             }
         },
@@ -23,7 +23,7 @@ export default {
             component: () => import('@/views/test/test2.vue'),
             meta: {
                 title: "测试页面2",
-                icon: "streamline-kameleon-color:test-tube-duo",
+                icon: "mdi:flask-outline",
             }
         },
         {
@@ -31,7 +31,7 @@ export default {
             name: "testTTs",
             component: () => import('@/views/test/tts.vue'),
             meta: {
-                icon: "twemoji:test-tube",
+                icon: "mdi:microphone",
                 title: "语音合成测试",
             }
         },
