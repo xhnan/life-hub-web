@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "api:gen": "openapi-typescript http://localhost:9000/v3/api-docs -o src/types/api-schema.d.ts"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",
@@ -23,6 +24,7 @@
     "@types/node": "^24.10.1",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.8.1",
+    "openapi-typescript": "^7.10.1",
     "sass": "^1.97.1",
     "typescript": "~5.9.3",
     "vite": "^7.2.4",
