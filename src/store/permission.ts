@@ -67,7 +67,7 @@ function transformMenuToRoutes(menus: MenuRow[]): RouteRecordRaw[] {
             meta: {
                 title: menu.menuName,
                 icon: menu.icon,
-                permissions: menu.permission ? [menu.permission] : undefined,
+                permissions: menu.menuCode ? [menu.menuCode] : undefined,
                 // rank: menu.sortOrder // 如果需要排序
             },
             component: undefined,

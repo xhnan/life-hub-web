@@ -8,7 +8,7 @@ export interface MenuRow {
 	parentId?: number; // 父菜单ID，0表示根菜单
 	menuName: string; // 菜单名称
     routerName?: string; // 路由名称
-	permission?: string; // 菜单权限标识
+	menuCode?: string; // 菜单权限标识（按钮或接口权限）
 	menuType: number; // 菜单类型：1目录 2菜单 3按钮
 	path: string; // 前端路由路径
 	component?: string; // 前端组件路径
@@ -54,3 +54,9 @@ export const deleteMenuApi = (id: string | number) => {
 	return http.delete<void>(`${prefix}/${id}`);
 };
 
+// 生成权限（同步生成权限）- 预留接口
+export const generatePermissionApi = (menuId: string | number) => {
+    // 假设后端接口路径为 /sys/permission/generate/{menuId}
+    // 暂时用 mock 或者实际请求，这里写实际请求定义的格式
+    return http.post<void>(`/sys/permission/generate/${menuId}`);
+};

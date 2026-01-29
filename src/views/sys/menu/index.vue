@@ -1,60 +1,83 @@
 <template>
-  <div>
-    <el-row :gutter="20" >
-      <el-col :span="8">
-        <el-card>
-          <template #header>
-            <div style="display: flex; justify-content: space-between; align-items: center">
-              <span>菜单树</span>
-              <el-button type="primary" size="small" @click="handleAdd(null)">新增根菜单</el-button>
-            </div>
+  <div class="menu-management">
+    <el-card class="box-card" shadow="never">
+      <template #header>
+        <div class="card-header">
+          <span class="title">菜单管理</span>
+          <div class="right-actions">
+            <el-button type="primary" @click="handleAdd(null)">
+              <el-icon class="el-icon--left"><Plus /></el-icon>新增根菜单
+            </el-button>
+            <el-button @click="handleExpandAll">
+              <el-icon class="el-icon--left"><Sort /></el-icon>{{ isExpandAll ? '折叠全部' : '展开全部' }}
+            </el-button>
+            <el-button @click="loadMenuTree" :loading="loading">
+              <el-icon class="el-icon--left"><Refresh /></el-icon>刷新
+            </el-button>
+          </div>
+        </div>
+      </template>
+
+      <el-table
+        v-if="refreshTable"
+        v-loading="loading"
+        :data="menuTableData"
+        row-key="id"
+        :default-expand-all="isExpandAll"
+        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+        header-cell-class-name="table-header"
+        border
+      >
+        <el-table-column prop="menuName" label="菜单名称" min-width="180" show-overflow-tooltip />
+        
+        <el-table-column prop="icon" label="图标" width="80" align="center">
+          <template #default="scope">
+            <el-icon v-if="scope.row.icon" size="16">
+              <component :is="scope.row.icon.includes(':') ? 'span' : scope.row.icon" />
+            </el-icon>
           </template>
-          <menu-tree ref="menuTreeRef" @menu-click="handleMenuClick"/>
-        </el-card>
-      </el-col>
-      <el-col  :span="16">
-        <!-- 显示菜单详细信息 -->
-        <el-card v-if="selectedMenu" v-loading="detailLoading">
-          <template #header>
-            <div style="display: flex; justify-content: space-between; align-items: center">
-              <span>菜单详细信息</span>
-              <div>
-                <el-button type="primary" size="small" @click="handleAdd(selectedMenu.id)">新增子菜单</el-button>
-                <el-button type="warning" size="small" @click="handleEdit">修改</el-button>
-                <el-button type="danger" size="small" @click="handleDelete">删除</el-button>
-                <el-button text @click="selectedMenu = null">关闭</el-button>
-              </div>
-            </div>
+        </el-table-column>
+
+        <el-table-column prop="sortOrder" label="排序" width="80" align="center" />
+
+        <el-table-column prop="menuCode" label="权限标识" min-width="150" show-overflow-tooltip />
+
+        <el-table-column prop="path" label="组件路径" min-width="180" show-overflow-tooltip>
+             <template #default="scope">
+                {{ scope.row.component || scope.row.path }}
+             </template>
+        </el-table-column>
+
+        <el-table-column prop="menuType" label="类型" width="100" align="center">
+          <template #default="scope">
+            <el-tag v-if="scope.row.menuType === 1" type="info" effect="plain">目录</el-tag>
+            <el-tag v-else-if="scope.row.menuType === 2" type="primary" effect="plain">菜单</el-tag>
+            <el-tag v-else-if="scope.row.menuType === 3" type="warning" effect="plain">按钮</el-tag>
           </template>
-          <el-descriptions :column="1" border>
-            <el-descriptions-item label="菜单ID">{{ selectedMenu.id }}</el-descriptions-item>
-            <el-descriptions-item label="菜单名称">{{ selectedMenu.menuName }}</el-descriptions-item>
-            <el-descriptions-item label="路由名称">{{ selectedMenu.routerName || '无' }}</el-descriptions-item>
-            <el-descriptions-item label="父级ID">{{ selectedMenu.parentId || '无' }}</el-descriptions-item>
-            <el-descriptions-item label="权限标识">{{ selectedMenu.permission || '无' }}</el-descriptions-item>
-            <el-descriptions-item label="路径">{{ selectedMenu.path }}</el-descriptions-item>
-            <el-descriptions-item label="组件">{{ selectedMenu.component || '无' }}</el-descriptions-item>
-            <el-descriptions-item label="类型">
-              <el-tag v-if="selectedMenu.menuType === 1" type="info">目录</el-tag>
-              <el-tag v-else-if="selectedMenu.menuType === 2" type="primary">菜单</el-tag>
-              <el-tag v-else-if="selectedMenu.menuType === 3" type="warning">按钮</el-tag>
-            </el-descriptions-item>
-            <el-descriptions-item label="图标">{{ selectedMenu.icon || '无' }}</el-descriptions-item>
-            <el-descriptions-item label="排序号">{{ selectedMenu.sortOrder || 0 }}</el-descriptions-item>
-            <el-descriptions-item label="状态">
-              <el-tag v-if="selectedMenu.status" type="success">启用</el-tag>
-              <el-tag v-else type="danger">禁用</el-tag>
-            </el-descriptions-item>
-            <el-descriptions-item label="可见性">
-              <el-tag v-if="selectedMenu.visible" type="success">可见</el-tag>
-              <el-tag v-else type="info">隐藏</el-tag>
-            </el-descriptions-item>
-            <el-descriptions-item v-if="selectedMenu.remark" label="备注">{{ selectedMenu.remark }}</el-descriptions-item>
-          </el-descriptions>
-        </el-card>
-        <el-empty v-else description="请点击左侧菜单树节点查看详情" />
-      </el-col>
-    </el-row>
+        </el-table-column>
+
+        <el-table-column prop="status" label="状态" width="100" align="center">
+          <template #default="scope">
+            <el-tag v-if="scope.row.status" type="success" effect="light">启用</el-tag>
+            <el-tag v-else type="danger" effect="light">禁用</el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="操作" width="200" fixed="right" align="center">
+          <template #default="scope">
+            <el-button link type="primary" size="small" @click="handleAdd(scope.row)">
+              新增
+            </el-button>
+            <el-button link type="primary" size="small" @click="handleEdit(scope.row)">
+              修改
+            </el-button>
+            <el-button link type="danger" size="small" @click="handleDelete(scope.row)">
+              删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
 
     <!-- 新增/编辑菜单对话框 -->
     <menu-dialog
@@ -62,82 +85,79 @@
       :title="dialogTitle"
       :is-edit="isEdit"
       :menu-data="dialogMenuData"
-      :menu-tree-data="menuTreeData"
+      :menu-tree-data="menuTableData"
       @success="handleDialogSuccess"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import MenuTree from "@/views/sys/menu/components/menu-tree.vue"
+import { Plus, Refresh, Sort } from '@element-plus/icons-vue'
 import MenuDialog from "@/views/sys/menu/components/menu-dialog.vue"
 import type { MenuRow } from '@/api/menuApi'
-import { deleteMenuApi, getMenuTreeApi, getMenuDetailApi } from '@/api/menuApi'
+import { deleteMenuApi, getMenuTreeApi } from '@/api/menuApi'
 
-const menuTreeRef = ref<InstanceType<typeof MenuTree>>()
-const selectedMenu = ref<MenuRow | null>(null)
-const detailLoading = ref(false)
+const loading = ref(false)
+const menuTableData = ref<MenuRow[]>([])
+const isExpandAll = ref(false)
+const refreshTable = ref(true)
+
 const dialogVisible = ref(false)
 const dialogTitle = ref('')
 const isEdit = ref(false)
 const dialogMenuData = ref<MenuRow | null>(null)
-const menuTreeData = ref<MenuRow[]>([])
 
-const handleMenuClick = async (menu: MenuRow) => {
-  // 根据 ID 从后端获取完整的菜单数据
-  detailLoading.value = true
+// 加载菜单树数据
+const loadMenuTree = async () => {
+  loading.value = true
   try {
-    const res = await getMenuDetailApi(menu.id)
-    selectedMenu.value = res.data
-  } catch (error: any) {
-    ElMessage.error(error?.message || '获取菜单详情失败')
-    selectedMenu.value = null
+    const res = await getMenuTreeApi()
+    menuTableData.value = res.data || []
+  } catch (error) {
+    console.error('加载菜单树失败:', error)
+    ElMessage.error('加载菜单数据失败')
   } finally {
-    detailLoading.value = false
+    loading.value = false
   }
 }
 
-// 加载菜单树数据（用于父级选择）
-const loadMenuTree = async () => {
-  try {
-    const res = await getMenuTreeApi()
-    menuTreeData.value = res.data || []
-  } catch (error) {
-    console.error('加载菜单树失败:', error)
-  }
+// 展开/折叠全部
+const handleExpandAll = () => {
+  refreshTable.value = false
+  isExpandAll.value = !isExpandAll.value
+  nextTick(() => {
+    refreshTable.value = true
+  })
 }
 
 // 新增菜单
-const handleAdd = (parentId: string | number | null) => {
+const handleAdd = (row: MenuRow | null) => {
   isEdit.value = false
-  dialogTitle.value = parentId ? '新增子菜单' : '新增根菜单'
-  // 如果有 parentId，传递父菜单信息用于设置默认父级
-  if (parentId && selectedMenu.value) {
-    dialogMenuData.value = { ...selectedMenu.value }
+  if (row) {
+      dialogTitle.value = '新增子菜单'
+      dialogMenuData.value = { id: row.id } as MenuRow // 只传递 ID 作为 parentId 的参考
   } else {
-    dialogMenuData.value = null
+      dialogTitle.value = '新增根菜单'
+      dialogMenuData.value = null
   }
   dialogVisible.value = true
 }
 
 // 编辑菜单
-const handleEdit = () => {
-  if (!selectedMenu.value) return
+const handleEdit = (row: MenuRow) => {
   isEdit.value = true
   dialogTitle.value = '修改菜单'
-  dialogMenuData.value = { ...selectedMenu.value }
+  dialogMenuData.value = { ...row }
   dialogVisible.value = true
 }
 
 // 删除菜单
-const handleDelete = async () => {
-  if (!selectedMenu.value) return
-  
+const handleDelete = async (row: MenuRow) => {
   try {
     await ElMessageBox.confirm(
-      `确定要删除菜单「${selectedMenu.value.menuName}」吗？`,
+      `确定要删除菜单「${row.menuName}」吗？这将同时删除其所有子菜单！`,
       '删除确认',
       {
         confirmButtonText: '确定',
@@ -146,12 +166,9 @@ const handleDelete = async () => {
       }
     )
     
-    await deleteMenuApi(selectedMenu.value.id)
+    await deleteMenuApi(row.id)
     ElMessage.success('删除成功')
-    selectedMenu.value = null
-    // 刷新菜单树
-    await menuTreeRef.value?.refreshTree()
-    await loadMenuTree()
+    loadMenuTree()
   } catch (error: any) {
     if (error !== 'cancel') {
       ElMessage.error(error?.message || '删除失败')
@@ -160,15 +177,8 @@ const handleDelete = async () => {
 }
 
 // 对话框操作成功
-const handleDialogSuccess = async (data: MenuRow) => {
-  // 如果是编辑模式，更新选中的菜单数据
-  if (isEdit.value && selectedMenu.value) {
-    selectedMenu.value = data
-  } else {
-    selectedMenu.value = null
-  }
-  await menuTreeRef.value?.refreshTree()
-  await loadMenuTree()
+const handleDialogSuccess = () => {
+  loadMenuTree()
 }
 
 onMounted(() => {
@@ -178,4 +188,47 @@ onMounted(() => {
 
 <style scoped lang="scss">
 @use '@/styles/variables' as *;
+
+.menu-management {
+  padding: 0;
+  
+  .box-card {
+    border: none;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    
+    :deep(.el-card__header) {
+      padding: 16px 20px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    :deep(.el-card__body) {
+      padding: 0;
+    }
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    .title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1f2937;
+    }
+    
+    .right-actions {
+      display: flex;
+      gap: 12px;
+    }
+  }
+  
+  :deep(.table-header) {
+    background-color: #f8fafc !important;
+    color: #475569;
+    font-weight: 600;
+    height: 50px;
+  }
+}
 </style>
