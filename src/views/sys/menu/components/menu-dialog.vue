@@ -59,11 +59,7 @@
 
           <el-col :span="12">
             <el-form-item label="图标" prop="icon">
-              <el-input v-model="formData.icon" placeholder="图标名称 (如: ep:user)" class="modern-input">
-                <template #prefix>
-                   <el-icon v-if="formData.icon" class="icon-preview"><component :is="formData.icon.includes(':') ? 'span' : formData.icon" /></el-icon>
-                </template>
-              </el-input>
+              <icon-selector v-model="formData.icon" />
             </el-form-item>
           </el-col>
 
@@ -137,10 +133,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, computed } from 'vue'
 import { ElMessage, ElNotification, type FormInstance, type FormRules } from 'element-plus'
 import type { MenuRow } from '@/api/menuApi'
+import type { components } from '@/types/api-schema'
 import { addMenuApi, updateMenuApi, getMenuDetailApi, generatePermissionApi } from '@/api/menuApi'
+import IconSelector from '@/components/IconSelector/index.vue'
+
+type SysMenu = components['schemas']['SysMenu']
 
 interface Props {
   modelValue: boolean
@@ -172,7 +172,7 @@ const treeProps = {
   children: 'children'
 }
 
-const formData = reactive<Partial<MenuRow>>({
+const formData = reactive<Partial<SysMenu>>({
   parentId: 0,
   menuName: '',
   routerName: '',
@@ -187,12 +187,20 @@ const formData = reactive<Partial<MenuRow>>({
   remark: ''
 })
 
-const formRules: FormRules = {
-  menuName: [{ required: true, message: '请输入菜单名称', trigger: 'blur' }],
-  routerName: [{ required: true, message: '请输入路由名称', trigger: 'blur' }],
-  path: [{ required: true, message: '请输入路径', trigger: 'blur' }],
-  menuType: [{ required: true, message: '请选择菜单类型', trigger: 'change' }]
-}
+const formRules = computed<FormRules>(() => {
+  const rules: FormRules = {
+    menuName: [{ required: true, message: '请输入菜单名称', trigger: 'blur' }],
+    menuType: [{ required: true, message: '请选择菜单类型', trigger: 'change' }]
+  }
+
+  // 只有菜单类型 (2) 才需要校验路由名称和路径
+  if (formData.menuType === 2) {
+    rules.routerName = [{ required: true, message: '请输入路由名称', trigger: 'blur' }]
+    rules.path = [{ required: true, message: '请输入路径', trigger: 'blur' }]
+  }
+  
+  return rules
+})
 
 // 监听对话框显示状态
 watch(() => props.modelValue, async (val) => {
@@ -207,12 +215,14 @@ watch(() => props.modelValue, async (val) => {
       dataLoading.value = true
       try {
         const res = await getMenuDetailApi(props.menuData.id)
-        const menuDetail = res.data
+        const menuDetail = res.data as SysMenu
         
         // 数据转换处理
-        const pid = (menuDetail.parentId === 0 || menuDetail.parentId === '0') ? undefined : menuDetail.parentId;
-        const status = menuDetail.status === true || String(menuDetail.status) === '1' || String(menuDetail.status) === 'true';
-        const visible = menuDetail.visible === true || String(menuDetail.visible) === '1' || String(menuDetail.visible) === 'true';
+        const pid = (menuDetail.parentId === 0 || Number(menuDetail.parentId) === 0) ? undefined : menuDetail.parentId;
+        
+        // 确保 status 和 visible 为布尔值，处理可能为 null/undefined 的情况，默认为 true
+        const status = menuDetail.status !== false && menuDetail.status !== 0 && String(menuDetail.status) !== 'false' && String(menuDetail.status) !== '0';
+        const visible = menuDetail.visible !== false && menuDetail.visible !== 0 && String(menuDetail.visible) !== 'false' && String(menuDetail.visible) !== '0';
         
         Object.assign(formData, {
           id: menuDetail.id,
