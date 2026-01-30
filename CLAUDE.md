@@ -19,6 +19,8 @@ pnpm build
 pnpm preview
 ```
 
+**IMPORTANT**: This project **MUST** use `pnpm` as the package manager. Do not use `npm` or `yarn`. Using other package managers may cause dependency conflicts and unexpected behavior due to differences in lock file formats and resolution algorithms.
+
 ## Architecture
 
 ### Dual-Source Routing System

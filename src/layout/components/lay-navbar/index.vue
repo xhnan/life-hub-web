@@ -108,7 +108,6 @@ defineOptions({
 </script>
 
 <style scoped lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600&display=swap');
 
 .lay-navbar {
   height: 100%;

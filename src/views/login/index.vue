@@ -54,7 +54,7 @@
 					
 					<div class="form-options">
 						<el-checkbox v-model="loginForm.rememberMe">记住我</el-checkbox>
-						<el-link type="primary" :underline="false" class="forgot-pwd">忘记密码？</el-link>
+						<el-link type="primary" underline="never" class="forgot-pwd">忘记密码？</el-link>
 					</div>
 
 					<el-alert
@@ -80,7 +80,7 @@
 				</el-form>
 				
 				<div class="form-footer">
-					<p>还没有账号？ <el-link type="primary" :underline="false">立即注册</el-link></p>
+					<p>还没有账号？ <el-link type="primary" underline="never">立即注册</el-link></p>
 				</div>
 			</div>
 		</div>
@@ -155,7 +155,6 @@ const handleLogin = async () => {
 </script>
 
 <style scoped lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600&display=swap');
 
 .login-container {
 	position: relative;
