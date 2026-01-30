@@ -25,7 +25,7 @@
         <!-- Sub Menu -->
         <el-sub-menu v-if="menu.children && menu.children.length > 0" :index="menu.path">
           <template #title>
-            <el-icon v-if="menu.icon" class="menu-icon"><Icon :icon="menu.icon" /></el-icon>
+            <el-icon v-if="menu.icon" class="menu-icon"><ReIcon :icon="menu.icon" /></el-icon>
             <span class="menu-label">{{ menu.label }}</span>
           </template>
           <menu-item v-for="child in menu.children" :key="child.id || child.path" :item="child" />
@@ -33,7 +33,7 @@
 
         <!-- Leaf Menu Item -->
         <el-menu-item v-else :index="menu.path">
-          <el-icon v-if="menu.icon" class="menu-icon"><Icon :icon="menu.icon" /></el-icon>
+          <el-icon v-if="menu.icon" class="menu-icon"><ReIcon :icon="menu.icon" /></el-icon>
           <template #title>
             <span class="menu-label">{{ menu.label }}</span>
           </template>
@@ -66,7 +66,7 @@
 import { useNav } from '@/layout/hooks/useNav.ts';
 import { useRoute } from 'vue-router';
 import MenuItem from "@/layout/components/lay-navbar/MenuItem.vue";
-import { Icon } from '@iconify/vue';
+import ReIcon from "@/components/ReIcon/index.vue";
 import { logoutApi } from '@/api/authApi';
 import { clearAuthData } from '@/utils/auth';
 import { ElMessage } from 'element-plus';
