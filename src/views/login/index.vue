@@ -12,8 +12,6 @@
 					<div class="logo-circle">
 						<el-icon :size="40" color="#fff"><s-promotion /></el-icon>
 					</div>
-					<h1 class="brand-title">LifeHub</h1>
-					<p class="brand-slogan">连接你的数字生活</p>
 					<div class="glass-decoration"></div>
 				</div>
 			</div>
@@ -270,19 +268,6 @@ const handleLogin = async () => {
 		justify-content: center;
 		margin: 0 auto 20px;
 		border: 2px solid rgba(255, 255, 255, 0.3);
-	}
-
-	.brand-title {
-		font-size: 36px;
-		font-weight: 700;
-		margin-bottom: 10px;
-		letter-spacing: 1px;
-	}
-
-	.brand-slogan {
-		font-size: 16px;
-		opacity: 0.9;
-		font-weight: 300;
 	}
 
 	.glass-decoration {
