@@ -1,0 +1,24 @@
+<template>
+  <div class="error-container">
+    <el-result
+      icon="error"
+      title="403"
+      sub-title="抱歉，您无权访问该页面"
+    >
+      <template #extra>
+        <el-button type="primary" @click="$router.push('/')">返回首页</el-button>
+      </template>
+    </el-result>
+  </div>
+</template>
+
+<style scoped>
+.error-container {
+  height: 100%;
+  min-height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--el-bg-color);
+}
+</style>

@@ -1,5 +1,6 @@
 import {createRouter, createWebHashHistory, type RouteRecordRaw} from "vue-router";
 import {formatRouter} from "@/router/utils.ts";
+import remainingRouter from "./modules/remaining";
 
 const modules: Record<string, any> = import.meta.glob(
     ["./modules/**/*.ts", "!./modules/**/remaining.ts"],
@@ -23,6 +24,8 @@ Object.keys(modules).forEach((key) => {
         asyncRouteList.push(...modList);
     }
 });
+
+constantRouteList.push(...remainingRouter);
 
 export const constantRoutes: Array<RouteRecordRaw> = formatRouter(constantRouteList);
 export const asyncRoutes: Array<RouteRecordRaw> = formatRouter(asyncRouteList);
@@ -60,7 +63,7 @@ router.beforeEach(async (to, _, next) => {
             // 判断是否已加载权限路由
             if (userStore.roles && userStore.roles.length > 0) {
                 if (to.meta?.permissions && !hasPermission(to.meta.permissions as string[])) {
-                     next('/404');
+                     next('/403');
                      return;
                 }
                 next();
