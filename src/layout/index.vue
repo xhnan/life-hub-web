@@ -33,7 +33,7 @@ import LayNavbar from "@/layout/components/lay-navbar/index.vue";
 .content {
   flex: 1;
   height: 100vh;
-  overflow: auto;
+  overflow: hidden;
   background: $center-background-color;
   color: #000000;
   padding: 16px;

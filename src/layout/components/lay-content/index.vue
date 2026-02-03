@@ -15,5 +15,6 @@ defineOptions({
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
+  overflow: auto;
 }
 </style>

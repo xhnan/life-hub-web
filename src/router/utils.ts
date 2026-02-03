@@ -39,16 +39,16 @@ function handleRouter(routes: any[]): RouteRecordRaw[] {
             component: needLayout ? () => import('@/layout/index.vue') : route.component,
             redirect: route.redirect,
             meta: route.meta || {},
-            children: needLayout && children.length === 0 && route.component
-                ? [
-                    // 无子路由时，把原 component 作为空路径子路由
-                    {
+            children: needLayout 
+                ? (children.length > 0 
+                    ? children 
+                    : (route.component ? [{
                         path: '',
                         name: route.name ? `${route.name}Index` : undefined,
                         component: route.component,
                         meta: route.meta || {}
-                    } as RouteRecordRaw
-                  ]
+                      } as RouteRecordRaw] : [])
+                  )
                 : children
         };
 
