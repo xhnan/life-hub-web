@@ -180,6 +180,139 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/fin/transtags": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有交易标签列表 */
+        get: operations["list_2"];
+        /** 修改交易标签 */
+        put: operations["update_11"];
+        /** 新增交易标签 */
+        post: operations["add_6"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/transactions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有财务交易记录列表 */
+        get: operations["list_3"];
+        /** 修改财务交易记录 */
+        put: operations["update_12"];
+        /** 新增财务交易记录 */
+        post: operations["add_7"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/tags": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有标签列表 */
+        get: operations["list_4"];
+        /** 修改标签 */
+        put: operations["update_13"];
+        /** 新增标签 */
+        post: operations["add_8"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/prices": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有价格列表 */
+        get: operations["list_5"];
+        /** 修改价格 */
+        put: operations["update_14"];
+        /** 新增价格 */
+        post: operations["add_9"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/entries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有财务分录列表 */
+        get: operations["list_6"];
+        /** 修改财务分录 */
+        put: operations["update_15"];
+        /** 新增财务分录 */
+        post: operations["add_10"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/budgets": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有预算列表 */
+        get: operations["list_7"];
+        /** 修改预算 */
+        put: operations["update_16"];
+        /** 新增预算 */
+        post: operations["add_11"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/accounts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有账户列表 */
+        get: operations["list_8"];
+        /** 修改账户 */
+        put: operations["update_17"];
+        /** 新增账户 */
+        post: operations["add_12"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/login": {
         parameters: {
             query?: never;
@@ -190,6 +323,22 @@ export interface paths {
         get?: never;
         put?: never;
         post: operations["login"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ai/code/generate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["generate"];
         delete?: never;
         options?: never;
         head?: never;
@@ -564,35 +713,360 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/grpc/health/ping": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ping"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/grpc/health/check": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["check"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/transtags/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询交易标签 */
+        get: operations["getById_11"];
+        put?: never;
+        post?: never;
+        /** 删除交易标签 */
+        delete: operations["delete_11"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/transtags/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询交易标签 */
+        get: operations["page"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/transactions/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询财务交易记录 */
+        get: operations["getById_12"];
+        put?: never;
+        post?: never;
+        /** 根据ID删除财务交易记录 */
+        delete: operations["delete_12"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/transactions/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询财务交易记录 */
+        get: operations["page_1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/tags/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询标签 */
+        get: operations["getById_13"];
+        put?: never;
+        post?: never;
+        /** 删除标签 */
+        delete: operations["delete_13"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/tags/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询标签 */
+        get: operations["page_2"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/prices/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询价格 */
+        get: operations["getById_14"];
+        put?: never;
+        post?: never;
+        /** 根据ID删除价格 */
+        delete: operations["delete_14"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/prices/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询价格 */
+        get: operations["page_3"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/entries/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询财务分录 */
+        get: operations["getById_15"];
+        put?: never;
+        post?: never;
+        /** 根据ID删除财务分录 */
+        delete: operations["delete_15"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/entries/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询财务分录 */
+        get: operations["page_4"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/budgets/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询预算 */
+        get: operations["getById_16"];
+        put?: never;
+        post?: never;
+        /** 删除预算 */
+        delete: operations["delete_16"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/budgets/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询预算 */
+        get: operations["page_5"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/accounts/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询账户 */
+        get: operations["getById_17"];
+        put?: never;
+        post?: never;
+        /** 删除账户 */
+        delete: operations["delete_17"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/accounts/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询账户 */
+        get: operations["page_6"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ai/code/health": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["health"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         SysUser: {
-            /** Format: int64 */
+            /**
+             * Format: int64
+             * @description 用户ID，主键，自增
+             */
             userId?: number;
+            /** @description 用户名，唯一 */
             username?: string;
+            /** @description 用户邮箱，唯一 */
             email?: string;
+            /** @description 用户密码（存储密码的哈希值） */
             password?: string;
+            /** @description 用户全名 */
             fullName?: string;
+            /** @description 用户头像的URL */
             avatarUrl?: string;
+            /** @description 用户性别（例如：male, female, other） */
             gender?: string;
-            /** Format: date */
+            /**
+             * Format: date
+             * @description 用户的生日
+             */
             birthDate?: string;
+            /** @description 用户账户状态（例如：active, inactive, banned） */
             status?: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description 用户最后一次登录时间
+             */
             lastLogin?: string;
-            /** Format: int32 */
+            /**
+             * Format: int32
+             * @description 用户登录失败次数
+             */
             loginAttempts?: number;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description 用户注册时间
+             */
             createdAt?: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description 最后更新时间
+             */
             updatedAt?: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description 用户软删除时间
+             */
             deletedAt?: string;
+            /** @description 邮箱是否验证 */
             emailVerified?: boolean;
+            /** @description 手机是否验证 */
             phoneVerified?: boolean;
+            /** @description 是否启用两步验证 */
             twoFactorEnabled?: boolean;
+            /** @description 软删除标志 */
             isDeleted?: boolean;
         };
         ResponseResultSysUser: {
@@ -845,6 +1319,186 @@ export interface components {
             /** Format: date-time */
             updateTime?: string;
         };
+        FinTransTags: {
+            /**
+             * Format: int64
+             * @description 主键ID
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 交易ID
+             */
+            transId?: number;
+            /**
+             * Format: int64
+             * @description 标签ID
+             */
+            tagId?: number;
+        };
+        FinTransactions: {
+            /**
+             * Format: int64
+             * @description 主键ID
+             */
+            id?: number;
+            /**
+             * Format: date-time
+             * @description 交易发生的实际时间
+             */
+            transDate?: string;
+            /** @description 交易描述 */
+            description?: string;
+            /** @description 附件ID(关联MinIO文件对象) */
+            attachmentId?: string;
+            /**
+             * Format: int64
+             * @description 创建人ID(关联RBAC用户表)
+             */
+            createdBy?: number;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+        };
+        FinTags: {
+            /**
+             * Format: int64
+             * @description 主键ID
+             */
+            id?: number;
+            /** @description 标签名称 (如：出差、装修、宠物) */
+            tagName?: string;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+        };
+        FinPrices: {
+            /**
+             * Format: int64
+             * @description 主键ID
+             */
+            id?: number;
+            /** @description 标的物代码 (如 00700.HK) */
+            commodityCode?: string;
+            /**
+             * Format: date-time
+             * @description 价格对应的时间点
+             */
+            priceDate?: string;
+            /** @description 收盘价/汇率 */
+            closePrice?: number;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+        };
+        FinEntries: {
+            /**
+             * Format: int64
+             * @description 主键ID
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 关联交易主表ID
+             */
+            transId?: number;
+            /**
+             * Format: int64
+             * @description 关联账户表ID
+             */
+            accountId?: number;
+            /**
+             * Format: int32
+             * @description 借贷方向 (1:借/Debit, -1:贷/Credit)
+             */
+            direction?: number;
+            /** @description 发生金额 (本币金额，用于报表统计) */
+            amount?: number;
+            /** @description 数量 (投资专用：如 100 股, 0.5 克黄金) */
+            quantity?: number;
+            /** @description 单价 (投资专用：记录交易时的成交单价) */
+            price?: number;
+            /** @description 标的物代码 (如 TENCENT, USD，为空则默认本币) */
+            commodityCode?: string;
+        };
+        FinBudgets: {
+            /**
+             * Format: int64
+             * @description 主键ID
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 关联的账户科目ID
+             */
+            accountId?: number;
+            /** @description 预算限额 */
+            amount?: number;
+            /** @description 预算周期类型 (MONTHLY, YEARLY) */
+            periodType?: string;
+            /**
+             * Format: date
+             * @description 预算所属日期 (如 2026-02-01 代表2月)
+             */
+            periodDate?: string;
+            /**
+             * Format: int64
+             * @description 关联用户ID (支持多用户独立预算)
+             */
+            userId?: number;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+        };
+        FinAccounts: {
+            /**
+             * Format: int64
+             * @description 主键ID
+             */
+            id?: number;
+            /** @description 账户名称 (如：招商银行、午餐) */
+            name?: string;
+            /**
+             * Format: int64
+             * @description 父级ID (实现树形结构，根节点为NULL)
+             */
+            parentId?: number;
+            /** @description 账户类型 (枚举值: ASSET, LIABILITY, EQUITY, INCOME, EXPENSE) */
+            accountType?: string;
+            /** @description 币种代码 (如: CNY, USD) */
+            currencyCode?: string;
+            /** @description 期初余额 (用于系统初始化时的存量) */
+            initialBalance?: number;
+            /**
+             * Format: int32
+             * @description 是否归档 (0:启用, 1:归档/逻辑删除)
+             */
+            isArchived?: number;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt?: string;
+            /** @description 科目说明/备注：用于解释该科目的核算范围 */
+            description?: string;
+            /** @description 是否叶子节点：只有true的科目允许被录入凭证 */
+            isLeaf?: boolean;
+            /** @description 业务编码 */
+            code?: string;
+        };
         LoginRequest: {
             username: string;
             password: string;
@@ -862,6 +1516,31 @@ export interface components {
             code?: number;
             message?: string;
             data?: components["schemas"]["LoginResponse"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        CodeGenerateRequest: {
+            prompt: string;
+        };
+        CodeGenerateResponse: {
+            success?: boolean;
+            message?: string;
+            description?: string;
+            error?: string;
+            files?: components["schemas"]["FileInfo"][];
+            steps?: string[];
+        };
+        FileInfo: {
+            path?: string;
+            type?: string;
+            description?: string;
+        };
+        ResponseResultCodeGenerateResponse: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["CodeGenerateResponse"];
             /** Format: int64 */
             timestamp?: number;
             success?: boolean;
@@ -1111,6 +1790,7 @@ export interface components {
             visible?: boolean;
             permission?: string;
             routerName?: string;
+            status?: boolean;
             children?: components["schemas"]["MenuTreeModel"][];
         };
         ResponseResultListMenuTreeModel: {
@@ -1136,6 +1816,369 @@ export interface components {
             code?: number;
             message?: string;
             data?: components["schemas"]["SysApp"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PingDTO: {
+            message?: string;
+        };
+        ResponseResultPingDTO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PingDTO"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        HealthCheckDTO: {
+            status?: string;
+            version?: string;
+            /** Format: int64 */
+            timestamp?: number;
+        };
+        ResponseResultHealthCheckDTO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthCheckDTO"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListFinTransTags: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["FinTransTags"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultFinTransTags: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["FinTransTags"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageFinTransTags: {
+            records?: components["schemas"]["FinTransTags"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageFinTransTags"];
+            searchCount?: components["schemas"]["PageFinTransTags"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageFinTransTags: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageFinTransTags"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListFinTransactions: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["FinTransactions"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultFinTransactions: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["FinTransactions"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageFinTransactions: {
+            records?: components["schemas"]["FinTransactions"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageFinTransactions"];
+            searchCount?: components["schemas"]["PageFinTransactions"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageFinTransactions: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageFinTransactions"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListFinTags: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["FinTags"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultFinTags: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["FinTags"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageFinTags: {
+            records?: components["schemas"]["FinTags"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageFinTags"];
+            searchCount?: components["schemas"]["PageFinTags"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageFinTags: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageFinTags"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListFinPrices: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["FinPrices"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultFinPrices: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["FinPrices"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageFinPrices: {
+            records?: components["schemas"]["FinPrices"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageFinPrices"];
+            searchCount?: components["schemas"]["PageFinPrices"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageFinPrices: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageFinPrices"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListFinEntries: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["FinEntries"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultFinEntries: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["FinEntries"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageFinEntries: {
+            records?: components["schemas"]["FinEntries"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageFinEntries"];
+            searchCount?: components["schemas"]["PageFinEntries"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageFinEntries: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageFinEntries"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListFinBudgets: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["FinBudgets"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultFinBudgets: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["FinBudgets"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageFinBudgets: {
+            records?: components["schemas"]["FinBudgets"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageFinBudgets"];
+            searchCount?: components["schemas"]["PageFinBudgets"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageFinBudgets: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageFinBudgets"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListFinAccounts: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["FinAccounts"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultFinAccounts: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["FinAccounts"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageFinAccounts: {
+            records?: components["schemas"]["FinAccounts"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageFinAccounts"];
+            searchCount?: components["schemas"]["PageFinAccounts"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageFinAccounts: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageFinAccounts"];
             /** Format: int64 */
             timestamp?: number;
             success?: boolean;
@@ -1886,6 +2929,482 @@ export interface operations {
             };
         };
     };
+    list_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinTransTags"];
+                };
+            };
+        };
+    };
+    update_11: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinTransTags"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_6: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinTransTags"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_3: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinTransactions"];
+                };
+            };
+        };
+    };
+    update_12: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinTransactions"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_7: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinTransactions"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_4: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinTags"];
+                };
+            };
+        };
+    };
+    update_13: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinTags"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_8: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinTags"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_5: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinPrices"];
+                };
+            };
+        };
+    };
+    update_14: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinPrices"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_9: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinPrices"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_6: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinEntries"];
+                };
+            };
+        };
+    };
+    update_15: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinEntries"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_10: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinEntries"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_7: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinBudgets"];
+                };
+            };
+        };
+    };
+    update_16: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinBudgets"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_11: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinBudgets"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_8: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinAccounts"];
+                };
+            };
+        };
+    };
+    update_17: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinAccounts"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_12: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinAccounts"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
     login: {
         parameters: {
             query?: never;
@@ -1906,6 +3425,30 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ResponseResultLoginResponse"];
+                };
+            };
+        };
+    };
+    generate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CodeGenerateRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultCodeGenerateResponse"];
                 };
             };
         };
@@ -2645,6 +4188,563 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    ping: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPingDTO"];
+                };
+            };
+        };
+    };
+    check: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthCheckDTO"];
+                };
+            };
+        };
+    };
+    getById_11: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 标签ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultFinTransTags"];
+                };
+            };
+        };
+    };
+    delete_11: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 标签ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    page: {
+        parameters: {
+            query: {
+                /** @description 页码 */
+                pageNum: number;
+                /** @description 每页数量 */
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageFinTransTags"];
+                };
+            };
+        };
+    };
+    getById_12: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 财务交易记录ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultFinTransactions"];
+                };
+            };
+        };
+    };
+    delete_12: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 财务交易记录ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    page_1: {
+        parameters: {
+            query: {
+                /** @description 页码 */
+                pageNum: number;
+                /** @description 每页数量 */
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageFinTransactions"];
+                };
+            };
+        };
+    };
+    getById_13: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 标签ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultFinTags"];
+                };
+            };
+        };
+    };
+    delete_13: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 标签ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    page_2: {
+        parameters: {
+            query: {
+                /** @description 页码 */
+                pageNum: number;
+                /** @description 每页数量 */
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageFinTags"];
+                };
+            };
+        };
+    };
+    getById_14: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 价格ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultFinPrices"];
+                };
+            };
+        };
+    };
+    delete_14: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 价格ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    page_3: {
+        parameters: {
+            query: {
+                /** @description 页码 */
+                pageNum: number;
+                /** @description 每页数量 */
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageFinPrices"];
+                };
+            };
+        };
+    };
+    getById_15: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 分录ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultFinEntries"];
+                };
+            };
+        };
+    };
+    delete_15: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 分录ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    page_4: {
+        parameters: {
+            query: {
+                /** @description 页码 */
+                pageNum: number;
+                /** @description 每页数量 */
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageFinEntries"];
+                };
+            };
+        };
+    };
+    getById_16: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 预算ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultFinBudgets"];
+                };
+            };
+        };
+    };
+    delete_16: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 预算ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    page_5: {
+        parameters: {
+            query?: {
+                /** @description 页码 */
+                pageNum?: number;
+                /** @description 每页数量 */
+                pageSize?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageFinBudgets"];
+                };
+            };
+        };
+    };
+    getById_17: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 账户ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultFinAccounts"];
+                };
+            };
+        };
+    };
+    delete_17: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 账户ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    page_6: {
+        parameters: {
+            query: {
+                /** @description 页码 */
+                pageNum: number;
+                /** @description 每页数量 */
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageFinAccounts"];
+                };
+            };
+        };
+    };
+    health: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultString"];
                 };
             };
         };

@@ -7,15 +7,13 @@
   >
     <template #reference>
       <el-input
-        v-model="currentValue"
-        placeholder="点击选择图标"
-        readonly
-        clearable
-        @clear="handleClear"
-        class="icon-input"
+        v-model="inputValue"
+        placeholder="点击选择或输入图标"
+        class="icon-select-input"
+        @input="handleInput"
       >
         <template #prefix>
-          <el-icon v-if="currentValue && icons[currentValue]" class="el-input__icon">
+          <el-icon v-if="modelValue" class="icon-preview">
             <component :is="icons[currentValue]" />
           </el-icon>
           <el-icon v-else class="el-input__icon">
@@ -70,8 +68,19 @@ const emit = defineEmits(['update:modelValue', 'change'])
 
 // Cast to any to access by index/key
 const icons = ElementPlusIconsVue as any
+const visible = ref(false)
 const currentValue = ref(props.modelValue)
 const searchText = ref('')
+const inputValue = ref(props.modelValue || '')
+
+watch(() => props.modelValue, (val) => {
+  inputValue.value = val || ''
+})
+
+const handleInput = (val: string) => {
+  emit('update:modelValue', val)
+  emit('change', val)
+}
 
 // Get all icon names, excluding internal exports if any
 const iconNames = Object.keys(ElementPlusIconsVue).filter(key => typeof (ElementPlusIconsVue as any)[key] === 'object')
