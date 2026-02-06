@@ -106,10 +106,10 @@
             <span class="code-tag">{{ row.code }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="accountType" label="类型" width="100">
+        <el-table-column prop="accountTypeEnum" label="类型" width="100">
           <template #default="{ row }">
-            <el-tag :type="getTypeTag(row.accountType)" effect="light" round size="small">
-              {{ getTypeLabel(row.accountType) }}
+            <el-tag :type="getTypeTag(row.accountTypeEnum)" effect="light" round size="small">
+              {{ getTypeLabel(row.accountTypeEnum) }}
             </el-tag>
           </template>
         </el-table-column>
@@ -130,7 +130,7 @@
         <el-table-column prop="currencyCode" label="币种" width="80" align="center" />
         <el-table-column prop="isArchived" label="状态" width="80" align="center">
           <template #default="{ row }">
-            <div class="status-dot" :class="row.isArchived === 0 ? 'active' : 'archived'"></div>
+            <div class="status-dot" :class="!row.isArchived ? 'active' : 'archived'"></div>
           </template>
         </el-table-column>
         <el-table-column prop="description" label="备注" min-width="150" show-overflow-tooltip />
@@ -151,6 +151,13 @@
         </el-table-column>
       </el-table>
     </el-card>
+
+    <!-- 新增/编辑弹窗 -->
+    <AccountDialog 
+      ref="dialogRef" 
+      :all-data="allData" 
+      @success="loadData"
+    />
   </div>
 </template>
 
@@ -159,27 +166,16 @@ import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { TabsPaneContext, ElTable } from 'element-plus'
 import { Money, CreditCard, Wallet, Search, Refresh, Plus, Edit, Delete, Folder, Document } from '@element-plus/icons-vue'
-
-// 类型定义，参考 FinAccounts schema
-interface AccountRow {
-  id: number
-  code?: string
-  name: string
-  parentId?: number
-  accountType: string // ASSET, LIABILITY, EQUITY, INCOME, EXPENSE
-  currencyCode: string
-  initialBalance: number
-  currentBalance: number // 当前余额
-  isArchived: number // 0:启用, 1:归档
-  description: string
-  isLeaf?: boolean
-  createdAt: string
-  updatedAt: string
-  children?: AccountRow[]
-}
+import { 
+  getAccountTreeApi, 
+  deleteAccountApi, 
+  type AccountRow 
+} from '@/api/fin/account'
+import AccountDialog from './components/AccountDialog.vue'
 
 const loading = ref(false)
 const tableData = ref<AccountRow[]>([])
+const allData = ref<AccountRow[]>([]) // 存储原始数据用于前端过滤
 const activeTab = ref('ALL')
 const tableRef = ref<InstanceType<typeof ElTable>>()
 
@@ -188,27 +184,24 @@ const searchForm = reactive({
   accountType: ''
 })
 
+const dialogRef = ref<InstanceType<typeof AccountDialog>>()
+
+
 // 辅助函数
 const getTypeTag = (type: string) => {
   const map: Record<string, string> = {
-    ASSET: 'success',
-    LIABILITY: 'danger',
-    EQUITY: 'warning',
-    INCOME: 'primary',
-    EXPENSE: 'info'
+    '资产': 'success',
+    '负债': 'danger',
+    '权益': 'warning',
+    '收入': 'primary',
+    '支出': 'info'
   }
   return map[type] || 'info'
 }
 
 const getTypeLabel = (type: string) => {
-  const map: Record<string, string> = {
-    ASSET: '资产',
-    LIABILITY: '负债',
-    EQUITY: '权益',
-    INCOME: '收入',
-    EXPENSE: '支出'
-  }
-  return map[type] || type
+  // 后端已经返回中文描述，直接展示即可
+  return type
 }
 
 const getBalanceClass = (amount: number) => {
@@ -218,183 +211,120 @@ const getBalanceClass = (amount: number) => {
 }
 
 const formatCurrency = (amount: number) => {
-  return amount.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  return amount?.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || '0.00'
 }
 
 const toggleRowExpansion = (row: AccountRow) => {
-  if (row.children && row.children.length > 0) {
-    tableRef.value?.toggleRowExpansion(row)
+  tableRef.value?.toggleRowExpansion(row)
+}
+
+// 递归过滤树形数据
+const filterTree = (nodes: AccountRow[], keyword: string, type: string): AccountRow[] => {
+  // 后端返回的枚举值为中文描述，需要映射
+  const typeMap: Record<string, string> = {
+    'ASSET': '资产',
+    'LIABILITY': '负债',
+    'EQUITY': '权益',
+    'INCOME': '收入',
+    'EXPENSE': '支出'
+  }
+  const targetType = type === 'ALL' ? 'ALL' : (typeMap[type] || type)
+
+  return nodes.filter(node => {
+    // 类型匹配（如果是ALL则不校验类型）
+    const typeMatch = targetType === 'ALL' || node.accountTypeEnum === targetType
+    
+    // 名称或Code匹配
+    const nameMatch = !keyword || 
+      node.name.toLowerCase().includes(keyword.toLowerCase()) || 
+      node.code.toLowerCase().includes(keyword.toLowerCase())
+    
+    // 如果有子节点，递归过滤
+    let childrenMatch = false
+    if (node.children && node.children.length > 0) {
+      const filteredChildren = filterTree(node.children, keyword, type)
+      if (filteredChildren.length > 0) {
+        childrenMatch = true
+      }
+    }
+
+    return typeMatch && (nameMatch || childrenMatch)
+  })
+}
+
+// 更简单的搜索逻辑：仅对顶层或扁平化数据有效，树形搜索较复杂。
+// 鉴于后端API返回全量树，我们在前端做简单的展示过滤
+const applyFilter = () => {
+  let result = [...allData.value]
+  
+  // 1. 类型过滤 (仅对第一层有效，或者假设树的根节点就是按类型分的？)
+  // 根据之前的 mock 数据，根节点就是 ASSET, LIABILITY 等类型的大类
+  // 所以我们可以直接过滤根节点
+  if (activeTab.value !== 'ALL') {
+    // 后端返回的枚举值为中文描述
+    const typeMap: Record<string, string> = {
+      'ASSET': '资产',
+      'LIABILITY': '负债',
+      'EQUITY': '权益',
+      'INCOME': '收入',
+      'EXPENSE': '支出'
+    }
+    const targetValue = typeMap[activeTab.value] || activeTab.value
+    result = result.filter(item => item.accountTypeEnum === targetValue)
+  }
+
+  // 2. 名称搜索 (简单实现：只搜索第一层，或者如果需要深层搜索需要递归)
+  // 如果需要深层搜索，建议后端实现。前端暂时只做顶层名称匹配
+  if (searchForm.name) {
+    const keyword = searchForm.name.toLowerCase()
+    result = result.filter(item => 
+      item.name.toLowerCase().includes(keyword) || 
+      item.code.toLowerCase().includes(keyword)
+    )
+  }
+  
+  tableData.value = result
+}
+
+const loadData = async () => {
+  loading.value = true
+  try {
+    const res = await getAccountTreeApi()
+    if (res.data) {
+      allData.value = res.data
+      applyFilter()
+    }
+  } catch (error) {
+    console.error(error)
+  } finally {
+    loading.value = false
   }
 }
 
-// 模拟数据加载
-const loadData = () => {
-  loading.value = true
-  setTimeout(() => {
-    // 生成大量模拟数据以测试滚动条
-    const generateChildren = (parentId: number, count: number) => {
-      return Array.from({ length: count }).map((_, idx) => ({
-        id: parentId * 100 + idx,
-        code: `${parentId}${idx}`,
-        name: `测试账户 ${parentId}-${idx}`,
-        parentId: parentId,
-        accountType: 'ASSET',
-        initialBalance: Math.random() * 10000,
-        currentBalance: Math.random() * 10000,
-        currencyCode: 'CNY',
-        isArchived: 0,
-        description: '自动生成测试数据',
-        createdAt: '2023-01-01 12:00:00',
-        updatedAt: '2023-10-01 12:00:00'
-      }))
-    }
-
-    const allData = [
-      {
-        id: 100,
-        code: '1000',
-        name: '流动资产',
-        accountType: 'ASSET',
-        initialBalance: 15230.00,
-        currentBalance: 18656.00,
-        currencyCode: 'CNY',
-        isArchived: 0,
-        description: '流动性较强的资产',
-        createdAt: '2023-01-01 00:00:00',
-        updatedAt: '2023-10-01 12:00:00',
-        children: [
-           {
-            id: 1,
-            code: '1001',
-            name: '招商银行储蓄卡',
-            parentId: 100,
-            accountType: 'ASSET',
-            initialBalance: 15000.50,
-            currentBalance: 18500.00,
-            currencyCode: 'CNY',
-            isArchived: 0,
-            description: '工资卡',
-            createdAt: '2023-01-01 12:00:00',
-            updatedAt: '2023-10-01 12:00:00'
-          },
-          {
-            id: 3,
-            code: '1002',
-            name: '支付宝余额',
-            parentId: 100,
-            accountType: 'ASSET',
-            initialBalance: 230.00,
-            currentBalance: 156.00,
-            currencyCode: 'CNY',
-            isArchived: 0,
-            description: '零钱',
-            createdAt: '2023-01-05 15:20:00',
-            updatedAt: '2023-10-05 15:20:00'
-          },
-          ...generateChildren(100, 5) // 增加一些子节点
-        ]
-      },
-      {
-        id: 200,
-        code: '2000',
-        name: '流动负债',
-        accountType: 'LIABILITY',
-        initialBalance: -500.00,
-        currentBalance: -2500.00,
-        currencyCode: 'CNY',
-        isArchived: 0,
-        description: '短期负债',
-        createdAt: '2023-01-01 00:00:00',
-        updatedAt: '2023-10-01 12:00:00',
-        children: [
-          {
-            id: 2,
-            code: '2001',
-            name: '招商银行信用卡',
-            parentId: 200,
-            accountType: 'LIABILITY',
-            initialBalance: -500.00,
-            currentBalance: -2500.00,
-            currencyCode: 'CNY',
-            isArchived: 0,
-            description: '日常消费',
-            createdAt: '2023-01-02 10:30:00',
-            updatedAt: '2023-10-02 10:30:00'
-          }
-        ]
-      },
-      {
-        id: 4,
-        code: '6001',
-        name: '工资收入',
-        accountType: 'INCOME',
-        initialBalance: 0,
-        currentBalance: 120000.00,
-        currencyCode: 'CNY',
-        isArchived: 0,
-        description: '每月工资',
-        createdAt: '2023-01-01 00:00:00',
-        updatedAt: '2023-01-01 00:00:00'
-      },
-      {
-        id: 5,
-        code: '5001',
-        name: '餐饮支出',
-        accountType: 'EXPENSE',
-        initialBalance: 0,
-        currentBalance: 3500.00,
-        currencyCode: 'CNY',
-        isArchived: 0,
-        description: '一日三餐',
-        createdAt: '2023-01-01 00:00:00',
-        updatedAt: '2023-01-01 00:00:00'
-      },
-      // 增加更多根节点以撑开高度
-      ...generateChildren(300, 15)
-    ]
-
-    // 简单的前端过滤逻辑，实际应由后端处理
-    if (activeTab.value !== 'ALL') {
-      tableData.value = allData.filter(item => item.accountType === activeTab.value)
-    } else {
-      tableData.value = allData
-    }
-
-    if (searchForm.name) {
-       // 简单的搜索逻辑
-       tableData.value = tableData.value.filter(item => item.name.includes(searchForm.name))
-    }
-
-    loading.value = false
-  }, 300)
-}
-
 const handleTabClick = (tab: TabsPaneContext) => {
-  // 切换Tab时重置搜索名称并重新加载
-  // searchForm.name = '' 
-  loadData()
+  applyFilter()
 }
 
 const handleSearch = () => {
-  loadData()
+  applyFilter()
 }
 
 const handleReset = () => {
   searchForm.name = ''
   activeTab.value = 'ALL'
-  loadData()
+  applyFilter()
 }
 
 const handleAdd = () => {
-  ElMessage.info('点击了新增账户，功能待实现')
+  dialogRef.value?.open('add')
 }
 
 const handleAddChild = (row: AccountRow) => {
-  ElMessage.info(`点击了新增子账户，父账户: ${row.name}`)
+  dialogRef.value?.open('addChild', row)
 }
 
 const handleEdit = (row: AccountRow) => {
-  ElMessage.info(`点击了编辑账户: ${row.name}，功能待实现`)
+  dialogRef.value?.open('edit', row)
 }
 
 const handleDelete = (row: AccountRow) => {
@@ -406,8 +336,14 @@ const handleDelete = (row: AccountRow) => {
       cancelButtonText: '取消',
       type: 'warning'
     }
-  ).then(() => {
-    ElMessage.success('删除成功 (模拟)')
+  ).then(async () => {
+    try {
+      await deleteAccountApi(row.id)
+      ElMessage.success('删除成功')
+      loadData() // 重新加载数据
+    } catch (error) {
+      // 错误已由拦截器处理
+    }
   }).catch(() => {})
 }
 

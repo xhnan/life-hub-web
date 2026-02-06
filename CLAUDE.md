@@ -36,6 +36,12 @@ Routes are merged in `src/store/permission.ts:generateRoutes()`:
 - Duplicate routes (by name/path) are removed via Map deduplication
 - 404 catch-all route is always added last
 
+**CRITICAL: Route Strategy**
+- **DO NOT add static routes** for new features in `src/router/modules/`
+- **Always use backend menu (dynamic routes)** for all business features
+- Static routes are reserved for system pages only (login, welcome, 404, etc.)
+- Dynamic routes provide better flexibility, RBAC integration, and maintainability
+
 **Critical**: The 404 route must be added last via `router.addRoute()` after all dynamic routes. See `src/router/index.ts:117-128`.
 
 ### Auto-Layout Injection
@@ -139,10 +145,24 @@ export const getMenuTreeApi = () => http.get<MenuRow[]>(`${prefix}/tree`);
 
 ### Adding New Pages
 
+**IMPORTANT: Always use dynamic routes (backend menu), NEVER add static routes**
+
 1. Create view component in `src/views/`
-2. Add route module in `src/router/modules/` (auto-scanned via `import.meta.glob`)
-3. If using backend menu: Configure menu in backend admin panel
-4. If using static route: Add `meta.roles` or `meta.permissions` for access control
+2. **Configure menu in backend admin panel** (system will auto-generate routes)
+3. Add `meta.permissions` in backend menu configuration for access control
+4. The system will automatically:
+   - Fetch menu tree from backend on login
+   - Transform menu items to Vue Router routes
+   - Apply permission-based filtering
+   - Inject Layout component automatically
+
+**Static routes should ONLY be used for**:
+- Login page (`/login`)
+- Welcome/Dashboard page (`/welcome`)
+- Error pages (404, 403, etc.)
+- Other system-level pages that don't require RBAC
+
+**DO NOT create new files in `src/router/modules/` for business features**
 
 ### Route Meta Fields
 

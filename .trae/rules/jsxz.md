@@ -1,6 +1,7 @@
-1.项目使用了vue3+ts+element-plus+Vue Router 4.6
-2.使用PNPM作为包管理工具,禁止使用其他包管理工具
-3.Axios 1.13，自定义拦截器 - 统一处理 Token 注入、401 跳转、错误提示，响应封装 - 统一的 ApiResponse<T> 数据结构
-4.RBAC 模型 - 基于角色的访问控制,权限缓存 - sessionStorage 缓存角色权限,超级管理员 - 支持 super_admin 角色和 *:*:* 超级权限
-5.Sass/SCSS使用 
-6.路径别名@  →  src/
+IMPORTANT: Use pnpm only (NO npm/yarn). Using other package managers may cause lockfile conflicts.
+
+1) Stack: Vue 3 + TypeScript + Element Plus + Vue Router 4.6
+2) HTTP: Axios 1.13 + custom interceptors (token injection, 401 redirect, error message); unified ApiResponse<T>
+3) Auth: RBAC; cache roles/permissions in sessionStorage; supports super_admin and *:*:* wildcard permission
+4) Styling: Sass/SCSS; alias @ -> src/
+5) Routing: Business pages must use backend-driven dynamic routes (menu tree -> routes). DO NOT add new business static routes in src/router/modules. Static routes are for system pages only (/login, /welcome, 403/404, etc.)
