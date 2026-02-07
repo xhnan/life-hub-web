@@ -18,7 +18,7 @@ export const getEntryListApi = () => {
   return http.get<EntryRow[]>(`${prefix}`);
 };
 
-export const getEntryPageApi = (params: { pageNum: number; pageSize: number }) => {
+export const getEntryPageApi = (params: { pageNum: number; pageSize: number; bookId?: number }) => {
   return http.get<{ records: EntryRow[]; total: number }>(`${prefix}/page`, params);
 };
 

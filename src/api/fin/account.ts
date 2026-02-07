@@ -62,7 +62,7 @@ export const getAccountTreeApi = (params: { accountType?: string; bookId?: numbe
  * @param params 查询参数 { parentId, bookId }
  */
 export const getAccountChildrenApi = (params: { parentId?: number; bookId?: number }) => {
-  return http.get<AccountRow[]>(`${prefix}/subjects`, { params });
+  return http.get<AccountRow[]>(`${prefix}/subjects`, params);
 };
 
 /**
@@ -71,7 +71,7 @@ export const getAccountChildrenApi = (params: { parentId?: number; bookId?: numb
  * @param bookId 账本ID
  */
 export const getAccountListApi = (bookId?: number) => {
-  return http.get<AccountRow[]>(`${prefix}`, { params: { bookId } });
+  return http.get<AccountRow[]>(`${prefix}`, { bookId });
 };
 
 /**
@@ -81,7 +81,7 @@ export const getAccountListApi = (bookId?: number) => {
  * @param bookId 账本ID
  */
 export const getAccountDetailApi = (id: number, bookId?: number) => {
-  return http.get<AccountRow>(`${prefix}/${id}`, { params: { bookId } });
+  return http.get<AccountRow>(`${prefix}/${id}`, { bookId });
 };
 
 /**
@@ -113,5 +113,5 @@ export const deleteAccountApi = (id: number) => {
  * 接口地址: POST /fin/accounts/init?bookId={bookId}
  */
 export const initAccountsApi = (bookId: number) => {
-  return http.post<void>(`${prefix}/init`, null, { params: { bookId } });
+  return http.post<void>(`${prefix}/init`, undefined, { params: { bookId } });
 };

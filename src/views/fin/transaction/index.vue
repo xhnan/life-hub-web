@@ -247,8 +247,16 @@ const initDateRange = () => {
 // 加载所有分录（临时方案，应该有根据 transId 查询的接口）
 // 实际上 getEntryListApi 返回的是所有分录，我们在前端过滤
 const loadAllEntries = async () => {
+  if (!ledgerStore.currentLedgerId) {
+    allEntries.value = []
+    return
+  }
   try {
-    const res = await getEntryPageApi({ pageNum: 1, pageSize: 1000 })
+    const res = await getEntryPageApi({ 
+      pageNum: 1, 
+      pageSize: 1000,
+      bookId: ledgerStore.currentLedgerId
+    })
     if (res.data && res.data.records) {
       allEntries.value = res.data.records
     }
@@ -272,6 +280,7 @@ const loadAccounts = async () => {
 watch(() => ledgerStore.currentLedgerId, () => {
   loadTransactions()
   loadAccounts()
+  loadAllEntries()
 })
 
 // 事件处理
@@ -296,6 +305,10 @@ const handleDateChange = () => {
 }
 
 const handleAddTransaction = () => {
+  if (!ledgerStore.currentLedgerId) {
+    ElMessage.warning('请先选择账本')
+    return
+  }
   dialogRef.value?.open('add')
 }
 
@@ -311,11 +324,15 @@ const handleSuccess = () => {
 }
 
 const handleDeleteTransaction = (row: TransactionRow) => {
+  if (!ledgerStore.currentLedgerId) {
+    ElMessage.warning('请先选择账本')
+    return
+  }
   ElMessageBox.confirm('确定删除该交易记录吗？', '提示', {
     type: 'warning'
   }).then(async () => {
     try {
-      await deleteTransactionApi(row.id)
+      await deleteTransactionApi(row.id, ledgerStore.currentLedgerId!)
       ElMessage.success('删除成功')
       loadTransactions()
       if (currentTransaction.value?.id === row.id) {

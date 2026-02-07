@@ -18,16 +18,16 @@ export interface TransactionDTO extends Partial<TransactionRow> {
   entries?: Partial<EntryRow>[];
 }
 
-export const getTransactionListApi = (bookId?: number) => {
-  return http.get<TransactionRow[]>(`${prefix}`, { params: { bookId } });
+export const getTransactionListApi = (bookId: number) => {
+  return http.get<TransactionRow[]>(`${prefix}`, { bookId });
 };
 
-export const getTransactionPageApi = (params: { pageNum: number; pageSize: number; bookId?: number; startDate?: string; endDate?: string }) => {
+export const getTransactionPageApi = (params: { pageNum: number; pageSize: number; bookId: number; startDate?: string; endDate?: string }) => {
   return http.get<{ records: TransactionRow[]; total: number }>(`${prefix}/page`, params);
 };
 
-export const getTransactionDetailApi = (id: number) => {
-  return http.get<TransactionRow>(`${prefix}/${id}`);
+export const getTransactionDetailApi = (id: number, bookId: number) => {
+  return http.get<TransactionRow>(`${prefix}/${id}`, { bookId });
 };
 
 export const addTransactionApi = (data: TransactionDTO) => {
@@ -38,6 +38,6 @@ export const updateTransactionApi = (data: TransactionDTO) => {
   return http.put<boolean>(`${prefix}`, data);
 };
 
-export const deleteTransactionApi = (id: number) => {
-  return http.delete<boolean>(`${prefix}/${id}`);
+export const deleteTransactionApi = (id: number, bookId: number) => {
+  return http.delete<boolean>(`${prefix}/${id}`, { bookId });
 };
