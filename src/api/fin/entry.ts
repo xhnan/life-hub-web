@@ -19,7 +19,7 @@ export const getEntryListApi = () => {
 };
 
 export const getEntryPageApi = (params: { pageNum: number; pageSize: number }) => {
-  return http.get<{ records: EntryRow[]; total: number }>(`${prefix}/page`, { params });
+  return http.get<{ records: EntryRow[]; total: number }>(`${prefix}/page`, params);
 };
 
 export const getEntryDetailApi = (id: number) => {

@@ -7,11 +7,14 @@
           <template #header>
             <div class="card-header">
               <span class="title">交易记录</span>
-              <el-button type="primary" size="small" :icon="Plus" circle @click="handleAddTransaction" />
+              <el-button type="primary" size="default" :icon="Plus" circle @click="handleAddTransaction" />
             </div>
           </template>
           
-          <div class="search-bar mb-2">
+          <div class="search-bar mb-2 flex items-center">
+            <div class="ledger-wrapper mr-2">
+              <LedgerSelect />
+            </div>
             <el-date-picker
               v-model="dateRange"
               type="daterange"
@@ -21,6 +24,14 @@
               size="small"
               style="width: 100%"
               @change="handleDateChange"
+            />
+            <el-button 
+              type="primary" 
+              size="small" 
+              :icon="Search" 
+              circle 
+              class="ml-2"
+              @click="handleDateChange" 
             />
           </div>
 
@@ -54,7 +65,7 @@
               v-model:page-size="pageSize"
               :total="total"
               layout="prev, pager, next"
-              small
+              size="small"
               @current-change="loadTransactions"
             />
           </div>
@@ -69,7 +80,7 @@
               <span class="title">分录明细</span>
               <el-button 
                 type="success" 
-                size="small" 
+                size="default" 
                 :icon="Plus" 
                 :disabled="!currentTransaction" 
                 @click="handleAddEntry"
@@ -130,25 +141,30 @@
         </el-card>
       </div>
     </div>
+    <!-- 弹窗组件 -->
+    <TransactionDialog ref="dialogRef" @success="handleSuccess" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Plus, Edit, Delete } from '@element-plus/icons-vue'
+import { Plus, Edit, Delete, Search } from '@element-plus/icons-vue'
 import { 
   getTransactionPageApi, 
   deleteTransactionApi, 
   type TransactionRow 
 } from '@/api/fin/transaction'
 import { 
-  getEntryListApi, 
+  getEntryPageApi, 
   deleteEntryApi, 
   type EntryRow 
 } from '@/api/fin/entry'
 import { getAccountListApi, type AccountRow } from '@/api/fin/account'
+import TransactionDialog from './components/TransactionDialog.vue'
 import dayjs from 'dayjs'
+import { ledgerStore } from '@/store/ledger'
+import LedgerSelect from "@/components/LedgerSelect/index.vue";
 
 // 状态定义
 const loadingTransactions = ref(false)
@@ -158,12 +174,14 @@ const entryList = ref<EntryRow[]>([]) // 当前选中的交易的分录列表
 const allEntries = ref<EntryRow[]>([]) // 所有分录（暂时全部加载，后期优化为按ID查询）
 const accountList = ref<AccountRow[]>([])
 const currentTransaction = ref<TransactionRow | null>(null)
-const dateRange = ref('')
+const dateRange = ref<[string, string] | ''>('')
+const dialogRef = ref<InstanceType<typeof TransactionDialog>>()
 
 // 分页
 const pageNum = ref(1)
 const pageSize = ref(20)
 const total = ref(0)
+
 
 // 获取账户映射
 const accountMap = computed(() => {
@@ -180,7 +198,7 @@ const getAccountName = (id: number) => {
 
 // 格式化函数
 const formatDate = (date: string) => {
-  return dayjs(date).format('YYYY-MM-DD')
+  return date ? dayjs(date).format('YYYY-MM-DD') : '-'
 }
 
 const formatCurrency = (amount: number) => {
@@ -189,12 +207,25 @@ const formatCurrency = (amount: number) => {
 
 // 加载数据
 const loadTransactions = async () => {
+  if (!ledgerStore.currentLedgerId) {
+    transactionList.value = []
+    return
+  }
   loadingTransactions.value = true
   try {
-    const res = await getTransactionPageApi({
+    const params: any = {
       pageNum: pageNum.value,
-      pageSize: pageSize.value
-    })
+      pageSize: pageSize.value,
+      bookId: ledgerStore.currentLedgerId
+    }
+    
+    // 如果选择了日期范围，添加到查询参数
+    if (dateRange.value && Array.isArray(dateRange.value)) {
+      params.startDate = dateRange.value[0]
+      params.endDate = dateRange.value[1]
+    }
+
+    const res = await getTransactionPageApi(params)
     if (res.data) {
       transactionList.value = res.data.records
       total.value = res.data.total
@@ -206,13 +237,20 @@ const loadTransactions = async () => {
   }
 }
 
+// 初始化日期范围为本月
+const initDateRange = () => {
+  const start = dayjs().startOf('month').format('YYYY-MM-DD')
+  const end = dayjs().endOf('month').format('YYYY-MM-DD')
+  dateRange.value = [start, end]
+}
+
 // 加载所有分录（临时方案，应该有根据 transId 查询的接口）
 // 实际上 getEntryListApi 返回的是所有分录，我们在前端过滤
 const loadAllEntries = async () => {
   try {
-    const res = await getEntryListApi()
-    if (res.data) {
-      allEntries.value = res.data
+    const res = await getEntryPageApi({ pageNum: 1, pageSize: 1000 })
+    if (res.data && res.data.records) {
+      allEntries.value = res.data.records
     }
   } catch (error) {
     console.error(error)
@@ -220,8 +258,9 @@ const loadAllEntries = async () => {
 }
 
 const loadAccounts = async () => {
+  if (!ledgerStore.currentLedgerId) return
   try {
-    const res = await getAccountListApi()
+    const res = await getAccountListApi(ledgerStore.currentLedgerId)
     if (res.data) {
       accountList.value = res.data
     }
@@ -229,6 +268,11 @@ const loadAccounts = async () => {
     console.error(error)
   }
 }
+
+watch(() => ledgerStore.currentLedgerId, () => {
+  loadTransactions()
+  loadAccounts()
+})
 
 // 事件处理
 const handleTransactionSelect = (row: TransactionRow | undefined) => {
@@ -252,11 +296,18 @@ const handleDateChange = () => {
 }
 
 const handleAddTransaction = () => {
-  ElMessage.info('新增交易功能待实现')
+  dialogRef.value?.open('add')
 }
 
 const handleEditTransaction = (row: TransactionRow) => {
-  ElMessage.info(`编辑交易: ${row.id}`)
+  // 目前仅支持新增，因为后端未提供聚合查询接口，无法回显分录
+  ElMessage.info('编辑功能暂未完全开放，请先使用新增')
+  // dialogRef.value?.open('edit', row)
+}
+
+const handleSuccess = () => {
+  loadTransactions()
+  loadAllEntries() // 刷新分录列表
 }
 
 const handleDeleteTransaction = (row: TransactionRow) => {
@@ -305,6 +356,7 @@ const handleDeleteEntry = (row: EntryRow) => {
 }
 
 onMounted(() => {
+  initDateRange()
   loadTransactions()
   loadAllEntries()
   loadAccounts()
@@ -408,4 +460,20 @@ onMounted(() => {
 
 .mb-2 { margin-bottom: 8px; }
 .mb-4 { margin-bottom: 16px; }
+.flex { display: flex; }
+.items-center { align-items: center; }
+.ml-2 { margin-left: 8px; }
+.mr-2 { margin-right: 8px; }
+
+.ledger-wrapper {
+  width: 160px;
+  :deep(.el-input__wrapper) {
+    background-color: white;
+    border: 1px solid #dcdfe6;
+    box-shadow: none !important;
+    .el-input__inner {
+      color: #606266;
+    }
+  }
+}
 </style>

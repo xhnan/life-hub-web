@@ -92,6 +92,7 @@ import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { addAccountApi, updateAccountApi, type AccountRow } from '@/api/fin/account'
+import { ledgerStore } from '@/store/ledger'
 
 const props = defineProps<{
   allData: AccountRow[]
@@ -108,6 +109,7 @@ const parentCode = ref('')
 const form = reactive<Partial<AccountRow>>({
   id: undefined,
   parentId: null,
+  bookId: undefined,
   name: '',
   code: '',
   accountTypeEnum: undefined,
@@ -128,6 +130,7 @@ const resetForm = () => {
   if (formRef.value) formRef.value.resetFields()
   form.id = undefined
   form.parentId = null
+  form.bookId = ledgerStore.currentLedgerId || undefined
   form.name = ''
   form.code = ''
   form.accountTypeEnum = undefined
@@ -145,6 +148,7 @@ const open = (type: 'add' | 'edit' | 'addChild', row?: AccountRow) => {
   } else if (type === 'addChild' && row) {
     title.value = '新增子账户'
     form.parentId = row.id
+    form.bookId = row.bookId || ledgerStore.currentLedgerId || undefined
     // 设置父账户代码前缀
     parentCode.value = row.code ? `${row.code}` : ''
     form.accountTypeEnum = row.accountTypeEnum
@@ -153,6 +157,7 @@ const open = (type: 'add' | 'edit' | 'addChild', row?: AccountRow) => {
     // 仅复制需要的字段
     form.id = row.id
     form.parentId = row.parentId
+    form.bookId = row.bookId || ledgerStore.currentLedgerId || undefined
     form.name = row.name
     // 编辑时如果存在父节点，尝试提取前缀（简单处理：如果是子账户，通常不建议修改前缀，这里暂不特殊处理前缀显示，直接显示完整code）
     // 或者为了体验一致，也可以尝试解析。这里简单起见，编辑时直接显示完整code，不使用前缀槽

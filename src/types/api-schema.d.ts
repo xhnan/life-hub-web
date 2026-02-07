@@ -294,6 +294,44 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/fin/books": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有账簿列表 */
+        get: operations["list_8"];
+        /** 修改账簿 */
+        put: operations["update_17"];
+        /** 新增账簿 */
+        post: operations["add_12"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/bookmembers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有账本成员列表 */
+        get: operations["list_9"];
+        /** 修改账本成员 */
+        put: operations["update_18"];
+        /** 新增账本成员 */
+        post: operations["add_13"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/fin/accounts": {
         parameters: {
             query?: never;
@@ -302,11 +340,28 @@ export interface paths {
             cookie?: never;
         };
         /** 查询所有账户列表 */
-        get: operations["list_8"];
+        get: operations["list_10"];
         /** 修改账户 */
-        put: operations["update_17"];
+        put: operations["update_19"];
         /** 新增账户 */
-        post: operations["add_12"];
+        post: operations["add_14"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/accounts/init": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 初始化账本默认科目 */
+        post: operations["initDefaultAccounts"];
         delete?: never;
         options?: never;
         head?: never;
@@ -955,6 +1010,76 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/fin/books/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询账簿 */
+        get: operations["getById_17"];
+        put?: never;
+        post?: never;
+        /** 根据ID删除账簿 */
+        delete: operations["delete_17"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/books/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询账簿 */
+        get: operations["page_6"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/bookmembers/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询账本成员 */
+        get: operations["getById_18"];
+        put?: never;
+        post?: never;
+        /** 根据ID删除账本成员 */
+        delete: operations["delete_18"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/bookmembers/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询账本成员 */
+        get: operations["page_7"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/fin/accounts/{id}": {
         parameters: {
             query?: never;
@@ -963,11 +1088,45 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询账户 */
-        get: operations["getById_17"];
+        get: operations["getById_19"];
         put?: never;
         post?: never;
         /** 删除账户 */
-        delete: operations["delete_17"];
+        delete: operations["delete_19"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/accounts/subjects": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据父级ID获取子科目列表 */
+        get: operations["getSubjectsByParentId"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/accounts/subjects/tree": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取科目树形结构 */
+        get: operations["getSubjectTree"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -981,7 +1140,7 @@ export interface paths {
             cookie?: never;
         };
         /** 分页查询账户 */
-        get: operations["page_6"];
+        get: operations["page_8"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1361,6 +1520,16 @@ export interface components {
              * @description 创建时间
              */
             createdAt?: string;
+            /**
+             * Format: int64
+             * @description 用户id
+             */
+            userId?: number;
+            /**
+             * Format: int64
+             * @description 所属账本ID
+             */
+            bookId?: number;
         };
         FinTags: {
             /**
@@ -1405,27 +1574,36 @@ export interface components {
             id?: number;
             /**
              * Format: int64
-             * @description 关联交易主表ID
+             * @description 关联主交易表的ID
              */
             transId?: number;
             /**
              * Format: int64
-             * @description 关联账户表ID
+             * @description 关联账户表的ID
              */
             accountId?: number;
-            /**
-             * Format: int32
-             * @description 借贷方向 (1:借/Debit, -1:贷/Credit)
-             */
-            direction?: number;
-            /** @description 发生金额 (本币金额，用于报表统计) */
+            /** @description 资金流动方向：DEBIT(借)/CREDIT(贷) */
+            direction?: string;
+            /** @description 交易金额(绝对值，必须为正数) */
             amount?: number;
-            /** @description 数量 (投资专用：如 100 股, 0.5 克黄金) */
+            /** @description 分录级别的详细备注 */
+            memo?: string;
+            /** @description 资产数量(如股票股数) */
             quantity?: number;
-            /** @description 单价 (投资专用：记录交易时的成交单价) */
+            /** @description 价格 */
             price?: number;
-            /** @description 标的物代码 (如 TENCENT, USD，为空则默认本币) */
+            /** @description 商品代码 */
             commodityCode?: string;
+            /**
+             * Format: int64
+             * @description 用户id
+             */
+            userId?: number;
+            /**
+             * Format: int64
+             * @description 账本id
+             */
+            bookId?: number;
         };
         FinBudgets: {
             /**
@@ -1458,6 +1636,62 @@ export interface components {
              */
             createdAt?: string;
         };
+        FinBooks: {
+            /**
+             * Format: int64
+             * @description 主键ID
+             */
+            id?: number;
+            /** @description 账本名称 */
+            name?: string;
+            /** @description 账本描述 */
+            description?: string;
+            /**
+             * Format: int64
+             * @description 拥有者ID
+             */
+            ownerId?: number;
+            /** @description 默认币种 (CNY/SGD) */
+            defaultCurrency?: string;
+            /** @description 账本封面图片URL */
+            coverUrl?: string;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt?: string;
+        };
+        FinBookMembers: {
+            /**
+             * Format: int64
+             * @description 主键ID
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 账本ID
+             */
+            bookId?: number;
+            /**
+             * Format: int64
+             * @description 用户ID
+             */
+            userId?: number;
+            /** @description 角色权限 (OWNER/ADMIN/EDITOR/VIEWER) */
+            role?: string;
+            /** @description 账本内专属昵称 */
+            nickname?: string;
+            /**
+             * Format: date-time
+             * @description 加入时间
+             */
+            joinedAt?: string;
+        };
         FinAccounts: {
             /**
              * Format: int64
@@ -1477,11 +1711,8 @@ export interface components {
             currencyCode?: string;
             /** @description 期初余额 (用于系统初始化时的存量) */
             initialBalance?: number;
-            /**
-             * Format: int32
-             * @description 是否归档 (0:启用, 1:归档/逻辑删除)
-             */
-            isArchived?: number;
+            /** @description 是否归档 */
+            isArchived?: boolean;
             /**
              * Format: date-time
              * @description 创建时间
@@ -1498,6 +1729,27 @@ export interface components {
             isLeaf?: boolean;
             /** @description 业务编码 */
             code?: string;
+            /** @description 账户原本的借贷方向：DEBIT=资产/支出，CREDIT=负债/权益/收入 */
+            balanceDirection?: string;
+            /**
+             * Format: int64
+             * @description 用户id
+             */
+            userId?: number;
+            /**
+             * Format: int64
+             * @description 所属账本ID (数据隔离核心字段)
+             */
+            bookId?: number;
+            /** @enum {string} */
+            accountTypeEnum?: "资产" | "负债" | "权益" | "收入" | "支出";
+            /** @enum {string} */
+            balanceDirectionEnum?: "借" | "贷";
+            asset?: boolean;
+            equity?: boolean;
+            liability?: boolean;
+            expense?: boolean;
+            income?: boolean;
         };
         LoginRequest: {
             username: string;
@@ -2135,6 +2387,102 @@ export interface components {
             timestamp?: number;
             success?: boolean;
         };
+        ResponseResultListFinBooks: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["FinBooks"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultFinBooks: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["FinBooks"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageFinBooks: {
+            records?: components["schemas"]["FinBooks"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageFinBooks"];
+            searchCount?: components["schemas"]["PageFinBooks"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageFinBooks: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageFinBooks"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListFinBookMembers: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["FinBookMembers"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultFinBookMembers: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["FinBookMembers"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageFinBookMembers: {
+            records?: components["schemas"]["FinBookMembers"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageFinBookMembers"];
+            searchCount?: components["schemas"]["PageFinBookMembers"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageFinBookMembers: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageFinBookMembers"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
         ResponseResultListFinAccounts: {
             /** Format: int32 */
             code?: number;
@@ -2152,6 +2500,56 @@ export interface components {
             /** Format: int64 */
             timestamp?: number;
             success?: boolean;
+        };
+        ResponseResultListSubjectTreeDTO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["SubjectTreeDTO"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        /** @description 财务科目树形结构 */
+        SubjectTreeDTO: {
+            /**
+             * Format: int64
+             * @description 主键ID
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 父级ID (根节点为NULL)
+             */
+            parentId?: number;
+            /** @description 业务编码 */
+            code?: string;
+            /** @description 账户名称 */
+            name?: string;
+            /**
+             * @description 账户类型枚举
+             * @enum {string}
+             */
+            accountTypeEnum?: "资产" | "负债" | "权益" | "收入" | "支出";
+            /**
+             * @description 账户原本的借贷方向枚举
+             * @enum {string}
+             */
+            balanceDirectionEnum?: "借" | "贷";
+            /** @description 币种代码 (如: CNY, USD) */
+            currencyCode?: string;
+            /** @description 期初余额 */
+            initialBalance?: number;
+            /** @description 当前余额 (期初 + 累计发生额，计算字段) */
+            currentBalance?: number;
+            /** @description 是否归档 */
+            isArchived?: boolean;
+            /** @description 科目说明/备注 */
+            description?: string;
+            /** @description 是否叶子节点 */
+            isLeaf?: boolean;
+            /** @description 子节点列表 */
+            children?: components["schemas"]["SubjectTreeDTO"][];
         };
         PageFinAccounts: {
             records?: components["schemas"]["FinAccounts"][];
@@ -2999,7 +3397,10 @@ export interface operations {
     };
     list_3: {
         parameters: {
-            query?: never;
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -3203,7 +3604,10 @@ export interface operations {
     };
     list_6: {
         parameters: {
-            query?: never;
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -3352,7 +3756,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultListFinAccounts"];
+                    "*/*": components["schemas"]["ResponseResultListFinBooks"];
                 };
             };
         };
@@ -3366,7 +3770,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinAccounts"];
+                "application/json": components["schemas"]["FinBooks"];
             };
         };
         responses: {
@@ -3390,9 +3794,171 @@ export interface operations {
         };
         requestBody: {
             content: {
+                "application/json": components["schemas"]["FinBooks"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_9: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinBookMembers"];
+                };
+            };
+        };
+    };
+    update_18: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinBookMembers"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_13: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinBookMembers"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_10: {
+        parameters: {
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinAccounts"];
+                };
+            };
+        };
+    };
+    update_19: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
                 "application/json": components["schemas"]["FinAccounts"];
             };
         };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_14: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinAccounts"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    initDefaultAccounts: {
+        parameters: {
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
         responses: {
             /** @description OK */
             200: {
@@ -4305,7 +4871,10 @@ export interface operations {
     };
     getById_12: {
         parameters: {
-            query?: never;
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+            };
             header?: never;
             path: {
                 /** @description 财务交易记录ID */
@@ -4328,7 +4897,10 @@ export interface operations {
     };
     delete_12: {
         parameters: {
-            query?: never;
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+            };
             header?: never;
             path: {
                 /** @description 财务交易记录ID */
@@ -4356,6 +4928,12 @@ export interface operations {
                 pageNum: number;
                 /** @description 每页数量 */
                 pageSize: number;
+                /** @description 账本ID */
+                bookId: number;
+                /** @description 开始日期 (yyyy-MM-dd) */
+                startDate?: string;
+                /** @description 结束日期 (yyyy-MM-dd) */
+                endDate?: string;
             };
             header?: never;
             path?: never;
@@ -4518,7 +5096,10 @@ export interface operations {
     };
     getById_15: {
         parameters: {
-            query?: never;
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+            };
             header?: never;
             path: {
                 /** @description 分录ID */
@@ -4541,7 +5122,10 @@ export interface operations {
     };
     delete_15: {
         parameters: {
-            query?: never;
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+            };
             header?: never;
             path: {
                 /** @description 分录ID */
@@ -4569,6 +5153,8 @@ export interface operations {
                 pageNum: number;
                 /** @description 每页数量 */
                 pageSize: number;
+                /** @description 账本ID */
+                bookId: number;
             };
             header?: never;
             path?: never;
@@ -4663,7 +5249,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description 账户ID */
+                /** @description 账簿ID */
                 id: number;
             };
             cookie?: never;
@@ -4676,7 +5262,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultFinAccounts"];
+                    "*/*": components["schemas"]["ResponseResultFinBooks"];
                 };
             };
         };
@@ -4686,7 +5272,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description 账户ID */
+                /** @description 账簿ID */
                 id: number;
             };
             cookie?: never;
@@ -4711,6 +5297,206 @@ export interface operations {
                 pageNum: number;
                 /** @description 每页数量 */
                 pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageFinBooks"];
+                };
+            };
+        };
+    };
+    getById_18: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 账本成员ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultFinBookMembers"];
+                };
+            };
+        };
+    };
+    delete_18: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 账本成员ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    page_7: {
+        parameters: {
+            query: {
+                /** @description 页码 */
+                pageNum: number;
+                /** @description 每页数量 */
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageFinBookMembers"];
+                };
+            };
+        };
+    };
+    getById_19: {
+        parameters: {
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+            };
+            header?: never;
+            path: {
+                /** @description 账户ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultFinAccounts"];
+                };
+            };
+        };
+    };
+    delete_19: {
+        parameters: {
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+            };
+            header?: never;
+            path: {
+                /** @description 账户ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    getSubjectsByParentId: {
+        parameters: {
+            query: {
+                /** @description 父级ID，不传或传0查询根节点 */
+                parentId?: number;
+                /** @description 账本ID */
+                bookId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListSubjectTreeDTO"];
+                };
+            };
+        };
+    };
+    getSubjectTree: {
+        parameters: {
+            query: {
+                /** @description 账户类型：ASSET(资产)、LIABILITY(负债)、EQUITY(权益)、INCOME(收入)、EXPENSE(支出)，不传则查询全部 */
+                accountType?: string;
+                /** @description 账本ID */
+                bookId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListSubjectTreeDTO"];
+                };
+            };
+        };
+    };
+    page_8: {
+        parameters: {
+            query: {
+                /** @description 页码 */
+                pageNum: number;
+                /** @description 每页数量 */
+                pageSize: number;
+                /** @description 账本ID */
+                bookId: number;
             };
             header?: never;
             path?: never;

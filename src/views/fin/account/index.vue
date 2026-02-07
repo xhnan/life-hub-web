@@ -58,6 +58,9 @@
           </el-tabs>
           
           <div class="search-input-wrapper">
+            <div class="ledger-wrapper">
+              <LedgerSelect />
+            </div>
             <el-input 
               v-model="searchForm.name" 
               placeholder="搜索账户..." 
@@ -67,13 +70,16 @@
               @keyup.enter="handleSearch"
             />
             <el-button type="primary" @click="handleSearch" :icon="Search" circle />
+            
+            <!-- 操作按钮移到这里 -->
+            <div class="action-buttons ml-4">
+              <el-tooltip content="初始化默认账户" placement="top">
+                <el-button @click="handleInit" :icon="MagicStick" circle size="default" type="warning" plain />
+              </el-tooltip>
+              <el-button @click="handleReset" :icon="Refresh" circle size="default" />
+              <el-button type="success" @click="handleAdd" :icon="Plus" round size="default" class="add-btn">新增账户</el-button>
+            </div>
           </div>
-        </div>
-
-        <!-- 右侧操作按钮 -->
-        <div class="action-buttons">
-          <el-button @click="handleReset" :icon="Refresh" circle />
-          <el-button type="success" @click="handleAdd" :icon="Plus" round class="add-btn">新增账户</el-button>
         </div>
       </div>
     </el-card>
@@ -162,16 +168,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, watch } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { TabsPaneContext, ElTable } from 'element-plus'
-import { Money, CreditCard, Wallet, Search, Refresh, Plus, Edit, Delete, Folder, Document } from '@element-plus/icons-vue'
+import { Money, CreditCard, Wallet, Search, Refresh, Plus, Edit, Delete, Folder, Document, MagicStick } from '@element-plus/icons-vue'
 import { 
   getAccountTreeApi, 
   deleteAccountApi, 
+  initAccountsApi,
   type AccountRow 
 } from '@/api/fin/account'
 import AccountDialog from './components/AccountDialog.vue'
+import { ledgerStore } from '@/store/ledger'
+import LedgerSelect from "@/components/LedgerSelect/index.vue";
 
 const loading = ref(false)
 const tableData = ref<AccountRow[]>([])
@@ -241,15 +250,32 @@ const filterTree = (nodes: AccountRow[], keyword: string, type: string): Account
     
     // 如果有子节点，递归过滤
     let childrenMatch = false
+    let filteredChildren: AccountRow[] = []
+    
     if (node.children && node.children.length > 0) {
-      const filteredChildren = filterTree(node.children, keyword, type)
+      filteredChildren = filterTree(node.children, keyword, type)
       if (filteredChildren.length > 0) {
         childrenMatch = true
       }
     }
 
-    return typeMatch && (nameMatch || childrenMatch)
-  })
+    // 匹配逻辑：
+    // 1. 如果有子节点匹配 (childrenMatch)，则当前节点必须保留，且仅保留匹配的子节点
+    if (childrenMatch) {
+      return { ...node, children: filteredChildren }
+    }
+    
+    // 2. 如果子节点都不匹配，检查当前节点是否匹配 (typeMatch && nameMatch)
+    // 注意：如果是类型过滤，只有当当前节点匹配时才保留（叶子节点或无匹配子节点的父节点）
+    if (typeMatch && nameMatch) {
+      // 这里的逻辑稍微复杂：如果只是类型过滤，我们希望保留该类型的所有节点
+      // 如果当前节点符合类型，我们保留它（此时它没有匹配的子节点，或者子节点被过滤空了）
+      // 但是要小心，如果当前节点匹配，但我们想看它的子结构（即使子结构类型不同？通常类型是一致的）
+      return { ...node, children: [] }
+    }
+
+    return null
+  }).filter(Boolean) as AccountRow[]
 }
 
 // 更简单的搜索逻辑：仅对顶层或扁平化数据有效，树形搜索较复杂。
@@ -257,42 +283,33 @@ const filterTree = (nodes: AccountRow[], keyword: string, type: string): Account
 const applyFilter = () => {
   let result = [...allData.value]
   
-  // 1. 类型过滤 (仅对第一层有效，或者假设树的根节点就是按类型分的？)
-  // 根据之前的 mock 数据，根节点就是 ASSET, LIABILITY 等类型的大类
-  // 所以我们可以直接过滤根节点
-  if (activeTab.value !== 'ALL') {
-    // 后端返回的枚举值为中文描述
-    const typeMap: Record<string, string> = {
-      'ASSET': '资产',
-      'LIABILITY': '负债',
-      'EQUITY': '权益',
-      'INCOME': '收入',
-      'EXPENSE': '支出'
-    }
-    const targetValue = typeMap[activeTab.value] || activeTab.value
-    result = result.filter(item => item.accountTypeEnum === targetValue)
-  }
-
-  // 2. 名称搜索 (简单实现：只搜索第一层，或者如果需要深层搜索需要递归)
-  // 如果需要深层搜索，建议后端实现。前端暂时只做顶层名称匹配
+  // 1. 类型过滤
+  // 既然已经从后端获取了对应类型的数据，这里不需要再根据类型过滤了
+  // 除非 activeTab 和 loadData 的参数不一致（目前是一致的）
+  
+  // 2. 名称搜索 (前端搜索)
   if (searchForm.name) {
-    const keyword = searchForm.name.toLowerCase()
-    result = result.filter(item => 
-      item.name.toLowerCase().includes(keyword) || 
-      item.code.toLowerCase().includes(keyword)
-    )
+    result = filterTree(result, searchForm.name, 'ALL')
   }
   
   tableData.value = result
 }
 
-const loadData = async () => {
+const loadData = async (type: string = activeTab.value) => {
+  if (!ledgerStore.currentLedgerId) {
+    tableData.value = []
+    allData.value = []
+    return
+  }
   loading.value = true
   try {
-    const res = await getAccountTreeApi()
+    const res = await getAccountTreeApi({ 
+      accountType: type !== 'ALL' ? type : undefined,
+      bookId: ledgerStore.currentLedgerId
+    })
     if (res.data) {
       allData.value = res.data
-      applyFilter()
+      tableData.value = res.data
     }
   } catch (error) {
     console.error(error)
@@ -301,8 +318,13 @@ const loadData = async () => {
   }
 }
 
+watch(() => ledgerStore.currentLedgerId, () => {
+  loadData()
+})
+
 const handleTabClick = (tab: TabsPaneContext) => {
-  applyFilter()
+  // 直接使用当前点击的 tab.paneName 作为参数，避免 v-model 异步更新时序问题
+  loadData(tab.paneName as string)
 }
 
 const handleSearch = () => {
@@ -312,7 +334,34 @@ const handleSearch = () => {
 const handleReset = () => {
   searchForm.name = ''
   activeTab.value = 'ALL'
-  applyFilter()
+  loadData()
+}
+
+const handleInit = () => {
+  if (!ledgerStore.currentLedgerId) {
+    ElMessage.warning('请先选择账本')
+    return
+  }
+  ElMessageBox.confirm(
+    '确定要初始化默认账户吗？如果已经存在账户，可能会跳过或重复创建。',
+    '初始化确认',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }
+  ).then(async () => {
+    loading.value = true
+    try {
+      await initAccountsApi(ledgerStore.currentLedgerId!)
+      ElMessage.success('初始化成功')
+      loadData()
+    } catch (error) {
+      console.error(error)
+    } finally {
+      loading.value = false
+    }
+  }).catch(() => {})
 }
 
 const handleAdd = () => {
@@ -496,6 +545,19 @@ $shadow-glass: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0
     gap: 8px;
   }
 
+  .ledger-wrapper {
+    width: 180px;
+    :deep(.el-input__wrapper) {
+      background-color: white;
+      border: 1px solid #e2e8f0;
+      box-shadow: none !important;
+      border-radius: 20px;
+      .el-input__inner {
+        color: #606266;
+      }
+    }
+  }
+
   .search-input {
     width: 220px;
     :deep(.el-input__wrapper) {
@@ -607,6 +669,7 @@ $shadow-glass: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0
 .font-medium { font-weight: 500; }
 .font-bold { font-weight: 700; }
 .ml-2 { margin-left: 8px; }
+.ml-4 { margin-left: 16px; }
 .mb-4 { margin-bottom: 16px; }
 
 </style>
