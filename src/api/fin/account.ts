@@ -29,13 +29,27 @@ export type Direction = typeof Direction[keyof typeof Direction];
  * 财务科目实体 (对应后端 SubjectTreeDTO / FinAccounts)
  */
 export interface AccountRow {
-  id: number;
-  parentId: number | null;
+  id: string | number;        // 后端实际返回的是字符串类型的ID
+  parentId: string | number | null;
   bookId: number;             // 账本ID
   code: string;               // 业务编码
   name: string;               // 账户名称
-  accountTypeEnum: SubjectType; // 账户类型枚举
-  balanceDirectionEnum: Direction; // 借贷方向枚举
+
+  // 账户类型 - 两种表示方式
+  accountType?: SubjectType;  // 枚举值: "ASSET", "EXPENSE", "INCOME", "LIABILITY", "EQUITY"
+  accountTypeEnum?: string;   // 中文描述: "资产", "支出", "收入", "负债", "权益"
+
+  // 布尔标记（后端返回的便捷字段）
+  asset?: boolean;            // 是否为资产类
+  expense?: boolean;          // 是否为支出类
+  income?: boolean;           // 是否为收入类
+  liability?: boolean;        // 是否为负债类
+  equity?: boolean;           // 是否为权益类
+
+  // 借贷方向
+  balanceDirection?: Direction;      // 枚举值: "DEBIT", "CREDIT"
+  balanceDirectionEnum?: string;     // 中文描述: "借", "贷"
+
   currencyCode: string;
   initialBalance: number;
   currentBalance: number;
@@ -45,6 +59,7 @@ export interface AccountRow {
   children?: AccountRow[];
   createdAt?: string;
   updatedAt?: string;
+  userId?: string | null;
 }
 
 /**

@@ -58,7 +58,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="借贷方向" width="100">
+          <el-table-column label="借贷方向" width="100" v-if="false">
              <template #default="{ row }">
                <el-select v-model="row.direction" disabled>
                  <el-option label="借" value="DEBIT" />
@@ -78,9 +78,9 @@
                 <el-input-number 
                   v-model="row.amount" 
                   :precision="2" 
-                  :min="0" 
                   :controls="false"
                   style="width: 100%" 
+                  @change="(val) => handleAmountChange(val, row)"
                 />
               </el-form-item>
             </template>
@@ -159,17 +159,24 @@ const rules = reactive<FormRules>({
   description: [{ required: true, message: '请输入交易描述', trigger: 'blur' }]
 })
 
-// 计算借贷总额
+// 计算借贷总额（显示逻辑也要适配负数输入的情况）
 const totalDebit = computed(() => {
   return (form.entries || [])
-    .filter(e => e.direction === 'DEBIT')
-    .reduce((sum, e) => sum + (e.amount || 0), 0)
+    .reduce((sum, e) => {
+      // 这里的 e.amount 可能是负数，e.direction 是根据正负计算出来的方向
+      // 借方增加 = 金额为正且方向为借 || 金额为负且方向为贷（反向）
+      // 其实直接用 direction 判断即可，因为 direction 已经是最终结果，amount 取绝对值累加
+      // 但因为我们在输入过程中 amount 是带符号的，所以这里要小心
+      // 逻辑：如果 direction 是 DEBIT，那么实际金额就是 Math.abs(amount)
+      return sum + (e.direction === 'DEBIT' ? Math.abs(e.amount || 0) : 0)
+    }, 0)
 })
 
 const totalCredit = computed(() => {
   return (form.entries || [])
-    .filter(e => e.direction === 'CREDIT')
-    .reduce((sum, e) => sum + (e.amount || 0), 0)
+    .reduce((sum, e) => {
+      return sum + (e.direction === 'CREDIT' ? Math.abs(e.amount || 0) : 0)
+    }, 0)
 })
 
 const loadAccounts = async () => {
@@ -197,13 +204,32 @@ const flattenAccounts = (nodes: AccountRow[]) => {
 const handleAccountChange = (accountId: number, row: Partial<EntryRow>) => {
   const account = accountMap.value[accountId]
   if (account) {
-    // 根据科目类型自动设置默认借贷方向
-    // 资产/支出 -> 借，负债/权益/收入 -> 贷
-    if (['ASSET', 'EXPENSE'].includes(account.accountTypeEnum)) {
-      row.direction = 'DEBIT'
+    // 默认方向逻辑：
+    // 资产/支出 -> 借
+    // 负债/权益/收入 -> 贷
+    // 如果当前金额为负，则方向取反
+    const isDebitDefault = ['ASSET', 'EXPENSE'].includes(account.accountTypeEnum)
+    const amount = row.amount || 0
+    
+    if (amount >= 0) {
+      row.direction = isDebitDefault ? 'DEBIT' : 'CREDIT'
     } else {
-      row.direction = 'CREDIT'
+      row.direction = isDebitDefault ? 'CREDIT' : 'DEBIT'
     }
+  }
+}
+
+const handleAmountChange = (val: number, row: Partial<EntryRow>) => {
+  if (!row.accountId) return
+  const account = accountMap.value[row.accountId]
+  if (!account) return
+
+  const isDebitDefault = ['ASSET', 'EXPENSE'].includes(account.accountTypeEnum)
+  
+  if (val >= 0) {
+    row.direction = isDebitDefault ? 'DEBIT' : 'CREDIT'
+  } else {
+    row.direction = isDebitDefault ? 'CREDIT' : 'DEBIT'
   }
 }
 
@@ -260,13 +286,22 @@ const submitForm = async () => {
         return
       }
       
+      // 提交前处理：将金额取绝对值，因为后端可能只接受正数，方向已经由正负号决定了
+      const submitData = {
+        ...form,
+        entries: form.entries?.map(entry => ({
+          ...entry,
+          amount: Math.abs(entry.amount || 0)
+        }))
+      }
+
       submitting.value = true
       try {
         if (form.id) {
-          await updateTransactionApi(form)
+          await updateTransactionApi(submitData)
           ElMessage.success('更新成功')
         } else {
-          await addTransactionApi(form)
+          await addTransactionApi(submitData)
           ElMessage.success('新增成功')
         }
         visible.value = false

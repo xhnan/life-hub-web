@@ -7,41 +7,44 @@
           <template #header>
             <div class="card-header">
               <span class="title">交易记录</span>
-              <el-button type="primary" size="default" :icon="Plus" circle @click="handleAddTransaction" />
+              <!-- 列表操作：快速记账按钮放这里，或者放下面搜索栏 -->
             </div>
           </template>
           
-          <div class="search-bar mb-2 flex items-center">
-            <div class="ledger-wrapper mr-2">
-              <LedgerSelect />
-            </div>
-            <el-date-picker
-              v-model="dateRange"
-              type="daterange"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              size="small"
-              style="width: 100%"
-              @change="handleDateChange"
-            />
-            <el-button 
-              type="primary" 
-              size="small" 
-              :icon="Search" 
-              circle 
-              class="ml-2"
-              @click="handleDateChange" 
-            />
+          <!-- 搜索栏 -->
+          <div class="search-bar mb-4 flex items-center justify-between">
+             <div class="flex items-center">
+                <div class="ledger-wrapper mr-2">
+                  <LedgerSelect />
+                </div>
+                <el-date-picker
+                  v-model="dateRange"
+                  type="daterange"
+                  range-separator="至"
+                  start-placeholder="开始"
+                  end-placeholder="结束"
+                  size="default"
+                  style="width: 240px"
+                  @change="handleDateChange"
+                />
+             </div>
+             
+             <el-button 
+                type="primary" 
+                :icon="Plus"
+                @click="handleQuickTrack"
+              >
+                快速记账
+              </el-button>
           </div>
-
+          
           <el-table
             ref="transactionTableRef"
             :data="transactionList"
             v-loading="loadingTransactions"
             highlight-current-row
             @current-change="handleTransactionSelect"
-            height="calc(100% - 80px)"
+            height="calc(100% - 50px)"
             style="width: 100%"
             class="transaction-table"
           >
@@ -50,8 +53,24 @@
                 {{ formatDate(row.transDate) }}
               </template>
             </el-table-column>
-            <el-table-column prop="description" label="描述" min-width="120" show-overflow-tooltip />
-            <el-table-column label="操作" width="80" align="center">
+            
+            <el-table-column prop="description" label="描述" min-width="200">
+               <template #default="{ row }">
+                 <div class="desc-cell">
+                   <span class="desc-text">{{ row.description }}</span>
+                 </div>
+               </template>
+            </el-table-column>
+
+            <el-table-column label="金额" width="120" align="right">
+               <template #default="{ row }">
+                  <!-- 暂时无法直接获取金额，因为 TransactionRow 里没有总金额字段，通常需要后端计算或者前端遍历 entries -->
+                  <!-- 这里先留空，或者显示 '查看明细' -->
+                  <el-tag size="small" type="info" class="cursor-pointer">查看明细</el-tag>
+               </template>
+            </el-table-column>
+
+            <el-table-column label="操作" width="100" align="center">
               <template #default="{ row }">
                 <el-button type="primary" link :icon="Edit" circle @click.stop="handleEditTransaction(row)" />
                 <el-button type="danger" link :icon="Delete" circle @click.stop="handleDeleteTransaction(row)" />
@@ -117,7 +136,7 @@
                   {{ getAccountName(row.accountId) }}
                 </template>
               </el-table-column>
-              <el-table-column prop="direction" label="方向" width="80" align="center">
+              <el-table-column prop="direction" label="方向" width="80" align="center" v-if="false">
                 <template #default="{ row }">
                   <el-tag :type="row.direction === 'DEBIT' ? 'success' : 'danger'" size="small">
                     {{ row.direction === 'DEBIT' ? '借' : '贷' }}
@@ -126,7 +145,9 @@
               </el-table-column>
               <el-table-column prop="amount" label="金额" width="120" align="right">
                 <template #default="{ row }">
-                  {{ formatCurrency(row.amount) }}
+                  <span :class="getAmountClass(row)">
+                    {{ formatSignedAmount(row) }}
+                  </span>
                 </template>
               </el-table-column>
               <el-table-column prop="memo" label="备注" min-width="120" show-overflow-tooltip />
@@ -141,15 +162,17 @@
         </el-card>
       </div>
     </div>
+    
     <!-- 弹窗组件 -->
     <TransactionDialog ref="dialogRef" @success="handleSuccess" />
+    <QuickTrackerDrawer ref="quickTrackerRef" @success="handleSuccess" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, computed, watch } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Plus, Edit, Delete, Search } from '@element-plus/icons-vue'
+import { Plus, Edit, Delete } from '@element-plus/icons-vue'
 import { 
   getTransactionPageApi, 
   deleteTransactionApi, 
@@ -165,6 +188,7 @@ import TransactionDialog from './components/TransactionDialog.vue'
 import dayjs from 'dayjs'
 import { ledgerStore } from '@/store/ledger'
 import LedgerSelect from "@/components/LedgerSelect/index.vue";
+import QuickTrackerDrawer from './components/QuickTrackerDrawer.vue'
 
 // 状态定义
 const loadingTransactions = ref(false)
@@ -176,6 +200,7 @@ const accountList = ref<AccountRow[]>([])
 const currentTransaction = ref<TransactionRow | null>(null)
 const dateRange = ref<[string, string] | ''>('')
 const dialogRef = ref<InstanceType<typeof TransactionDialog>>()
+const quickTrackerRef = ref<InstanceType<typeof QuickTrackerDrawer>>()
 
 // 分页
 const pageNum = ref(1)
@@ -203,6 +228,43 @@ const formatDate = (date: string) => {
 
 const formatCurrency = (amount: number) => {
   return amount?.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || '0.00'
+}
+
+const getAccountType = (accountId: number) => {
+  const account = accountList.value.find(a => a.id === accountId)
+  return account?.accountTypeEnum
+}
+
+// 格式化有符号金额
+const formatSignedAmount = (row: EntryRow) => {
+  const type = getAccountType(row.accountId)
+  if (!type) return formatCurrency(row.amount)
+  
+  const isDebitDefault = ['ASSET', 'EXPENSE'].includes(type)
+  const isDebit = row.direction === 'DEBIT'
+  
+  // 逻辑：
+  // 资产/支出：借方为正，贷方为负
+  // 负债/权益/收入：贷方为正，借方为负
+  
+  let amount = row.amount
+  if (isDebitDefault) {
+    // 默认借方
+    if (!isDebit) amount = -amount
+  } else {
+    // 默认贷方
+    if (isDebit) amount = -amount
+  }
+  
+  return formatCurrency(amount)
+}
+
+const getAmountClass = (row: EntryRow) => {
+  const amountStr = formatSignedAmount(row)
+  const amount = parseFloat(amountStr.replace(/,/g, ''))
+  if (amount > 0) return 'text-green-600 font-medium'
+  if (amount < 0) return 'text-red-600 font-medium'
+  return ''
 }
 
 // 加载数据
@@ -312,10 +374,28 @@ const handleAddTransaction = () => {
   dialogRef.value?.open('add')
 }
 
+const handleQuickTrack = () => {
+  console.log('🔘 快速记账按钮被点击')
+  console.log('📒 当前账本ID:', ledgerStore.currentLedgerId)
+  console.log('📎 quickTrackerRef:', quickTrackerRef.value)
+
+  if (!ledgerStore.currentLedgerId) {
+    ElMessage.warning('请先选择账本')
+    return
+  }
+
+  console.log('✅ 准备打开抽屉')
+  quickTrackerRef.value?.open()
+}
+
 const handleEditTransaction = (row: TransactionRow) => {
   // 目前仅支持新增，因为后端未提供聚合查询接口，无法回显分录
   ElMessage.info('编辑功能暂未完全开放，请先使用新增')
   // dialogRef.value?.open('edit', row)
+}
+
+const handleViewDetail = (row: TransactionRow) => {
+  ElMessage.info('明细查看暂未开放，请通过右侧“查看明细”进入分录页')
 }
 
 const handleSuccess = () => {
@@ -396,14 +476,15 @@ onMounted(() => {
 }
 
 .left-pane {
-  width: 400px;
-  flex-shrink: 0;
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
 }
 
 .right-pane {
-  flex: 1;
+  width: 420px;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   min-width: 0;
