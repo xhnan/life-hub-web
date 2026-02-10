@@ -32,6 +32,7 @@
              <el-button 
                 type="primary" 
                 :icon="Plus"
+                :disabled="!ledgerStore.currentLedgerId"
                 @click="handleQuickTrack"
               >
                 快速记账
@@ -165,7 +166,7 @@
     
     <!-- 弹窗组件 -->
     <TransactionDialog ref="dialogRef" @success="handleSuccess" />
-    <QuickTrackerDrawer ref="quickTrackerRef" @success="handleSuccess" />
+    <QuickTrackerDrawer v-model="quickTrackerVisible" @success="handleSuccess" />
   </div>
 </template>
 
@@ -200,7 +201,7 @@ const accountList = ref<AccountRow[]>([])
 const currentTransaction = ref<TransactionRow | null>(null)
 const dateRange = ref<[string, string] | ''>('')
 const dialogRef = ref<InstanceType<typeof TransactionDialog>>()
-const quickTrackerRef = ref<InstanceType<typeof QuickTrackerDrawer>>()
+const quickTrackerVisible = ref(false)
 
 // 分页
 const pageNum = ref(1)
@@ -375,17 +376,11 @@ const handleAddTransaction = () => {
 }
 
 const handleQuickTrack = () => {
-  console.log('🔘 快速记账按钮被点击')
-  console.log('📒 当前账本ID:', ledgerStore.currentLedgerId)
-  console.log('📎 quickTrackerRef:', quickTrackerRef.value)
-
   if (!ledgerStore.currentLedgerId) {
     ElMessage.warning('请先选择账本')
     return
   }
-
-  console.log('✅ 准备打开抽屉')
-  quickTrackerRef.value?.open()
+  quickTrackerVisible.value = true
 }
 
 const handleEditTransaction = (row: TransactionRow) => {
