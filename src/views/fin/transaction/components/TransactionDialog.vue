@@ -129,7 +129,7 @@
 import { ref, reactive, computed, watch } from 'vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { Plus, Delete } from '@element-plus/icons-vue'
-import { addTransactionApi, updateTransactionApi, type TransactionRow, type TransactionDTO } from '@/api/fin/transaction'
+import { addTransactionWithEntriesApi, updateTransactionApi, type TransactionRow, type TransactionDTO } from '@/api/fin/transaction'
 import type { EntryRow } from '@/api/fin/entry'
 import { getAccountTreeApi, type AccountRow } from '@/api/fin/account'
 import dayjs from 'dayjs'
@@ -301,7 +301,7 @@ const submitForm = async () => {
           await updateTransactionApi(submitData)
           ElMessage.success('更新成功')
         } else {
-          await addTransactionApi(submitData)
+          await addTransactionWithEntriesApi(submitData)
           ElMessage.success('新增成功')
         }
         visible.value = false

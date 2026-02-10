@@ -210,8 +210,7 @@ export interface paths {
         get: operations["list_3"];
         /** 修改财务交易记录 */
         put: operations["update_12"];
-        /** 新增财务交易记录 */
-        post: operations["add_7"];
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -230,7 +229,7 @@ export interface paths {
         /** 修改标签 */
         put: operations["update_13"];
         /** 新增标签 */
-        post: operations["add_8"];
+        post: operations["add_7"];
         delete?: never;
         options?: never;
         head?: never;
@@ -249,7 +248,7 @@ export interface paths {
         /** 修改价格 */
         put: operations["update_14"];
         /** 新增价格 */
-        post: operations["add_9"];
+        post: operations["add_8"];
         delete?: never;
         options?: never;
         head?: never;
@@ -268,7 +267,7 @@ export interface paths {
         /** 修改财务分录 */
         put: operations["update_15"];
         /** 新增财务分录 */
-        post: operations["add_10"];
+        post: operations["add_9"];
         delete?: never;
         options?: never;
         head?: never;
@@ -287,7 +286,7 @@ export interface paths {
         /** 修改预算 */
         put: operations["update_16"];
         /** 新增预算 */
-        post: operations["add_11"];
+        post: operations["add_10"];
         delete?: never;
         options?: never;
         head?: never;
@@ -306,7 +305,7 @@ export interface paths {
         /** 修改账簿 */
         put: operations["update_17"];
         /** 新增账簿 */
-        post: operations["add_12"];
+        post: operations["add_11"];
         delete?: never;
         options?: never;
         head?: never;
@@ -325,7 +324,7 @@ export interface paths {
         /** 修改账本成员 */
         put: operations["update_18"];
         /** 新增账本成员 */
-        post: operations["add_13"];
+        post: operations["add_12"];
         delete?: never;
         options?: never;
         head?: never;
@@ -344,6 +343,43 @@ export interface paths {
         /** 修改账户 */
         put: operations["update_19"];
         /** 新增账户 */
+        post: operations["add_13"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/transactions/with-entries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 统一记账接口：创建交易及分录（复式记账）
+         * @description 在一个事务中同时创建交易主表和分录表，自动校验借贷平衡
+         */
+        post: operations["createWithEntries"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/transactions/save": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 新增财务交易记录 */
         post: operations["add_14"];
         delete?: never;
         options?: never;
@@ -1045,6 +1081,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/fin/books/my": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取我的账本列表（包括创建的和加入的） */
+        get: operations["getMyBooks"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/fin/bookmembers/{id}": {
         parameters: {
             query?: never;
@@ -1544,6 +1597,15 @@ export interface components {
              * @description 创建时间
              */
             createdAt?: string;
+            /** @description 标签颜色 */
+            color?: string;
+            /**
+             * Format: int64
+             * @description 用户ID
+             */
+            userId?: number;
+            /** @description 标签图标 */
+            icon?: string;
         };
         FinPrices: {
             /**
@@ -1741,15 +1803,95 @@ export interface components {
              * @description 所属账本ID (数据隔离核心字段)
              */
             bookId?: number;
-            /** @enum {string} */
-            accountTypeEnum?: "资产" | "负债" | "权益" | "收入" | "支出";
+            /** @description 图标 */
+            icon?: string;
+            /**
+             * Format: int64
+             * @description 排序
+             */
+            sortOrder?: number;
             /** @enum {string} */
             balanceDirectionEnum?: "借" | "贷";
-            asset?: boolean;
-            equity?: boolean;
+            /** @enum {string} */
+            accountTypeEnum?: "资产" | "负债" | "权益" | "收入" | "支出";
             liability?: boolean;
-            expense?: boolean;
             income?: boolean;
+            expense?: boolean;
+            equity?: boolean;
+            asset?: boolean;
+        };
+        /** @description 分录请求 */
+        EntryRequest: {
+            /**
+             * Format: int64
+             * @description 科目ID
+             * @example 100
+             */
+            accountId: number;
+            /**
+             * @description 借贷方向：DEBIT(借)/CREDIT(贷)
+             * @example DEBIT
+             */
+            direction: string;
+            /**
+             * @description 交易金额（绝对值，必须为正数）
+             * @example 100
+             */
+            amount: string;
+            /** @description 分录备注 */
+            memo?: string;
+            /** @description 资产数量（如股票股数） */
+            quantity?: string;
+            /** @description 价格 */
+            price?: string;
+            /** @description 商品代码 */
+            commodityCode?: string;
+        };
+        /** @description 交易及分录统一记账请求 */
+        TransactionEntryDTO: {
+            /**
+             * Format: date-time
+             * @description 交易日期
+             */
+            transDate?: string;
+            /**
+             * @description 交易描述
+             * @example 周末超市采购
+             */
+            description?: string;
+            /** @description 附件ID（关联文件对象） */
+            attachmentId?: string;
+            /**
+             * Format: int64
+             * @description 所属账本ID
+             */
+            bookId?: number;
+            /** @description 分录列表 */
+            entries: components["schemas"]["EntryRequest"][];
+        };
+        ResponseResultTransactionEntryResponseDTO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["TransactionEntryResponseDTO"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        /** @description 交易创建响应 */
+        TransactionEntryResponseDTO: {
+            /**
+             * Format: int64
+             * @description 交易ID
+             */
+            transId?: number;
+            /**
+             * Format: date-time
+             * @description 交易日期
+             */
+            transDate?: string;
+            /** @description 交易描述 */
+            description?: string;
         };
         LoginRequest: {
             username: string;
@@ -2548,6 +2690,8 @@ export interface components {
             description?: string;
             /** @description 是否叶子节点 */
             isLeaf?: boolean;
+            /** @description 图标 */
+            icon?: string;
             /** @description 子节点列表 */
             children?: components["schemas"]["SubjectTreeDTO"][];
         };
@@ -3442,30 +3586,6 @@ export interface operations {
             };
         };
     };
-    add_7: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["FinTransactions"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultBoolean"];
-                };
-            };
-        };
-    };
     list_4: {
         parameters: {
             query?: never;
@@ -3510,7 +3630,7 @@ export interface operations {
             };
         };
     };
-    add_8: {
+    add_7: {
         parameters: {
             query?: never;
             header?: never;
@@ -3578,7 +3698,7 @@ export interface operations {
             };
         };
     };
-    add_9: {
+    add_8: {
         parameters: {
             query?: never;
             header?: never;
@@ -3649,7 +3769,7 @@ export interface operations {
             };
         };
     };
-    add_10: {
+    add_9: {
         parameters: {
             query?: never;
             header?: never;
@@ -3717,7 +3837,7 @@ export interface operations {
             };
         };
     };
-    add_11: {
+    add_10: {
         parameters: {
             query?: never;
             header?: never;
@@ -3785,7 +3905,7 @@ export interface operations {
             };
         };
     };
-    add_12: {
+    add_11: {
         parameters: {
             query?: never;
             header?: never;
@@ -3853,7 +3973,7 @@ export interface operations {
             };
         };
     };
-    add_13: {
+    add_12: {
         parameters: {
             query?: never;
             header?: never;
@@ -3924,7 +4044,7 @@ export interface operations {
             };
         };
     };
-    add_14: {
+    add_13: {
         parameters: {
             query?: never;
             header?: never;
@@ -3934,6 +4054,54 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["FinAccounts"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    createWithEntries: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TransactionEntryDTO"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultTransactionEntryResponseDTO"];
+                };
+            };
+        };
+    };
+    add_14: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinTransactions"];
             };
         };
         responses: {
@@ -5311,6 +5479,26 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ResponseResultPageFinBooks"];
+                };
+            };
+        };
+    };
+    getMyBooks: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinBooks"];
                 };
             };
         };

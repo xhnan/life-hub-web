@@ -16,6 +16,13 @@ export interface TransactionRow {
 
 export interface TransactionDTO extends Partial<TransactionRow> {
   entries?: Partial<EntryRow>[];
+  tagIds?: number[];
+}
+
+export interface TransactionEntryResponseDTO {
+  transId: number;
+  transDate: string;
+  description: string;
 }
 
 export const getTransactionListApi = (bookId: number) => {
@@ -30,8 +37,20 @@ export const getTransactionDetailApi = (id: number, bookId: number) => {
   return http.get<TransactionRow>(`${prefix}/${id}`, { bookId });
 };
 
+/**
+ * 简单新增交易（仅主表，不含分录）
+ * POST /fin/transactions/save
+ */
 export const addTransactionApi = (data: TransactionDTO) => {
-  return http.post<boolean>(`${prefix}`, data);
+  return http.post<boolean>(`${prefix}/save`, data);
+};
+
+/**
+ * 统一记账接口：创建交易及分录（复式记账）
+ * POST /fin/transactions/with-entries
+ */
+export const addTransactionWithEntriesApi = (data: TransactionDTO) => {
+  return http.post<TransactionEntryResponseDTO>(`${prefix}/with-entries`, data);
 };
 
 export const updateTransactionApi = (data: TransactionDTO) => {

@@ -152,21 +152,6 @@
               </div>
               <div v-else class="account-list-scroll">
                 <div class="account-list">
-                  <!-- 常用账户 -->
-                  <div
-                    v-for="acc in recentAssetAccounts"
-                    :key="`recent-asset-${acc.id}`"
-                    class="account-card-mini recent"
-                    :class="{ active: expenseForm.accountId === acc.id }"
-                    @click="handleAccountSelect(acc, 'ASSET')"
-                  >
-                    <div class="acc-icon-box"><el-icon><Star /></el-icon></div>
-                    <div class="acc-info">
-                      <div class="acc-name">{{ acc.name }}</div>
-                      <div class="acc-type">常用</div>
-                    </div>
-                  </div>
-
                   <!-- 所有账户 -->
                   <div
                     v-for="acc in flattenedAssetAccounts"
@@ -197,6 +182,46 @@
                 :clearable="false"
                 value-format="YYYY-MM-DD"
               />
+              
+              <!-- 标签选择 -->
+              <div class="tag-selector">
+                <div class="tag-selector-header">
+                  <span class="tag-label">标签</span>
+                  <div class="quick-add-tag">
+                    <el-input
+                      v-model="newTagName"
+                      placeholder="新标签"
+                      size="small"
+                      class="new-tag-input"
+                      @keyup.enter="handleQuickCreateTag('expense')"
+                    />
+                    <el-button
+                      type="primary"
+                      :icon="Plus"
+                      size="small"
+                      circle
+                      :loading="creatingTag"
+                      @click="handleQuickCreateTag('expense')"
+                    />
+                  </div>
+                </div>
+                <div class="tag-list">
+                  <el-tag
+                    v-for="tag in allTags"
+                    :key="tag.id"
+                    :color="expenseForm.tagIds.includes(tag.id as number) ? tag.color : undefined"
+                    :effect="expenseForm.tagIds.includes(tag.id as number) ? 'dark' : 'plain'"
+                    class="tag-item"
+                    :class="{ active: expenseForm.tagIds.includes(tag.id as number) }"
+                    @click="toggleTag(tag.id as number, 'expense')"
+                  >
+                    <ReIcon v-if="tag.icon" :icon="tag.icon" class="tag-icon" />
+                    {{ tag.tagName }}
+                  </el-tag>
+                  <span v-if="allTags.length === 0" class="no-tags">暂无标签</span>
+                </div>
+              </div>
+
               <el-input 
                 v-model="expenseForm.memo" 
                 placeholder="添加备注..." 
@@ -354,6 +379,46 @@
                 :clearable="false"
                 value-format="YYYY-MM-DD"
               />
+              
+              <!-- 标签选择 -->
+              <div class="tag-selector">
+                <div class="tag-selector-header">
+                  <span class="tag-label">标签</span>
+                  <div class="quick-add-tag">
+                    <el-input
+                      v-model="newTagName"
+                      placeholder="新标签"
+                      size="small"
+                      class="new-tag-input"
+                      @keyup.enter="handleQuickCreateTag('income')"
+                    />
+                    <el-button
+                      type="primary"
+                      :icon="Plus"
+                      size="small"
+                      circle
+                      :loading="creatingTag"
+                      @click="handleQuickCreateTag('income')"
+                    />
+                  </div>
+                </div>
+                <div class="tag-list">
+                  <el-tag
+                    v-for="tag in allTags"
+                    :key="tag.id"
+                    :color="incomeForm.tagIds.includes(tag.id as number) ? tag.color : undefined"
+                    :effect="incomeForm.tagIds.includes(tag.id as number) ? 'dark' : 'plain'"
+                    class="tag-item"
+                    :class="{ active: incomeForm.tagIds.includes(tag.id as number) }"
+                    @click="toggleTag(tag.id as number, 'income')"
+                  >
+                    <ReIcon v-if="tag.icon" :icon="tag.icon" class="tag-icon" />
+                    {{ tag.tagName }}
+                  </el-tag>
+                  <span v-if="allTags.length === 0" class="no-tags">暂无标签</span>
+                </div>
+              </div>
+
               <el-input 
                 v-model="incomeForm.memo" 
                 placeholder="添加备注..." 
@@ -468,11 +533,12 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed, watch } from 'vue'
-import { Operation, Bottom, Star } from '@element-plus/icons-vue'
+import { Operation, Bottom, Star, Plus } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import dayjs from 'dayjs'
 import { getAccountListApi, type AccountRow } from '@/api/fin/account'
-import { addTransactionApi, type TransactionDTO } from '@/api/fin/transaction'
+import { addTransactionWithEntriesApi, type TransactionDTO } from '@/api/fin/transaction'
+import { getTagListApi, addTagApi, type TagRow } from '@/api/fin/tag'
 import { ledgerStore } from '@/store/ledger'
 import { useStorage } from '@vueuse/core'
 import ReIcon from '@/components/ReIcon/index.vue'
@@ -486,6 +552,11 @@ const allAccounts = ref<AccountRow[]>([])
 const selectedExpenseGroupId = ref<string | number>('')
 const selectedIncomeGroupId = ref<string | number>('')
 const splitMode = ref(false)
+
+// 标签相关状态
+const allTags = ref<TagRow[]>([])
+const newTagName = ref('')
+const creatingTag = ref(false)
 
 interface SplitItem {
   categoryId: string | number | undefined
@@ -508,7 +579,8 @@ const expenseForm = reactive({
   categoryId: undefined as string | number | undefined,
   accountId: undefined as string | number | undefined,
   date: dayjs().format('YYYY-MM-DD'),
-  memo: ''
+  memo: '',
+  tagIds: [] as number[]
 })
 
 const incomeForm = reactive({
@@ -516,7 +588,8 @@ const incomeForm = reactive({
   categoryId: undefined as string | number | undefined,
   accountId: undefined as string | number | undefined,
   date: dayjs().format('YYYY-MM-DD'),
-  memo: ''
+  memo: '',
+  tagIds: [] as number[]
 })
 
 const transferForm = reactive({
@@ -531,6 +604,7 @@ const resetForms = () => {
   expenseForm.amount = ''
   expenseForm.memo = ''
   expenseForm.date = dayjs().format('YYYY-MM-DD')
+  expenseForm.tagIds = []
   splitMode.value = false
   splitItems.value = [{ categoryId: undefined, amount: '' }, { categoryId: undefined, amount: '' }]
   // 账户和分类暂不重置，方便连续记账
@@ -538,6 +612,7 @@ const resetForms = () => {
   incomeForm.amount = ''
   incomeForm.memo = ''
   incomeForm.date = dayjs().format('YYYY-MM-DD')
+  incomeForm.tagIds = []
 
   transferForm.amount = ''
   transferForm.fee = ''
@@ -714,7 +789,9 @@ watch(incomeCategories, (groups) => {
     return
   }
   if (!groups.some(g => g.id === selectedIncomeGroupId.value)) {
-    selectedIncomeGroupId.value = groups[0].id
+    // 优先选"主动收入"分组
+    const preferred = groups.find(g => g.name.includes('主动'))
+    selectedIncomeGroupId.value = (preferred || groups[0]).id
   }
 }, { immediate: true })
 
@@ -842,8 +919,64 @@ const loadAccounts = async () => {
   }
 }
 
+const loadTags = async () => {
+  try {
+    const res = await getTagListApi()
+    if (res.data) {
+      allTags.value = res.data
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 快速创建标签
+const handleQuickCreateTag = async (formType: 'expense' | 'income') => {
+  const name = newTagName.value.trim()
+  if (!name) return
+  
+  creatingTag.value = true
+  try {
+    await addTagApi({ tagName: name, color: getRandomColor() })
+    ElMessage.success('标签创建成功')
+    newTagName.value = ''
+    await loadTags()
+    // 自动选中新创建的标签
+    const newTag = allTags.value.find(t => t.tagName === name)
+    if (newTag && newTag.id) {
+      if (formType === 'expense') {
+        expenseForm.tagIds.push(newTag.id as number)
+      } else {
+        incomeForm.tagIds.push(newTag.id as number)
+      }
+    }
+  } catch (error) {
+    console.error(error)
+  } finally {
+    creatingTag.value = false
+  }
+}
+
+const getRandomColor = () => {
+  const colors = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#06B6D4', '#84CC16']
+  return colors[Math.floor(Math.random() * colors.length)]
+}
+
+const toggleTag = (tagId: number, formType: 'expense' | 'income') => {
+  const form = formType === 'expense' ? expenseForm : incomeForm
+  const idx = form.tagIds.indexOf(tagId)
+  if (idx > -1) {
+    form.tagIds.splice(idx, 1)
+  } else {
+    form.tagIds.push(tagId)
+  }
+}
+
 watch(() => ledgerStore.currentLedgerId, loadAccounts)
-onMounted(loadAccounts)
+onMounted(() => {
+  loadAccounts()
+  loadTags()
+})
 
 // --- 提交逻辑 ---
 
@@ -924,11 +1057,13 @@ const handleExpenseSubmit = async () => {
       bookId: ledgerStore.currentLedgerId,
       transDate: dayjs(expenseForm.date).format('YYYY-MM-DD HH:mm:ss'),
       description: expenseForm.memo || `${categoryNames} 支出`,
-      entries
+      entries,
+      tagIds: expenseForm.tagIds.length > 0 ? expenseForm.tagIds : undefined
     }
 
     await submitTransaction(dto, () => {
       expenseForm.memo = ''
+      expenseForm.tagIds = []
       splitItems.value = [{ categoryId: undefined, amount: '' }, { categoryId: undefined, amount: '' }]
     })
   } else {
@@ -951,12 +1086,14 @@ const handleExpenseSubmit = async () => {
           direction: 'CREDIT',
           amount: parseFloat(expenseForm.amount)
         }
-      ]
+      ],
+      tagIds: expenseForm.tagIds.length > 0 ? expenseForm.tagIds : undefined
     }
 
     await submitTransaction(dto, () => {
       expenseForm.amount = ''
       expenseForm.memo = ''
+      expenseForm.tagIds = []
     })
   }
 }
@@ -982,12 +1119,14 @@ const handleIncomeSubmit = async () => {
         direction: 'CREDIT',
         amount: parseFloat(incomeForm.amount)
       }
-    ]
+    ],
+    tagIds: incomeForm.tagIds.length > 0 ? incomeForm.tagIds : undefined
   }
 
   await submitTransaction(dto, () => {
     incomeForm.amount = ''
     incomeForm.memo = ''
+    incomeForm.tagIds = []
   })
 }
 
@@ -1057,7 +1196,7 @@ const handleTransferSubmit = async () => {
 const submitTransaction = async (dto: TransactionDTO, onSuccess: () => void) => {
   submitting.value = true
   try {
-    await addTransactionApi(dto)
+    await addTransactionWithEntriesApi(dto)
     ElMessage.success('记账成功')
     onSuccess()
     emit('success')
@@ -1245,6 +1384,7 @@ const getAccountName = (id?: string | number) => {
     :deep(.el-input__wrapper) {
       box-shadow: none;
       padding: 0;
+      padding-right: 32px;
       background: transparent;
     }
 
@@ -1254,6 +1394,14 @@ const getAccountName = (id?: string | number) => {
       text-align: left;
       color: #1e293b;
       font-family: monospace;
+
+      // 隐藏 number 输入框自带的上下箭头
+      -moz-appearance: textfield;
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
     }
   }
 
@@ -1620,6 +1768,73 @@ const getAccountName = (id?: string | number) => {
     :deep(.el-input__wrapper) {
       box-shadow: none;
       background: #f1f5f9;
+    }
+  }
+
+  // 标签选择器
+  .tag-selector {
+    .tag-selector-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+
+      .tag-label {
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 500;
+      }
+
+      .quick-add-tag {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        .new-tag-input {
+          width: 80px;
+          
+          :deep(.el-input__wrapper) {
+            box-shadow: none;
+            background: #f1f5f9;
+            padding: 0 8px;
+          }
+        }
+      }
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      max-height: 60px;
+      overflow-y: auto;
+      padding: 2px;
+
+      .tag-item {
+        cursor: pointer;
+        transition: all 0.2s;
+        border-radius: 12px;
+        font-size: 12px;
+
+        &:hover {
+          transform: scale(1.05);
+        }
+
+        &.active {
+          color: #fff;
+          border-color: transparent;
+        }
+
+        .tag-icon {
+          margin-right: 2px;
+          font-size: 12px;
+        }
+      }
+
+      .no-tags {
+        font-size: 12px;
+        color: #94a3b8;
+      }
     }
   }
 
