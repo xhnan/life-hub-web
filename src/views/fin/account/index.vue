@@ -101,7 +101,8 @@
         <el-table-column prop="name" label="账户名称" min-width="240">
           <template #default="{ row }">
             <div class="account-name-cell cursor-pointer" @click="toggleRowExpansion(row)">
-              <el-icon v-if="row.children && row.children.length" class="folder-icon"><Folder /></el-icon>
+              <ReIcon v-if="row.icon" :icon="row.icon" class="account-icon" />
+              <el-icon v-else-if="row.children && row.children.length" class="folder-icon"><Folder /></el-icon>
               <el-icon v-else class="file-icon"><Document /></el-icon>
               <span class="ml-2 font-medium">{{ row.name }}</span>
             </div>
@@ -180,7 +181,8 @@ import {
 } from '@/api/fin/account'
 import AccountDialog from './components/AccountDialog.vue'
 import { ledgerStore } from '@/store/ledger'
-import LedgerSelect from "@/components/LedgerSelect/index.vue";
+import LedgerSelect from "@/components/LedgerSelect/index.vue"
+import ReIcon from "@/components/ReIcon/index.vue"
 
 const loading = ref(false)
 const tableData = ref<AccountRow[]>([])
@@ -616,6 +618,11 @@ $shadow-glass: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0
     
     &:hover {
       opacity: 0.8;
+    }
+
+    .account-icon {
+      font-size: 18px;
+      color: #F59E0B;
     }
 
     .folder-icon {

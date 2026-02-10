@@ -3,41 +3,22 @@
     <el-tabs v-model="activeTab" class="tracker-tabs" stretch>
       <!-- Tab 1: 支出 -->
       <el-tab-pane name="EXPENSE" label="支出">
-        <div class="tab-content">
-          <!-- 1. 金额输入 (超大) -->
-          <div class="amount-section">
-            <div class="currency-symbol">¥</div>
-            <el-input
-              v-model="expenseForm.amount"
-              class="huge-input"
-              placeholder="0.00"
-              type="number"
-              :min="0"
-              @keyup.enter="handleExpenseSubmit"
-            />
-            <el-button 
-              class="split-btn" 
-              type="primary" 
-              link 
-              @click="toggleSplitMode"
-              title="拆分模式"
-            >
-              <el-icon :size="20"><Operation /></el-icon>
-            </el-button>
-          </div>
-
-          <!-- 2. 分类选择 (Grid) - Target -->
-          <div class="category-grid-wrapper">
-            <div class="section-label">去向 (分类)</div>
+        <div class="tab-content split-layout">
+          <!-- 左侧：分类选择 (Flex 1) -->
+          <div class="left-panel">
+            <div class="section-header">
+              <span class="label">选择分类</span>
+              <span class="sub-label" v-if="expenseForm.categoryId">
+                已选: {{ getAccountName(expenseForm.categoryId) }}
+              </span>
+            </div>
+            
             <div v-if="expenseCategories.length === 0" class="empty-hint">
               暂无支出分类，请先在账户管理中创建
             </div>
             <div v-else class="category-scroll">
               <div v-if="recentExpenseCategories.length > 0" class="recent-section">
-                <div class="recent-title">
-                  <el-icon><Star /></el-icon>
-                  常用
-                </div>
+                <div class="section-title">常用分类</div>
                 <div class="category-grid">
                   <div
                     v-for="cat in recentExpenseCategories"
@@ -46,21 +27,31 @@
                     :class="{ active: expenseForm.categoryId === cat.id }"
                     @click="handleCategorySelect(cat, 'EXPENSE')"
                   >
-                    <div class="cat-icon">{{ getIcon(cat.name) }}</div>
+                    <div class="icon-wrapper">
+                      <div class="cat-icon">
+                        <ReIcon v-if="isIconifyIcon(cat.icon)" :icon="cat.icon!" />
+                        <template v-else>{{ getIcon(cat.name, cat.icon) }}</template>
+                      </div>
+                    </div>
                     <div class="cat-name">{{ cat.name }}</div>
                   </div>
                 </div>
               </div>
 
-              <div class="group-selector">
-                <div
-                  v-for="group in expenseCategories"
-                  :key="`expense-group-${group.id}`"
-                  class="group-pill"
-                  :class="{ active: selectedExpenseGroupId === group.id }"
-                  @click="selectedExpenseGroupId = group.id"
-                >
-                  {{ getIcon(group.name) }} {{ group.name }}
+              <div class="group-section">
+                <div class="section-title">分类组</div>
+                <div class="group-selector">
+                  <div
+                    v-for="group in expenseCategories"
+                    :key="`expense-group-${group.id}`"
+                    class="group-pill"
+                    :class="{ active: selectedExpenseGroupId === group.id }"
+                    @click="selectedExpenseGroupId = group.id"
+                  >
+                    <ReIcon v-if="isIconifyIcon(group.icon)" :icon="group.icon!" class="group-pill-icon" />
+                    <template v-else>{{ getIcon(group.name, group.icon) }}</template>
+                    {{ group.name }}
+                  </div>
                 </div>
               </div>
 
@@ -72,102 +63,177 @@
                   :class="{ active: expenseForm.categoryId === cat.id }"
                   @click="handleCategorySelect(cat, 'EXPENSE')"
                 >
-                  <div class="cat-icon">{{ getIcon(cat.name) }}</div>
+                  <div class="icon-wrapper">
+                    <div class="cat-icon">
+                      <ReIcon v-if="isIconifyIcon(cat.icon)" :icon="cat.icon!" />
+                      <template v-else>{{ getIcon(cat.name, cat.icon) }}</template>
+                    </div>
+                  </div>
                   <div class="cat-name">{{ cat.name }}</div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- 3. 账户选择 (Bottom Bar) - Source -->
-          <div class="account-bar-wrapper">
-            <div class="section-label">来源 (账户)</div>
-            <div v-if="assetAccounts.length === 0" class="empty-hint">
-              暂无资产账户，请先在账户管理中创建
-            </div>
-            <div v-else class="account-grid-scroll">
-              <div v-if="recentAssetAccounts.length > 0" class="recent-title">
-                <el-icon><Star /></el-icon>
-                常用
-              </div>
-              <div class="account-grid">
-                <div
-                  v-for="acc in recentAssetAccounts"
-                  :key="`recent-asset-${acc.id}`"
-                  class="account-card recent"
-                  :class="{ active: expenseForm.accountId === acc.id }"
-                  @click="handleAccountSelect(acc, 'ASSET')"
+          <!-- 右侧：金额/账户/操作 (Fixed Width) -->
+          <div class="right-panel">
+            <!-- 1. 金额输入 -->
+            <div class="panel-section">
+              <!-- 普通模式 -->
+              <div v-if="!splitMode" class="amount-card">
+                <div class="currency-symbol">¥</div>
+                <el-input
+                  v-model="expenseForm.amount"
+                  class="huge-input"
+                  placeholder="0.00"
+                  type="number"
+                  :min="0"
+                  @keyup.enter="handleExpenseSubmit"
+                />
+                <el-button 
+                  class="split-btn" 
+                  type="primary" 
+                  link 
+                  @click="toggleSplitMode"
+                  title="拆分模式"
                 >
-                  <div class="acc-icon"><el-icon><Star /></el-icon></div>
-                  <div class="acc-name">{{ acc.name }}</div>
-                </div>
+                  <el-icon :size="20"><Operation /></el-icon>
+                </el-button>
+              </div>
 
-                <div
-                  v-for="acc in flattenedAssetAccounts"
-                  :key="`asset-${acc.id}`"
-                  class="account-card"
-                  :class="{ active: expenseForm.accountId === acc.id }"
-                  @click="handleAccountSelect(acc, 'ASSET')"
-                >
-                  <div class="acc-icon">{{ getIcon(acc.name) }}</div>
-                  <div class="acc-name">{{ acc.name }}</div>
+              <!-- 拆分模式 -->
+              <div v-else class="split-card">
+                <div class="split-header">
+                  <span class="split-title">拆分记账</span>
+                  <div class="split-actions">
+                    <span class="split-total">合计 ¥{{ splitTotal.toFixed(2) }}</span>
+                    <el-button type="primary" link size="small" @click="addSplitItem">+ 添加</el-button>
+                    <el-button type="info" link size="small" @click="toggleSplitMode">退出拆分</el-button>
+                  </div>
+                </div>
+                <div class="split-list">
+                  <div v-for="(item, idx) in splitItems" :key="idx" class="split-row">
+                    <div class="split-category" :class="{ 'has-value': item.categoryId }">
+                      {{ item.categoryId ? getAccountName(item.categoryId) : '点左侧选分类' }}
+                    </div>
+                    <div class="split-amount-wrap">
+                      <span class="split-currency">¥</span>
+                      <el-input
+                        v-model="item.amount"
+                        class="split-amount-input"
+                        placeholder="0.00"
+                        type="number"
+                        :min="0"
+                      />
+                    </div>
+                    <el-button
+                      v-if="splitItems.length > 2"
+                      type="danger"
+                      link
+                      size="small"
+                      class="split-remove"
+                      @click="removeSplitItem(idx)"
+                    >✕</el-button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- 底部操作栏 -->
-          <div class="action-bar">
-            <el-date-picker
-              v-model="expenseForm.date"
-              type="date"
-              placeholder="今天"
-              size="small"
-              class="date-picker"
-              :clearable="false"
-              value-format="YYYY-MM-DD"
-            />
-            <el-input 
-              v-model="expenseForm.memo" 
-              placeholder="备注..." 
-              size="small" 
-              class="memo-input"
-            />
-            <el-button @click="handleCancel">取消</el-button>
-            <el-button type="primary" class="submit-btn" @click="handleExpenseSubmit" :loading="submitting">
-              完成
-            </el-button>
+            <!-- 2. 账户选择 -->
+            <div class="panel-section flex-1">
+              <div class="section-header">
+                <span class="label">支付账户</span>
+                <span class="sub-label" v-if="expenseForm.accountId">
+                  已选: {{ getAccountName(expenseForm.accountId) }}
+                </span>
+              </div>
+              <div v-if="assetAccounts.length === 0" class="empty-hint">
+                暂无资产账户
+              </div>
+              <div v-else class="account-list-scroll">
+                <div class="account-list">
+                  <!-- 常用账户 -->
+                  <div
+                    v-for="acc in recentAssetAccounts"
+                    :key="`recent-asset-${acc.id}`"
+                    class="account-card-mini recent"
+                    :class="{ active: expenseForm.accountId === acc.id }"
+                    @click="handleAccountSelect(acc, 'ASSET')"
+                  >
+                    <div class="acc-icon-box"><el-icon><Star /></el-icon></div>
+                    <div class="acc-info">
+                      <div class="acc-name">{{ acc.name }}</div>
+                      <div class="acc-type">常用</div>
+                    </div>
+                  </div>
+
+                  <!-- 所有账户 -->
+                  <div
+                    v-for="acc in flattenedAssetAccounts"
+                    :key="`asset-${acc.id}`"
+                    class="account-card-mini"
+                    :class="{ active: expenseForm.accountId === acc.id }"
+                    @click="handleAccountSelect(acc, 'ASSET')"
+                  >
+                    <div class="acc-icon-box">
+                      <ReIcon v-if="isIconifyIcon(acc.icon)" :icon="acc.icon!" />
+                      <template v-else>{{ getIcon(acc.name, acc.icon) }}</template>
+                    </div>
+                    <div class="acc-info">
+                      <div class="acc-name">{{ acc.name }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. 操作区 -->
+            <div class="panel-section action-area">
+              <el-date-picker
+                v-model="expenseForm.date"
+                type="date"
+                placeholder="今天"
+                class="full-width-date"
+                :clearable="false"
+                value-format="YYYY-MM-DD"
+              />
+              <el-input 
+                v-model="expenseForm.memo" 
+                placeholder="添加备注..." 
+                type="textarea"
+                :rows="2"
+                resize="none"
+                class="memo-input"
+              />
+              <div class="btn-group">
+                <el-button @click="handleCancel" class="cancel-btn">取消</el-button>
+                <el-button type="primary" class="submit-btn" @click="handleExpenseSubmit" :loading="submitting">
+                  完成
+                </el-button>
+              </div>
+            </div>
           </div>
         </div>
       </el-tab-pane>
 
       <!-- Tab 2: 收入 -->
       <el-tab-pane name="INCOME" label="收入">
-        <div class="tab-content">
-          <!-- 1. 金额输入 -->
-          <div class="amount-section income-theme">
-            <div class="currency-symbol">¥</div>
-            <el-input
-              v-model="incomeForm.amount"
-              class="huge-input"
-              placeholder="0.00"
-              type="number"
-              :min="0"
-            />
-          </div>
-
-          <!-- 2. 来源选择 (Grid) - Source (收入类别) -->
-          <div class="category-grid-wrapper">
-            <div class="section-label">来源 (收入)</div>
+        <div class="tab-content split-layout">
+          <!-- 左侧：分类选择 -->
+          <div class="left-panel">
+            <div class="section-header">
+              <span class="label">选择来源</span>
+              <span class="sub-label" v-if="incomeForm.categoryId">
+                已选: {{ getAccountName(incomeForm.categoryId) }}
+              </span>
+            </div>
+            
             <div v-if="incomeCategories.length === 0" class="empty-hint">
               暂无收入分类，请先在账户管理中创建
             </div>
             <div v-else class="category-scroll">
               <div v-if="recentIncomeCategories.length > 0" class="recent-section">
-                <div class="recent-title">
-                  <el-icon><Star /></el-icon>
-                  常用
-                </div>
+                <div class="section-title">常用分类</div>
                 <div class="category-grid">
                   <div
                     v-for="cat in recentIncomeCategories"
@@ -176,21 +242,31 @@
                     :class="{ active: incomeForm.categoryId === cat.id }"
                     @click="handleCategorySelect(cat, 'INCOME')"
                   >
-                    <div class="cat-icon">{{ getIcon(cat.name) }}</div>
+                    <div class="icon-wrapper">
+                      <div class="cat-icon">
+                        <ReIcon v-if="isIconifyIcon(cat.icon)" :icon="cat.icon!" />
+                        <template v-else>{{ getIcon(cat.name, cat.icon) }}</template>
+                      </div>
+                    </div>
                     <div class="cat-name">{{ cat.name }}</div>
                   </div>
                 </div>
               </div>
 
-              <div class="group-selector">
-                <div
-                  v-for="group in incomeCategories"
-                  :key="`income-group-${group.id}`"
-                  class="group-pill"
-                  :class="{ active: selectedIncomeGroupId === group.id }"
-                  @click="selectedIncomeGroupId = group.id"
-                >
-                  {{ getIcon(group.name) }} {{ group.name }}
+              <div class="group-section">
+                <div class="section-title">分类组</div>
+                <div class="group-selector">
+                  <div
+                    v-for="group in incomeCategories"
+                    :key="`income-group-${group.id}`"
+                    class="group-pill"
+                    :class="{ active: selectedIncomeGroupId === group.id }"
+                    @click="selectedIncomeGroupId = group.id"
+                  >
+                    <ReIcon v-if="isIconifyIcon(group.icon)" :icon="group.icon!" class="group-pill-icon" />
+                    <template v-else>{{ getIcon(group.name, group.icon) }}</template>
+                    {{ group.name }}
+                  </div>
                 </div>
               </div>
 
@@ -202,68 +278,97 @@
                   :class="{ active: incomeForm.categoryId === cat.id }"
                   @click="handleCategorySelect(cat, 'INCOME')"
                 >
-                  <div class="cat-icon">{{ getIcon(cat.name) }}</div>
+                  <div class="icon-wrapper">
+                    <div class="cat-icon">
+                      <ReIcon v-if="isIconifyIcon(cat.icon)" :icon="cat.icon!" />
+                      <template v-else>{{ getIcon(cat.name, cat.icon) }}</template>
+                    </div>
+                  </div>
                   <div class="cat-name">{{ cat.name }}</div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- 3. 账户选择 (Bottom Bar) - Target (存入账户) -->
-          <div class="account-bar-wrapper">
-            <div class="section-label">存入 (账户)</div>
-            <div class="account-grid-scroll">
-              <div v-if="recentAssetAccounts.length > 0" class="recent-title">
-                <el-icon><Star /></el-icon>
-                常用
+          <!-- 右侧：金额/账户/操作 -->
+          <div class="right-panel">
+            <!-- 1. 金额输入 -->
+            <div class="panel-section">
+              <div class="amount-card income-mode">
+                <div class="currency-symbol">¥</div>
+                <el-input
+                  v-model="incomeForm.amount"
+                  class="huge-input"
+                  placeholder="0.00"
+                  type="number"
+                  :min="0"
+                />
               </div>
-              <div class="account-grid">
-                <div
-                  v-for="acc in recentAssetAccounts"
-                  :key="`recent-income-asset-${acc.id}`"
-                  class="account-card recent"
-                  :class="{ active: incomeForm.accountId === acc.id }"
-                  @click="handleAccountSelect(acc, 'ASSET')"
-                >
-                  <div class="acc-icon"><el-icon><Star /></el-icon></div>
-                  <div class="acc-name">{{ acc.name }}</div>
-                </div>
+            </div>
 
-                <div
-                  v-for="acc in flattenedAssetAccounts"
-                  :key="`income-asset-${acc.id}`"
-                  class="account-card"
-                  :class="{ active: incomeForm.accountId === acc.id }"
-                  @click="handleAccountSelect(acc, 'ASSET')"
-                >
-                  <div class="acc-icon">{{ getIcon(acc.name) }}</div>
-                  <div class="acc-name">{{ acc.name }}</div>
+            <!-- 2. 账户选择 -->
+            <div class="panel-section flex-1">
+              <div class="section-header">
+                <span class="label">存入账户</span>
+                <span class="sub-label" v-if="incomeForm.accountId">
+                  已选: {{ getAccountName(incomeForm.accountId) }}
+                </span>
+              </div>
+              <div class="account-list-scroll">
+                <div class="account-list">
+                  <div
+                    v-for="acc in recentAssetAccounts"
+                    :key="`recent-income-asset-${acc.id}`"
+                    class="account-card-mini recent"
+                    :class="{ active: incomeForm.accountId === acc.id }"
+                    @click="handleAccountSelect(acc, 'ASSET')"
+                  >
+                    <div class="acc-icon-box"><el-icon><Star /></el-icon></div>
+                    <div class="acc-name">{{ acc.name }}</div>
+                  </div>
+
+                  <div
+                    v-for="acc in flattenedAssetAccounts"
+                    :key="`income-asset-${acc.id}`"
+                    class="account-card-mini"
+                    :class="{ active: incomeForm.accountId === acc.id }"
+                    @click="handleAccountSelect(acc, 'ASSET')"
+                  >
+                    <div class="acc-icon-box">
+                      <ReIcon v-if="isIconifyIcon(acc.icon)" :icon="acc.icon!" />
+                      <template v-else>{{ getIcon(acc.name, acc.icon) }}</template>
+                    </div>
+                    <div class="acc-name">{{ acc.name }}</div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- 底部操作栏 -->
-          <div class="action-bar">
-            <el-date-picker
-              v-model="incomeForm.date"
-              type="date"
-              placeholder="今天"
-              size="small"
-              class="date-picker"
-              :clearable="false"
-              value-format="YYYY-MM-DD"
-            />
-            <el-input 
-              v-model="incomeForm.memo" 
-              placeholder="备注..." 
-              size="small" 
-              class="memo-input"
-            />
-            <el-button @click="handleCancel">取消</el-button>
-            <el-button type="success" class="submit-btn" @click="handleIncomeSubmit" :loading="submitting">
-              完成
-            </el-button>
+            <!-- 3. 操作区 -->
+            <div class="panel-section action-area">
+              <el-date-picker
+                v-model="incomeForm.date"
+                type="date"
+                placeholder="今天"
+                class="full-width-date"
+                :clearable="false"
+                value-format="YYYY-MM-DD"
+              />
+              <el-input 
+                v-model="incomeForm.memo" 
+                placeholder="添加备注..." 
+                type="textarea"
+                :rows="2"
+                resize="none"
+                class="memo-input"
+              />
+              <div class="btn-group">
+                <el-button @click="handleCancel" class="cancel-btn">取消</el-button>
+                <el-button type="success" class="submit-btn" @click="handleIncomeSubmit" :loading="submitting">
+                  完成
+                </el-button>
+              </div>
+            </div>
           </div>
         </div>
       </el-tab-pane>
@@ -298,7 +403,11 @@
                   :label="acc.name"
                   :value="acc.id"
                 >
-                  <span style="float: left">{{ getIcon(acc.name) }} {{ acc.name }}</span>
+                  <span style="float: left; display: flex; align-items: center; gap: 4px;">
+                    <ReIcon v-if="isIconifyIcon(acc.icon)" :icon="acc.icon!" />
+                    <template v-else>{{ getIcon(acc.name, acc.icon) }}</template>
+                    {{ acc.name }}
+                  </span>
                 </el-option>
               </el-select>
             </div>
@@ -312,7 +421,11 @@
                   :label="acc.name"
                   :value="acc.id"
                 >
-                  <span style="float: left">{{ getIcon(acc.name) }} {{ acc.name }}</span>
+                  <span style="float: left; display: flex; align-items: center; gap: 4px;">
+                    <ReIcon v-if="isIconifyIcon(acc.icon)" :icon="acc.icon!" />
+                    <template v-else>{{ getIcon(acc.name, acc.icon) }}</template>
+                    {{ acc.name }}
+                  </span>
                 </el-option>
               </el-select>
             </div>
@@ -362,6 +475,7 @@ import { getAccountListApi, type AccountRow } from '@/api/fin/account'
 import { addTransactionApi, type TransactionDTO } from '@/api/fin/transaction'
 import { ledgerStore } from '@/store/ledger'
 import { useStorage } from '@vueuse/core'
+import ReIcon from '@/components/ReIcon/index.vue'
 
 const emit = defineEmits(['success', 'cancel'])
 
@@ -371,6 +485,16 @@ const submitting = ref(false)
 const allAccounts = ref<AccountRow[]>([])
 const selectedExpenseGroupId = ref<string | number>('')
 const selectedIncomeGroupId = ref<string | number>('')
+const splitMode = ref(false)
+
+interface SplitItem {
+  categoryId: string | number | undefined
+  amount: string
+}
+const splitItems = ref<SplitItem[]>([
+  { categoryId: undefined, amount: '' },
+  { categoryId: undefined, amount: '' }
+])
 
 // --- 本地存储 (Recent) ---
 // 存储 ID 列表: [1, 2, 3]
@@ -407,6 +531,8 @@ const resetForms = () => {
   expenseForm.amount = ''
   expenseForm.memo = ''
   expenseForm.date = dayjs().format('YYYY-MM-DD')
+  splitMode.value = false
+  splitItems.value = [{ categoryId: undefined, amount: '' }, { categoryId: undefined, amount: '' }]
   // 账户和分类暂不重置，方便连续记账
 
   incomeForm.amount = ''
@@ -603,17 +729,21 @@ const updateRecent = (id: number, type: 'EXPENSE' | 'INCOME' | 'ASSET') => {
   if (idx > -1) list.value.splice(idx, 1)
   list.value.unshift(id)
   
-  // 最多保留 5 个
-  if (list.value.length > 5) list.value.pop()
+  // 最多保留 3 个
+  if (list.value.length > 3) list.value.pop()
 }
 
 const handleCategorySelect = (cat: AccountRow, type: 'EXPENSE' | 'INCOME') => {
   if (type === 'EXPENSE') {
-    expenseForm.categoryId = cat.id
-    updateRecent(cat.id, 'EXPENSE')
+    if (splitMode.value) {
+      handleSplitCategorySelect(cat)
+    } else {
+      expenseForm.categoryId = cat.id
+      updateRecent(cat.id as number, 'EXPENSE')
+    }
   } else {
     incomeForm.categoryId = cat.id
-    updateRecent(cat.id, 'INCOME')
+    updateRecent(cat.id as number, 'INCOME')
   }
 }
 
@@ -642,7 +772,10 @@ const iconMap: Record<string, string> = {
   '微信': '💚', '支付宝': '💙', '银行': '🏦', '现金': '💵'
 }
 
-const getIcon = (name: string) => {
+const getIcon = (name: string, icon?: string) => {
+  // 0. 优先使用后端返回的 icon 字段（如果是 Iconify 编码则由模板用 ReIcon 渲染）
+  if (icon) return icon
+
   if (!name) return '📝'
   
   // 1. 尝试直接提取 Emoji
@@ -659,8 +792,27 @@ const getIcon = (name: string) => {
   return name.charAt(0)
 }
 
+// 判断是否为 Iconify 图标编码（包含 : 或 /，如 mdi:cash, fa-solid/home）
+const isIconifyIcon = (icon?: string) => {
+  return !!icon && (icon.includes(':') || icon.includes('/'))
+}
+
+// 排序函数：优先 sort 字段 (升序)，其次按 id (升序)
+// 使用 function 声明以确保提升，避免 flattenAccounts 调用时 TDZ 报错
+function sortAccounts(list: AccountRow[]) {
+  return list.sort((a, b) => {
+    const sortA = a.sort ?? 9999
+    const sortB = b.sort ?? 9999
+    if (sortA !== sortB) return sortA - sortB
+    return String(a.id).localeCompare(String(b.id))
+  })
+}
+
 function flattenAccounts(nodes: AccountRow[], result: AccountRow[] = []) {
-  nodes.forEach(node => {
+  // 先对当前层级进行排序
+  const sortedNodes = sortAccounts([...nodes])
+  
+  sortedNodes.forEach(node => {
     result.push(node)
     if (node.children && node.children.length > 0) {
       flattenAccounts(node.children, result)
@@ -696,38 +848,117 @@ onMounted(loadAccounts)
 // --- 提交逻辑 ---
 
 const toggleSplitMode = () => {
-  ElMessage.info('拆分模式即将上线')
+  splitMode.value = !splitMode.value
+  if (splitMode.value) {
+    // 进入拆分模式时，如果已选了分类和金额，把它作为第一项
+    const items: SplitItem[] = []
+    if (expenseForm.categoryId && expenseForm.amount) {
+      items.push({ categoryId: expenseForm.categoryId, amount: expenseForm.amount })
+      items.push({ categoryId: undefined, amount: '' })
+    } else {
+      items.push({ categoryId: undefined, amount: '' }, { categoryId: undefined, amount: '' })
+    }
+    splitItems.value = items
+    expenseForm.amount = ''
+    expenseForm.categoryId = undefined
+  } else {
+    // 退出拆分模式，如果只有一项有值就回填
+    const filled = splitItems.value.filter(i => i.categoryId && i.amount)
+    if (filled.length === 1) {
+      expenseForm.categoryId = filled[0].categoryId
+      expenseForm.amount = filled[0].amount
+    }
+    splitItems.value = [{ categoryId: undefined, amount: '' }, { categoryId: undefined, amount: '' }]
+  }
+}
+
+const addSplitItem = () => {
+  splitItems.value.push({ categoryId: undefined, amount: '' })
+}
+
+const removeSplitItem = (index: number) => {
+  if (splitItems.value.length > 2) {
+    splitItems.value.splice(index, 1)
+  }
+}
+
+const splitTotal = computed(() => {
+  return splitItems.value.reduce((sum, item) => {
+    const val = parseFloat(item.amount)
+    return sum + (isNaN(val) ? 0 : val)
+  }, 0)
+})
+
+// 拆分模式下点击分类时，自动填入第一个空的拆分项
+const handleSplitCategorySelect = (cat: AccountRow) => {
+  const emptyItem = splitItems.value.find(i => !i.categoryId)
+  if (emptyItem) {
+    emptyItem.categoryId = cat.id
+  }
+  updateRecent(cat.id as number, 'EXPENSE')
 }
 
 // 支出提交
 const handleExpenseSubmit = async () => {
-  if (!expenseForm.amount || parseFloat(expenseForm.amount) <= 0) return ElMessage.warning('请输入有效金额')
-  if (!expenseForm.categoryId) return ElMessage.warning('请选择支出分类')
   if (!expenseForm.accountId) return ElMessage.warning('请选择支付账户')
 
-  const dto: TransactionDTO = {
-    bookId: ledgerStore.currentLedgerId,
-    transDate: dayjs(expenseForm.date).format('YYYY-MM-DD HH:mm:ss'),
-    description: expenseForm.memo || `${getAccountName(expenseForm.categoryId)} 支出`,
-    entries: [
-      { // 借：支出 (增加)
-        accountId: expenseForm.categoryId,
-        direction: 'DEBIT',
-        amount: parseFloat(expenseForm.amount)
-      },
-      { // 贷：资产 (减少)
-        accountId: expenseForm.accountId,
-        direction: 'CREDIT',
-        amount: parseFloat(expenseForm.amount)
-      }
-    ]
-  }
+  if (splitMode.value) {
+    // 拆分模式提交
+    const validItems = splitItems.value.filter(i => i.categoryId && i.amount && parseFloat(i.amount) > 0)
+    if (validItems.length === 0) return ElMessage.warning('请至少填写一项拆分')
+    
+    const totalAmount = validItems.reduce((sum, i) => sum + parseFloat(i.amount), 0)
+    const entries: any[] = validItems.map(item => ({
+      accountId: item.categoryId,
+      direction: 'DEBIT',
+      amount: parseFloat(item.amount)
+    }))
+    entries.push({
+      accountId: expenseForm.accountId,
+      direction: 'CREDIT',
+      amount: totalAmount
+    })
 
-  await submitTransaction(dto, () => {
-    expenseForm.amount = ''
-    expenseForm.memo = ''
-    // 保留账户和分类选择，方便连续记账
-  })
+    const categoryNames = validItems.map(i => getAccountName(i.categoryId)).join('+')
+    const dto: TransactionDTO = {
+      bookId: ledgerStore.currentLedgerId,
+      transDate: dayjs(expenseForm.date).format('YYYY-MM-DD HH:mm:ss'),
+      description: expenseForm.memo || `${categoryNames} 支出`,
+      entries
+    }
+
+    await submitTransaction(dto, () => {
+      expenseForm.memo = ''
+      splitItems.value = [{ categoryId: undefined, amount: '' }, { categoryId: undefined, amount: '' }]
+    })
+  } else {
+    // 普通模式提交
+    if (!expenseForm.amount || parseFloat(expenseForm.amount) <= 0) return ElMessage.warning('请输入有效金额')
+    if (!expenseForm.categoryId) return ElMessage.warning('请选择支出分类')
+
+    const dto: TransactionDTO = {
+      bookId: ledgerStore.currentLedgerId,
+      transDate: dayjs(expenseForm.date).format('YYYY-MM-DD HH:mm:ss'),
+      description: expenseForm.memo || `${getAccountName(expenseForm.categoryId)} 支出`,
+      entries: [
+        {
+          accountId: expenseForm.categoryId,
+          direction: 'DEBIT',
+          amount: parseFloat(expenseForm.amount)
+        },
+        {
+          accountId: expenseForm.accountId,
+          direction: 'CREDIT',
+          amount: parseFloat(expenseForm.amount)
+        }
+      ]
+    }
+
+    await submitTransaction(dto, () => {
+      expenseForm.amount = ''
+      expenseForm.memo = ''
+    })
+  }
 }
 
 // 收入提交
@@ -859,114 +1090,447 @@ const getAccountName = (id?: string | number) => {
   height: 100%;
   display: flex;
   flex-direction: column;
-  
+
   :deep(.el-tabs__header) {
     margin-bottom: 0;
+    flex-shrink: 0;
   }
-  
+
   :deep(.el-tabs__content) {
     flex: 1;
-    overflow-y: auto;
+    overflow: hidden;
   }
-  
+
   :deep(.el-tab-pane) {
     height: 100%;
+    overflow: hidden;
   }
 }
 
 .tab-content {
-  padding: 24px;
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 24px;
   box-sizing: border-box;
+  overflow: hidden;
+
+  &.split-layout {
+    flex-direction: row;
+    padding: 0; // 分栏模式下不需要外层 padding
+  }
 }
 
-// 金额输入区
-.amount-section {
+// 左侧面板
+.left-panel {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #f1f5f9;
+  background: #fff;
+  padding: 16px;
+  height: 100%;
+  overflow: hidden;
+}
+
+// 右侧面板
+.right-panel {
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: #f8fafc;
+  padding: 16px;
+  height: 100%;
+  overflow: hidden;
+  gap: 12px;
+}
+
+.panel-section {
+  display: flex;
+  flex-direction: column;
+  
+  &.flex-1 {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  &.action-area {
+    flex-shrink: 0;
+    gap: 8px;
+    background: #fff;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+  }
+}
+
+// Section Header
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 0 4px;
+
+  .label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+  }
+
+  .sub-label {
+    font-size: 11px;
+    color: #3b82f6;
+    background: #eff6ff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+  margin: 12px 4px 8px 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+// 金额卡片
+.amount-card {
   display: flex;
   align-items: center;
-  border-bottom: 2px solid #e2e8f0;
-  padding-bottom: 8px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 8px 12px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
   position: relative;
-  
-  &.income-theme {
-    border-bottom-color: #10B981; // Green for income
-    .currency-symbol { color: #10B981; }
-    :deep(.el-input__inner) { color: #10B981; }
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+
+  &:focus-within {
+    background: #fff;
+    border-color: #3b82f6;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
   }
-  
+
+  &.income-mode {
+    &:focus-within {
+      border-color: #10b981;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+    }
+    .currency-symbol { color: #10b981; }
+    :deep(.el-input__inner) { color: #10b981; }
+  }
+
   .currency-symbol {
-    font-size: 32px;
-    font-weight: 600;
-    color: #334155;
-    margin-right: 12px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-right: 8px;
   }
-  
+
   .huge-input {
     flex: 1;
-    font-size: 40px;
-    font-weight: bold;
-    
+    font-size: 28px;
+    font-weight: 800;
+
     :deep(.el-input__wrapper) {
       box-shadow: none;
       padding: 0;
       background: transparent;
     }
-    
+
     :deep(.el-input__inner) {
-      height: 50px;
-      line-height: 50px;
+      height: 40px;
+      line-height: 40px;
       text-align: left;
+      color: #1e293b;
+      font-family: monospace;
     }
   }
-  
+
   .split-btn {
     position: absolute;
-    right: 0;
+    right: 8px;
     top: 50%;
     transform: translateY(-50%);
+    opacity: 0.5;
+    
+    &:hover { opacity: 1; }
+  }
+}
+
+// 拆分模式卡片
+.split-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+
+  .split-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f1f5f9;
+
+    .split-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    .split-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .split-total {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e293b;
+      font-family: monospace;
+    }
+  }
+
+  .split-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 160px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+
+  .split-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    transition: border-color 0.2s;
+
+    &:focus-within {
+      border-color: #3b82f6;
+    }
+  }
+
+  .split-category {
+    flex: 1;
+    font-size: 12px;
+    color: #94a3b8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+
+    &.has-value {
+      color: #334155;
+      font-weight: 500;
+    }
+  }
+
+  .split-amount-wrap {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    width: 110px;
+    flex-shrink: 0;
+
+    .split-currency {
+      font-size: 13px;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+  }
+
+  .split-amount-input {
+    :deep(.el-input__wrapper) {
+      box-shadow: none;
+      padding: 0 4px;
+      background: transparent;
+    }
+    :deep(.el-input__inner) {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1e293b;
+      font-family: monospace;
+      text-align: right;
+    }
+  }
+
+  .split-remove {
+    flex-shrink: 0;
+    font-size: 12px;
+    padding: 2px;
   }
 }
 
 // 分类 Grid
 .category-grid-wrapper {
+  // 兼容旧代码，但在新布局中不再作为主要容器名，保留以防万一
   flex: 1;
-  min-height: 200px;
+  min-height: 0;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  margin-top: 8px;
 }
 
 .category-scroll {
   flex: 1;
   overflow-y: auto;
-  padding: 4px;
+  overflow-x: hidden;
+  padding: 0 4px;
+  
+  // 隐藏滚动条但保持功能
+  scrollbar-width: thin;
+  scrollbar-color: #e2e8f0 transparent;
+  
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 2px;
+  }
 }
 
 .recent-section {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+  flex-shrink: 0;
 }
 
-.recent-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 600;
-  color: #334155;
-  font-size: 13px;
-  margin: 4px 4px 8px 4px;
+.group-section {
+  margin-bottom: 16px;
+  flex-shrink: 0;
 }
 
 .group-selector {
   display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 4px;
-  margin-bottom: 12px;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 2px;
+}
 
+.group-pill {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  border: 1px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+  font-size: 13px;
+  font-weight: 500;
+  color: #475569;
+  margin-bottom: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  &:hover {
+    background: #e2e8f0;
+  }
+
+  &.active {
+    background: #3b82f6;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+  }
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+  gap: 12px;
+  padding: 4px;
+
+  .category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    padding: 8px 4px;
+    border-radius: 12px;
+    transition: all 0.2s;
+    position: relative;
+
+    &:hover {
+      background-color: #f8fafc;
+      transform: translateY(-2px);
+    }
+
+    &.active {
+      .icon-wrapper {
+        background: #3b82f6;
+        color: #fff;
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(59, 130, 246, 0.25);
+      }
+      .cat-name { 
+        color: #1e293b; 
+        font-weight: 600; 
+      }
+    }
+
+    .icon-wrapper {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      
+      .cat-icon {
+        font-size: 24px;
+        line-height: 1;
+      }
+    }
+
+    .cat-name {
+      font-size: 12px;
+      color: #64748b;
+      text-align: center;
+      width: 100%;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      word-break: break-word;
+    }
+  }
+}
+
+// 账户列表 (右侧)
+.account-list-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 2px;
+  
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+  
   &::-webkit-scrollbar {
-    height: 4px;
+    width: 4px;
   }
   &::-webkit-scrollbar-thumb {
     background: #cbd5e1;
@@ -974,225 +1538,164 @@ const getAccountName = (id?: string | number) => {
   }
 }
 
-.group-pill {
-  flex-shrink: 0;
-  padding: 8px 12px;
-  border-radius: 999px;
+.account-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.account-card-mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
   border: 1px solid #e2e8f0;
   background: #fff;
   cursor: pointer;
-  user-select: none;
   transition: all 0.2s;
-  font-size: 13px;
-  color: #334155;
 
   &:hover {
-    border-color: #94a3b8;
+    border-color: #cbd5e1;
+    transform: translateX(2px);
   }
 
-  &.active {
-    background: #3b82f6;
-    border-color: #3b82f6;
-    color: #fff;
-  }
-}
-
-.group-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 600;
-  color: #334155;
-  font-size: 14px;
-}
-
-.category-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  gap: 16px;
-  padding: 8px;
-  
-  .category-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    padding: 12px 8px;
-    border-radius: 12px;
-    transition: all 0.2s;
-    
-    &:hover {
-      background-color: #f1f5f9;
-    }
+  &.recent {
+    background: #fffbeb;
+    border-color: #fef3c7;
     
     &.active {
-      background-color: #e0f2fe;
-      .cat-name { color: #0284c7; font-weight: 600; }
-    }
-    
-    .cat-icon {
-      font-size: 32px;
-      margin-bottom: 8px;
-    }
-    
-    .cat-name {
-      font-size: 12px;
-      color: #64748b;
-      text-align: center;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      width: 100%;
-    }
-  }
-}
-
-.account-bar-wrapper {
-  flex-shrink: 0;
-
-  .account-grid-scroll {
-    max-height: 190px;
-    overflow-y: auto;
-    padding: 4px;
-    border-radius: 10px;
-    background: #f8fafc;
-
-    &::-webkit-scrollbar {
-      width: 6px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 3px;
+      background: #f59e0b;
+      border-color: #f59e0b;
+      .acc-name, .acc-type { color: #fff; }
+      .acc-icon-box { background: rgba(255,255,255,0.2); color: #fff; }
     }
   }
 
-  .account-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 12px;
-    padding: 4px;
+  &.active:not(.recent) {
+    background: #1e293b;
+    border-color: #1e293b;
+    .acc-name { color: #fff; }
+    .acc-icon-box { background: rgba(255,255,255,0.2); color: #fff; }
   }
 
-  .account-card {
+  .acc-icon-box {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: #f1f5f9;
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
-    background: #fff;
-    cursor: pointer;
-    transition: all 0.2s;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
 
-    &:hover {
-      border-color: #94a3b8;
-      background: #f8fafc;
-    }
-
-    &.recent {
-      border-color: #fde68a;
-      background: #fffbeb;
-    }
-
-    &.active {
-      background: #3b82f6;
-      border-color: #3b82f6;
-      color: #fff;
-
-      .acc-name {
-        color: #fff;
-      }
-    }
-
-    .acc-icon {
-      width: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      flex-shrink: 0;
-    }
-
+  .acc-info {
+    flex: 1;
+    min-width: 0;
+    
     .acc-name {
       font-size: 13px;
+      font-weight: 500;
       color: #334155;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      flex: 1;
+    }
+    
+    .acc-type {
+      font-size: 10px;
+      color: #94a3b8;
     }
   }
 }
 
-.section-label {
-  font-size: 12px;
-  color: #94a3b8;
-  margin-bottom: 8px;
-  font-weight: 500;
+// 底部操作区
+.action-area {
+  .full-width-date {
+    width: 100% !important;
+    margin-bottom: 0;
+    
+    :deep(.el-input__wrapper) {
+      box-shadow: none;
+      background: #f1f5f9;
+    }
+  }
+
+  .memo-input {
+    :deep(.el-textarea__inner) {
+      box-shadow: none;
+      background: #f1f5f9;
+      padding: 8px;
+      font-size: 13px;
+      
+      &:focus {
+        background: #fff;
+        box-shadow: 0 0 0 1px #3b82f6;
+      }
+    }
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+    
+    .cancel-btn {
+      flex: 1;
+    }
+    
+    .submit-btn {
+      flex: 2;
+    }
+  }
 }
 
-.empty-hint {
-  color: #94a3b8;
-  font-size: 14px;
-  text-align: center;
-  padding: 40px 20px;
-  background-color: #f8fafc;
-  border-radius: 8px;
-  border: 1px dashed #cbd5e1;
-}
-
-// 底部操作栏
-.action-bar {
-  display: flex;
-  gap: 12px;
-  padding-top: 12px;
-  border-top: 1px solid #f1f5f9;
-  align-items: center;
-  
-  .date-picker { width: 130px; }
-  .memo-input { flex: 1; }
-  .submit-btn { width: 100px; }
+// 兼容转账页的旧样式（如果需要）
+.transfer-content {
+  // ...
 }
 
 // 转账页样式
 .transfer-content {
   justify-content: flex-start;
-  
+
   .transfer-form {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 16px;
     max-width: 400px;
     margin: 0 auto;
     width: 100%;
-    padding-top: 40px;
-    
+    padding-top: 20px;
+
     .form-row {
       label {
         display: block;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
         color: #64748b;
-        font-size: 14px;
+        font-size: 13px;
       }
     }
-    
+
     .transfer-arrow {
       display: flex;
       justify-content: center;
       color: #94a3b8;
-      font-size: 24px;
+      font-size: 20px;
     }
-    
+
     .large-input {
       :deep(.el-input__inner) {
-        height: 44px;
-        font-size: 18px;
+        height: 40px;
+        font-size: 16px;
       }
     }
-    
+
     .full-width { width: 100%; }
   }
-  
+
   .static-bottom {
     margin-top: auto;
   }

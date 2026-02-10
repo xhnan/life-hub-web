@@ -56,6 +56,11 @@ export interface AccountRow {
   isArchived: boolean;        // true:归档, false:启用
   description?: string;
   isLeaf: boolean;            // 是否叶子节点
+  
+  // 显示相关
+  sort?: number;              // 排序权重 (越小越靠前)
+  icon?: string;              // 图标 (Emoji 或 URL)
+
   children?: AccountRow[];
   createdAt?: string;
   updatedAt?: string;

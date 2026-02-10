@@ -26,6 +26,16 @@
          />
       </el-form-item>
       
+      <el-form-item label="图标" prop="icon">
+        <div class="icon-field">
+          <div class="icon-preview-box" :class="{ 'has-icon': form.icon }">
+            <ReIcon v-if="form.icon" :icon="form.icon" />
+            <el-icon v-else><PictureRounded /></el-icon>
+          </div>
+          <el-input v-model="form.icon" placeholder="输入 Iconify 图标编码，如 mdi:bank" clearable class="icon-input" />
+        </div>
+      </el-form-item>
+
       <el-form-item label="账户名称" prop="name">
         <el-input v-model="form.name" placeholder="请输入账户名称" />
       </el-form-item>
@@ -93,6 +103,8 @@ import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { addAccountApi, updateAccountApi, type AccountRow } from '@/api/fin/account'
 import { ledgerStore } from '@/store/ledger'
+import { PictureRounded } from '@element-plus/icons-vue'
+import ReIcon from '@/components/ReIcon/index.vue'
 
 const props = defineProps<{
   allData: AccountRow[]
@@ -112,6 +124,7 @@ const form = reactive<Partial<AccountRow>>({
   bookId: undefined,
   name: '',
   code: '',
+  icon: '',
   accountTypeEnum: undefined,
   initialBalance: 0,
   currencyCode: 'CNY',
@@ -133,6 +146,7 @@ const resetForm = () => {
   form.bookId = ledgerStore.currentLedgerId || undefined
   form.name = ''
   form.code = ''
+  form.icon = ''
   form.accountTypeEnum = undefined
   form.initialBalance = 0
   form.currencyCode = 'CNY'
@@ -162,6 +176,7 @@ const open = (type: 'add' | 'edit' | 'addChild', row?: AccountRow) => {
     // 编辑时如果存在父节点，尝试提取前缀（简单处理：如果是子账户，通常不建议修改前缀，这里暂不特殊处理前缀显示，直接显示完整code）
     // 或者为了体验一致，也可以尝试解析。这里简单起见，编辑时直接显示完整code，不使用前缀槽
     form.code = row.code
+    form.icon = row.icon || ''
     form.accountTypeEnum = row.accountTypeEnum
     form.initialBalance = row.initialBalance
     form.currencyCode = row.currencyCode
@@ -206,3 +221,37 @@ defineExpose({
   open
 })
 </script>
+
+<style scoped lang="scss">
+.icon-field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.icon-preview-box {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 8px;
+  border: 1px dashed #dcdfe6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #c0c4cc;
+  background: #f5f7fa;
+  transition: all 0.2s;
+
+  &.has-icon {
+    border-color: #F59E0B;
+    color: #F59E0B;
+    background: #fffbeb;
+  }
+}
+
+.icon-input {
+  flex: 1;
+}
+</style>
