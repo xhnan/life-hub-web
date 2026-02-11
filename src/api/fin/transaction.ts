@@ -9,9 +9,11 @@ export interface TransactionRow {
   bookId: number;
   transDate: string; // LocalDateTime 格式 "yyyy-MM-dd HH:mm:ss"
   description: string;
+  amount?: number; // 单边金额
   attachmentId?: string;
   createdBy?: number;
   createdAt?: string; // LocalDateTime 格式
+  tagIds?: number[]; // 关联的标签ID列表
 }
 
 export interface TransactionDTO extends Partial<TransactionRow> {
@@ -59,4 +61,19 @@ export const updateTransactionApi = (data: TransactionDTO) => {
 
 export const deleteTransactionApi = (id: number, bookId: number) => {
   return http.delete<boolean>(`${prefix}/${id}`, { bookId });
+};
+
+// 月度统计DTO
+export interface MonthlyStatisticsDTO {
+  totalIncome: number;
+  totalExpense: number;
+  balance: number;
+}
+
+/**
+ * 获取本月收支统计
+ * GET /fin/transactions/monthly-statistics
+ */
+export const getMonthlyStatisticsApi = (bookId: number) => {
+  return http.get<MonthlyStatisticsDTO>(`${prefix}/monthly-statistics`, { bookId });
 };

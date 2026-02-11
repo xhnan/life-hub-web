@@ -10,7 +10,7 @@
             </div>
             <div class="stat-info">
               <div class="stat-label">总资产</div>
-              <div class="stat-value text-green">¥ 138,656.00</div>
+              <div class="stat-value text-green">¥ {{ formatCurrency(assetSummary.totalAssets) }}</div>
             </div>
           </div>
         </el-card>
@@ -23,7 +23,7 @@
             </div>
             <div class="stat-info">
               <div class="stat-label">总负债</div>
-              <div class="stat-value text-red">¥ -2,500.00</div>
+              <div class="stat-value text-red">¥ {{ formatCurrency(assetSummary.totalLiabilities) }}</div>
             </div>
           </div>
         </el-card>
@@ -36,7 +36,7 @@
             </div>
             <div class="stat-info">
               <div class="stat-label">净资产</div>
-              <div class="stat-value text-blue">¥ 136,156.00</div>
+              <div class="stat-value text-blue">¥ {{ formatCurrency(assetSummary.netAssets) }}</div>
             </div>
           </div>
         </el-card>
@@ -179,6 +179,7 @@ import {
   initAccountsApi,
   type AccountRow 
 } from '@/api/fin/account'
+import { getAssetSummaryApi, type BookAssetSummaryDTO } from '@/api/fin/ledger'
 import AccountDialog from './components/AccountDialog.vue'
 import { ledgerStore } from '@/store/ledger'
 import LedgerSelect from "@/components/LedgerSelect/index.vue"
@@ -197,6 +198,12 @@ const searchForm = reactive({
 
 const dialogRef = ref<InstanceType<typeof AccountDialog>>()
 
+// 资产概览
+const assetSummary = ref<BookAssetSummaryDTO>({
+  totalAssets: 0,
+  totalLiabilities: 0,
+  netAssets: 0
+})
 
 // 辅助函数
 const getTypeTag = (type: string) => {
@@ -320,8 +327,24 @@ const loadData = async (type: string = activeTab.value) => {
   }
 }
 
+const loadAssetSummary = async () => {
+  if (!ledgerStore.currentLedgerId) {
+    assetSummary.value = { totalAssets: 0, totalLiabilities: 0, netAssets: 0 }
+    return
+  }
+  try {
+    const res = await getAssetSummaryApi(ledgerStore.currentLedgerId)
+    if (res.data) {
+      assetSummary.value = res.data
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 watch(() => ledgerStore.currentLedgerId, () => {
   loadData()
+  loadAssetSummary()
 })
 
 const handleTabClick = (tab: TabsPaneContext) => {
@@ -400,6 +423,7 @@ const handleDelete = (row: AccountRow) => {
 
 onMounted(() => {
   loadData()
+  loadAssetSummary()
 })
 </script>
 

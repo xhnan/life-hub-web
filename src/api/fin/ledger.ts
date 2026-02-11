@@ -32,3 +32,15 @@ export const updateLedgerApi = (data: FinBooks) => {
 export const deleteLedgerApi = (id: number) => {
   return http.delete<boolean>(`${prefix}/${id}`);
 };
+
+// 资产概览DTO
+export interface BookAssetSummaryDTO {
+  totalAssets: number;
+  totalLiabilities: number;
+  netAssets: number;
+}
+
+/** 查询账本资产概览（总资产、总负债、净资产） */
+export const getAssetSummaryApi = (bookId: number) => {
+  return http.get<BookAssetSummaryDTO>(`${prefix}/${bookId}/asset-summary`);
+};

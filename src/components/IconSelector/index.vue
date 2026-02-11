@@ -11,11 +11,13 @@
         placeholder="点击选择或输入图标"
         class="icon-select-input"
         @input="handleInput"
+        clearable
+        @clear="handleClear"
       >
         <template #prefix>
-          <el-icon v-if="modelValue" class="icon-preview">
-            <component :is="icons[currentValue]" />
-          </el-icon>
+          <div v-if="inputValue" class="icon-preview-wrapper">
+            <ReIcon :icon="inputValue" class="icon-preview" />
+          </div>
           <el-icon v-else class="el-input__icon">
             <Search />
           </el-icon>
@@ -24,9 +26,15 @@
     </template>
     
     <div class="icon-selector-container">
+      <!-- Iconify 提示 -->
+      <div class="iconify-tip">
+        <el-icon><InfoFilled /></el-icon>
+        <span>支持输入 Iconify 图标代码，如 <code>mdi:home</code></span>
+      </div>
+
       <el-input
         v-model="searchText"
-        placeholder="搜索图标"
+        placeholder="搜索 Element Plus 图标"
         prefix-icon="Search"
         clearable
         class="search-input"
@@ -55,7 +63,8 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-import { Search } from '@element-plus/icons-vue'
+import { Search, InfoFilled } from '@element-plus/icons-vue'
+import ReIcon from '@/components/ReIcon/index.vue'
 
 const props = defineProps({
   modelValue: {
@@ -66,24 +75,25 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue', 'change'])
 
-// Cast to any to access by index/key
 const icons = ElementPlusIconsVue as any
-const visible = ref(false)
 const currentValue = ref(props.modelValue)
 const searchText = ref('')
 const inputValue = ref(props.modelValue || '')
 
 watch(() => props.modelValue, (val) => {
+  currentValue.value = val
   inputValue.value = val || ''
 })
 
 const handleInput = (val: string) => {
+  currentValue.value = val
   emit('update:modelValue', val)
   emit('change', val)
 }
 
-// Get all icon names, excluding internal exports if any
-const iconNames = Object.keys(ElementPlusIconsVue).filter(key => typeof (ElementPlusIconsVue as any)[key] === 'object')
+const iconNames = Object.keys(ElementPlusIconsVue).filter(
+  key => typeof (ElementPlusIconsVue as any)[key] === 'object'
+)
 
 const filteredIcons = computed(() => {
   if (!searchText.value) return iconNames
@@ -92,25 +102,56 @@ const filteredIcons = computed(() => {
   )
 })
 
-watch(() => props.modelValue, (val) => {
-  currentValue.value = val
-})
-
 const selectIcon = (name: string) => {
   currentValue.value = name
+  inputValue.value = name
   emit('update:modelValue', name)
   emit('change', name)
 }
 
 const handleClear = () => {
   currentValue.value = ''
+  inputValue.value = ''
   emit('update:modelValue', '')
   emit('change', '')
 }
 </script>
 
 <style scoped lang="scss">
+.icon-preview-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #409eff;
+}
+
 .icon-selector-container {
+  .iconify-tip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    background: #f0f9ff;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #64748b;
+
+    .el-icon {
+      color: #3b82f6;
+      font-size: 14px;
+    }
+
+    code {
+      background: #e0f2fe;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 11px;
+      color: #0369a1;
+    }
+  }
+
   .search-input {
     margin-bottom: 12px;
   }
