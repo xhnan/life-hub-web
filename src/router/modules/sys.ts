@@ -42,6 +42,15 @@ export default {
                 title: "权限管理",
                 icon: "ep:lock"
             }
+        },
+        {
+            path: "/sys/app",
+            name: "SysApp",
+            component: () => import('@/views/sys/app/index.vue'),
+            meta: {
+                title: "应用管理",
+                icon: "ep:grid"
+            }
         }
     ]
 }
