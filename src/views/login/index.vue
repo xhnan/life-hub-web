@@ -1,79 +1,72 @@
 <template>
 	<div class="login-container">
 		<!-- 背景 -->
-		<div class="background-shapes">
-			<div class="shape shape-1"></div>
-			<div class="shape shape-2"></div>
-			<div class="shape shape-3"></div>
+		<div class="aurora-bg">
+			<div class="aurora aurora-1"></div>
+			<div class="aurora aurora-2"></div>
+			<div class="aurora aurora-3"></div>
 		</div>
+		<div class="noise-overlay"></div>
 
-		<div class="login-box slide-in">
+		<div class="login-card" :class="{ visible: cardVisible }">
 			<!-- 左侧品牌 -->
-			<div class="login-left">
-				<div class="left-content">
-					<div class="logo-circle">
-						<el-icon :size="36" color="#fff"><s-promotion /></el-icon>
+			<div class="brand-panel">
+				<div class="brand-glow"></div>
+				<div class="brand-content">
+					<div class="logo-ring">
+						<div class="logo-inner">
+							<Icon icon="ph:flower-lotus-bold" :width="30" />
+						</div>
 					</div>
 					<h1 class="brand-title">LifeHub</h1>
-					<p class="brand-desc">你的生活管理中心</p>
-					<div class="brand-features">
-						<div class="feature-item">
-							<el-icon :size="16"><Check /></el-icon>
-							<span>智能记账</span>
-						</div>
-						<div class="feature-item">
-							<el-icon :size="16"><Check /></el-icon>
-							<span>健康追踪</span>
-						</div>
-						<div class="feature-item">
-							<el-icon :size="16"><Check /></el-icon>
-							<span>生活管理</span>
+					<p class="brand-subtitle">你的生活管理中心</p>
+
+					<div class="feature-list">
+						<div class="feature-row" v-for="f in features" :key="f.label">
+							<Icon :icon="f.icon" :width="16" class="feature-icon" />
+							<span>{{ f.label }}</span>
 						</div>
 					</div>
 				</div>
-				<div class="glass-decoration"></div>
-				<div class="glass-decoration decoration-2"></div>
+				<div class="brand-line brand-line-1"></div>
+				<div class="brand-line brand-line-2"></div>
 			</div>
 
 			<!-- 右侧表单 -->
-			<div class="login-right">
-				<!-- Tab 切换 -->
-				<div class="login-tabs" role="tablist">
-					<div
+			<div class="form-panel">
+				<!-- Tab -->
+				<div class="tab-bar" role="tablist">
+					<button
 						role="tab"
-						class="tab-item"
+						class="tab-btn"
 						:class="{ active: loginType === 'account' }"
 						:aria-selected="loginType === 'account'"
-						tabindex="0"
 						@click="switchLoginType('account')"
-						@keydown.enter="switchLoginType('account')"
 					>
-						<el-icon :size="15"><User /></el-icon>
+						<Icon icon="lucide:user" :width="15" />
 						<span>账号登录</span>
-					</div>
-					<div
+					</button>
+					<button
 						role="tab"
-						class="tab-item"
+						class="tab-btn"
 						:class="{ active: loginType === 'qrcode' }"
 						:aria-selected="loginType === 'qrcode'"
-						tabindex="0"
 						@click="switchLoginType('qrcode')"
-						@keydown.enter="switchLoginType('qrcode')"
 					>
-						<el-icon :size="15"><Connection /></el-icon>
+						<Icon icon="lucide:scan-line" :width="15" />
 						<span>扫码登录</span>
-					</div>
-					<div class="tab-indicator" :class="{ 'slide-right': loginType === 'qrcode' }"></div>
+					</button>
+					<div class="tab-pill" :class="{ right: loginType === 'qrcode' }"></div>
 				</div>
 
-				<!-- 内容区 -->
-				<div class="login-content">
-					<Transition name="mode-fade" mode="out-in">
-						<!-- 账号密码登录 -->
+				<!-- 主体 -->
+				<div class="form-body">
+					<Transition name="fade-slide" mode="out-in">
+						<!-- 账号登录 -->
 						<div v-if="loginType === 'account'" key="account">
-							<div class="form-header">
+							<div class="section-head">
 								<h2>欢迎回来</h2>
-								<p>请登录您的账号以继续</p>
+								<p>登录你的账号以继续</p>
 							</div>
 
 							<el-form
@@ -87,10 +80,13 @@
 									<el-input
 										v-model="loginForm.username"
 										placeholder="用户名 / 邮箱"
-										:prefix-icon="User"
-										class="custom-input"
+										class="styled-input"
 										@keyup.enter="handleUsernameEnter"
-									/>
+									>
+										<template #prefix>
+											<Icon icon="lucide:at-sign" :width="16" style="color:var(--muted)" />
+										</template>
+									</el-input>
 								</el-form-item>
 
 								<el-form-item prop="password">
@@ -100,15 +96,18 @@
 										type="password"
 										placeholder="密码"
 										show-password
-										:prefix-icon="Lock"
-										class="custom-input"
+										class="styled-input"
 										@keyup.enter="handleLogin"
-									/>
+									>
+										<template #prefix>
+											<Icon icon="lucide:lock" :width="16" style="color:var(--muted)" />
+										</template>
+									</el-input>
 								</el-form-item>
 
-								<div class="form-options">
+								<div class="form-row">
 									<el-checkbox v-model="loginForm.rememberMe">记住我</el-checkbox>
-									<el-link type="primary" underline="never" class="forgot-pwd">忘记密码？</el-link>
+									<el-link type="primary" underline="never" class="link-accent">忘记密码？</el-link>
 								</div>
 
 								<el-alert
@@ -117,63 +116,51 @@
 									type="error"
 									show-icon
 									:closable="false"
-									class="login-error"
+									class="form-alert"
 								/>
 
 								<el-form-item>
-									<el-button
-										type="primary"
+									<button
+										type="button"
 										class="submit-btn"
-										:loading="loading"
+										:class="{ loading }"
+										:disabled="loading"
 										@click="handleLogin"
-										round
 									>
-										{{ loading ? '登录中...' : '立即登录' }}
-									</el-button>
+										<span v-if="loading" class="btn-loader"></span>
+										<span>{{ loading ? '登录中...' : '立即登录' }}</span>
+									</button>
 								</el-form-item>
 							</el-form>
 						</div>
 
 						<!-- 扫码登录 -->
-						<div v-else key="qrcode" class="qrcode-panel">
-							<div class="form-header">
+						<div v-else key="qrcode" class="qr-section">
+							<div class="section-head center">
 								<h2>扫码登录</h2>
-								<p>请使用 APP 扫描二维码登录</p>
+								<p>使用 APP 扫描二维码</p>
 							</div>
 
-							<div class="qrcode-wrapper">
-								<div class="qrcode-box" :class="{ 'is-scanned': qrcodeScanned, 'is-expired': qrcodeExpired }">
-									<img v-if="qrcodeDataUrl" :src="qrcodeDataUrl" alt="扫码登录二维码" class="qrcode-img" />
-									<!-- 已扫码 -->
-									<div v-if="qrcodeScanned && !qrcodeExpired" class="qrcode-overlay">
-										<el-icon :size="32" color="#4f46e5"><CircleCheckFilled /></el-icon>
-										<p class="overlay-title">扫描成功</p>
-										<p class="overlay-sub">请在手机上确认登录</p>
-									</div>
-									<!-- 已过期 -->
-									<div v-if="qrcodeExpired" class="qrcode-overlay">
-										<el-icon :size="28" color="#64748b"><RefreshRight /></el-icon>
-										<p class="overlay-title">二维码已过期</p>
-										<el-button type="primary" size="small" round @click="initQrcode">点击刷新</el-button>
-									</div>
+							<div class="qr-frame" :class="{ scanned: qrcodeScanned, expired: qrcodeExpired }">
+								<img v-if="qrcodeDataUrl" :src="qrcodeDataUrl" alt="二维码" class="qr-img" />
+								<div v-if="qrcodeScanned && !qrcodeExpired" class="qr-mask">
+									<Icon icon="lucide:check-circle-2" :width="36" style="color:#0d9488" />
+									<p class="mask-title">扫描成功</p>
+									<p class="mask-sub">请在手机上确认</p>
 								</div>
-								<p class="qrcode-tip">
-									打开 <strong>APP</strong>，扫描二维码登录
-								</p>
+								<div v-if="qrcodeExpired" class="qr-mask">
+									<Icon icon="lucide:refresh-cw" :width="28" style="color:#64748b" />
+									<p class="mask-title">已过期</p>
+									<button class="refresh-btn" @click="initQrcode">点击刷新</button>
+								</div>
 							</div>
 
-							<div class="qrcode-steps">
-								<div class="step-item">
-									<span class="step-num">1</span>
-									<span>打开 APP 扫一扫</span>
-								</div>
-								<div class="step-item">
-									<span class="step-num">2</span>
-									<span>扫描二维码</span>
-								</div>
-								<div class="step-item">
-									<span class="step-num">3</span>
-									<span>确认后登录</span>
+							<p class="qr-hint">打开 <strong>APP</strong> 扫一扫</p>
+
+							<div class="qr-steps">
+								<div class="qr-step" v-for="(s, i) in qrSteps" :key="i">
+									<span class="step-dot">{{ i + 1 }}</span>
+									<span>{{ s }}</span>
 								</div>
 							</div>
 						</div>
@@ -181,42 +168,46 @@
 				</div>
 
 				<!-- 底部 -->
-				<div class="form-footer">
-					<div class="social-login">
-						<div class="divider"><span>其他登录方式</span></div>
-						<div class="social-buttons">
-							<button class="social-btn github-btn" @click="handleGithubLogin" aria-label="GitHub 登录">
-								<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-									<path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-								</svg>
-								<span>GitHub</span>
-							</button>
-						</div>
+				<div class="form-foot">
+					<div class="divider-line"><span>其他登录方式</span></div>
+					<div class="social-row">
+						<button class="social-btn" @click="handleGithubLogin" aria-label="GitHub 登录">
+							<Icon icon="mdi:github" :width="20" />
+							<span>GitHub</span>
+						</button>
 					</div>
-					<p class="register-link">还没有账号？ <el-link type="primary" underline="never">立即注册</el-link></p>
+					<p class="foot-link">还没有账号？ <el-link type="primary" underline="never">立即注册</el-link></p>
 				</div>
 			</div>
 		</div>
 
 		<!-- ICP -->
-		<div class="icp-info">
+		<div class="icp">
 			<a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">赣ICP备2026003009号-1</a>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onUnmounted } from 'vue';
+import { ref, reactive, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus';
-import { User, Lock, Promotion as SPromotion, Connection, RefreshRight, CircleCheckFilled, Check } from '@element-plus/icons-vue';
-import QRCode from 'qrcode';
+import { Icon } from '@iconify/vue';
 import { loginApi, generateQrcodeApi, getQrcodeStatusApi, type LoginForm } from '@/api/authApi';
 import { STORAGE_KEYS } from '@/utils/constants';
 
 const router = useRouter();
 
-// ========== 通用 ==========
+// ========== 常量 ==========
+const features = [
+	{ icon: 'lucide:wallet', label: '智能记账' },
+	{ icon: 'lucide:heart-pulse', label: '健康追踪' },
+	{ icon: 'lucide:layout-dashboard', label: '生活管理' }
+];
+const qrSteps = ['打开 APP', '扫描二维码', '确认登录'];
+
+// ========== 状态 ==========
+const cardVisible = ref(false);
 const loginType = ref<'account' | 'qrcode'>('account');
 const loginFormRef = ref<FormInstance>();
 const passwordInputRef = ref();
@@ -263,19 +254,17 @@ const initQrcode = async () => {
 	qrcodeDataUrl.value = '';
 
 	try {
+		const QRCode = (await import('qrcode')).default;
 		const res = await generateQrcodeApi();
 		if (res.code === 200 && res.data) {
 			qrcodeId.value = res.data.qrCodeId;
-			const content = `lifehub://qrcode/login?qrCodeId=${res.data.qrCodeId}`;
-			qrcodeDataUrl.value = await QRCode.toDataURL(content, {
-				width: 168,
-				margin: 2,
-				color: { dark: '#1e293b', light: '#ffffff' }
-			});
+			qrcodeDataUrl.value = await QRCode.toDataURL(
+				`lifehub://qrcode/login?qrCodeId=${res.data.qrCodeId}`,
+				{ width: 160, margin: 2, color: { dark: '#1e293b', light: '#ffffff' } }
+			);
 			startPolling();
 		}
-	} catch (err) {
-		console.error('生成二维码失败:', err);
+	} catch {
 		ElMessage.error('获取二维码失败，请稍后重试');
 	}
 };
@@ -286,17 +275,14 @@ const startPolling = () => {
 		try {
 			const res = await getQrcodeStatusApi(qrcodeId.value);
 			if (res.code !== 200 || !res.data) return;
-
 			const { status } = res.data;
-
 			if (status === 'SCANNED') {
 				qrcodeScanned.value = true;
 			} else if (status === 'CONFIRMED') {
 				stopPolling();
 				if (res.data.token) {
 					localStorage.setItem(STORAGE_KEYS.TOKEN, res.data.token);
-					const expiresAt = Date.now() + (res.data.expiresIn || 86400000);
-					localStorage.setItem(STORAGE_KEYS.TOKEN_EXPIRES_AT, expiresAt.toString());
+					localStorage.setItem(STORAGE_KEYS.TOKEN_EXPIRES_AT, (Date.now() + (res.data.expiresIn || 86400000)).toString());
 					if (res.data.username) {
 						localStorage.setItem(STORAGE_KEYS.USER_INFO, JSON.stringify({ username: res.data.username, avatar: res.data.avatar }));
 					}
@@ -318,8 +304,6 @@ const startPolling = () => {
 const stopPolling = () => {
 	if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
 };
-
-onUnmounted(stopPolling);
 
 // ========== 账号登录 ==========
 const handleUsernameEnter = () => { passwordInputRef.value?.focus(); };
@@ -349,19 +333,40 @@ const handleLogin = async () => {
 	});
 };
 
-// ========== GitHub OAuth 登录 ==========
+// ========== GitHub OAuth ==========
 const handleGithubLogin = () => {
-	// Spring Security 内置 OAuth2 客户端路径，直接页面跳转，不是 axios 请求
-	// 后端会 302 → GitHub 授权页 → 用户同意 → 302 回后端 → 签发 JWT → 302 回前端 /oauth2/redirect?token=xxx
 	const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '/api';
 	window.location.href = `${apiBaseUrl}/oauth2/authorization/github`;
 };
+
+// ========== Lifecycle ==========
+onMounted(() => requestAnimationFrame(() => { cardVisible.value = true; }));
+onUnmounted(stopPolling);
 </script>
 
 <style scoped lang="scss">
+/* ---------- Design Tokens ---------- */
+:root {
+	--bg: #05080f;
+	--accent: #0d9488;
+	--accent-hover: #0f766e;
+	--accent-glow: rgba(13, 148, 136, 0.12);
+}
 
-/* ===== 容器 ===== */
+/* ---------- Container ---------- */
 .login-container {
+	--bg-deep: #05080f;
+	--accent: #0d9488;
+	--accent-hover: #0f766e;
+	--accent-glow: rgba(13, 148, 136, 0.12);
+	--amber: #f59e0b;
+	--panel-bg: #fafaf9;
+	--input-bg: #f5f5f4;
+	--input-border: #e7e5e4;
+	--ink: #1c1917;
+	--muted: #a8a29e;
+	--subtle: #d6d3d1;
+
 	position: relative;
 	display: flex;
 	justify-content: center;
@@ -369,241 +374,273 @@ const handleGithubLogin = () => {
 	min-height: 100vh;
 	padding: 24px 24px 56px;
 	box-sizing: border-box;
-	background: #0f172a;
-	font-family: 'Inter', 'Fira Sans', system-ui, sans-serif;
+	background: var(--bg-deep);
+	font-family: 'Outfit', system-ui, -apple-system, sans-serif;
 	overflow: hidden;
+	contain: layout style;
 }
 
-/* ===== 背景光晕 ===== */
-.background-shapes {
+/* ---------- Aurora ---------- */
+.aurora-bg {
 	position: absolute;
 	inset: 0;
-	overflow: hidden;
+	pointer-events: none;
 	z-index: 0;
 
-	.shape {
+	.aurora {
 		position: absolute;
 		border-radius: 50%;
-		filter: blur(72px);
-		opacity: 0.38;
-		animation: float 28s infinite ease-in-out;
 		will-change: transform;
 	}
 
-	.shape-1 {
-		width: 500px;
-		height: 500px;
-		background: #4f46e5;
-		top: -120px;
-		left: -80px;
+	.aurora-1 {
+		width: 55vmax;
+		height: 55vmax;
+		top: -28%;
+		left: -18%;
+		background: radial-gradient(circle, rgba(13, 148, 136, 0.16) 0%, transparent 65%);
+		animation: drift-a 22s ease-in-out infinite;
 	}
 
-	.shape-2 {
-		width: 420px;
-		height: 420px;
-		background: #ec4899;
-		bottom: -80px;
-		right: -60px;
-		animation-delay: -7s;
+	.aurora-2 {
+		width: 45vmax;
+		height: 45vmax;
+		bottom: -22%;
+		right: -12%;
+		background: radial-gradient(circle, rgba(99, 102, 241, 0.10) 0%, transparent 65%);
+		animation: drift-b 18s ease-in-out infinite;
 	}
 
-	.shape-3 {
-		width: 280px;
-		height: 280px;
-		background: #06b6d4;
+	.aurora-3 {
+		width: 30vmax;
+		height: 30vmax;
 		top: 45%;
 		left: 55%;
-		animation-delay: -13s;
+		background: radial-gradient(circle, rgba(245, 158, 11, 0.07) 0%, transparent 65%);
+		animation: drift-c 26s ease-in-out infinite;
 	}
 }
 
-@keyframes float {
-	0%, 100% { transform: translate(0, 0) scale(1); }
-	33% { transform: translate(20px, -30px) scale(1.02); }
-	66% { transform: translate(-10px, 20px) scale(0.98); }
+.noise-overlay {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	opacity: 0.03;
+	background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+	background-size: 128px 128px;
+	pointer-events: none;
 }
 
-/* ===== 登录卡片 ===== */
-.login-box {
+@keyframes drift-a {
+	0%, 100% { transform: translate(0, 0); }
+	33% { transform: translate(3vw, -2vh); }
+	66% { transform: translate(-2vw, 3vh); }
+}
+@keyframes drift-b {
+	0%, 100% { transform: translate(0, 0); }
+	33% { transform: translate(-3vw, 2vh); }
+	66% { transform: translate(2vw, -3vh); }
+}
+@keyframes drift-c {
+	0%, 100% { transform: translate(0, 0) scale(1); }
+	50% { transform: translate(-4vw, 2vh) scale(1.05); }
+}
+
+/* ---------- Card ---------- */
+.login-card {
 	position: relative;
 	display: flex;
 	width: 920px;
 	height: 560px;
 	max-width: 100%;
 	max-height: calc(100vh - 96px);
-	background: rgba(255, 255, 255, 0.08);
-	backdrop-filter: blur(16px) saturate(1.08);
-	-webkit-backdrop-filter: blur(16px) saturate(1.08);
-	border: 1px solid rgba(255, 255, 255, 0.15);
-	border-radius: 24px;
-	box-shadow:
-		0 25px 50px -12px rgba(0, 0, 0, 0.5),
-		0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+	border-radius: 20px;
 	overflow: hidden;
 	z-index: 1;
+	background: rgba(255, 255, 255, 0.035);
+	border: 1px solid rgba(255, 255, 255, 0.07);
+	box-shadow:
+		0 0 0 1px rgba(255, 255, 255, 0.03),
+		0 40px 80px -20px rgba(0, 0, 0, 0.55),
+		0 0 100px -30px var(--accent-glow);
+	opacity: 0;
+	transform: translateY(24px) scale(0.985);
+	transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+				transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+
+	&.visible {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
 }
 
-.slide-in {
-	animation: slideIn 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes slideIn {
-	from { opacity: 0; transform: translateY(24px) scale(0.98); }
-	to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-/* ===== 左侧品牌 ===== */
-.login-left {
-	width: 400px;
+/* ---------- Brand Panel ---------- */
+.brand-panel {
+	width: 380px;
 	flex-shrink: 0;
-	background: linear-gradient(160deg, rgba(79, 70, 229, 0.85) 0%, rgba(124, 58, 237, 0.85) 60%, rgba(139, 92, 246, 0.75) 100%);
+	background: linear-gradient(168deg, #0c3c37 0%, #0c1222 50%, #1a1640 100%);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	padding: 48px 40px;
-	color: white;
+	padding: 48px 36px;
+	color: #fff;
 	position: relative;
 	overflow: hidden;
 
-	.left-content {
-		text-align: center;
-		z-index: 2;
-		position: relative;
-	}
-
-	.logo-circle {
-		width: 68px;
-		height: 68px;
-		background: rgba(255, 255, 255, 0.18);
-		border-radius: 20px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin: 0 auto 20px;
-		border: 1px solid rgba(255, 255, 255, 0.25);
-		backdrop-filter: blur(8px);
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-	}
-
-	.brand-title {
-		font-size: 26px;
-		font-weight: 700;
-		letter-spacing: 0.5px;
-		margin: 0 0 6px;
-	}
-
-	.brand-desc {
-		font-size: 14px;
-		opacity: 0.75;
-		margin: 0 0 32px;
-	}
-
-	.brand-features {
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-	}
-
-	.feature-item {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-size: 13px;
-		opacity: 0.8;
-
-		:deep(.el-icon) {
-			background: rgba(255, 255, 255, 0.2);
-			border-radius: 50%;
-			padding: 2px;
-		}
-	}
-
-	.glass-decoration {
+	.brand-glow {
 		position: absolute;
-		width: 180%;
-		height: 40px;
-		background: rgba(255, 255, 255, 0.06);
-		transform: rotate(-35deg);
-		top: 15%;
-		left: -40%;
+		width: 280px;
+		height: 280px;
+		border-radius: 50%;
+		background: radial-gradient(circle, rgba(13, 148, 136, 0.15) 0%, transparent 70%);
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 		pointer-events: none;
-	}
-
-	.decoration-2 {
-		top: auto;
-		bottom: 20%;
-		left: -20%;
-		transform: rotate(-25deg);
-		opacity: 0.6;
 	}
 }
 
-/* ===== 右侧表单 ===== */
-.login-right {
+.brand-content {
+	text-align: center;
+	z-index: 2;
+	position: relative;
+}
+
+.logo-ring {
+	width: 64px;
+	height: 64px;
+	border-radius: 18px;
+	border: 1px solid rgba(13, 148, 136, 0.3);
+	background: rgba(13, 148, 136, 0.08);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto 24px;
+	color: var(--accent);
+	position: relative;
+
+	.logo-inner {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+}
+
+.brand-title {
+	font-size: 30px;
+	font-weight: 700;
+	letter-spacing: -0.5px;
+	margin: 0 0 6px;
+	background: linear-gradient(135deg, #f1f5f9 20%, #5eead4 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+.brand-subtitle {
+	font-size: 12px;
+	letter-spacing: 3px;
+	text-transform: uppercase;
+	opacity: 0.35;
+	margin: 0 0 40px;
+	font-weight: 300;
+}
+
+.feature-list {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.feature-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 13px;
+	opacity: 0.5;
+	transition: opacity 0.3s ease;
+
+	.feature-icon {
+		color: var(--accent);
+		flex-shrink: 0;
+	}
+
+	&:hover { opacity: 0.85; }
+}
+
+.brand-line {
+	position: absolute;
+	width: 250%;
+	height: 1px;
+	background: linear-gradient(90deg, transparent, rgba(13, 148, 136, 0.12), transparent);
+	pointer-events: none;
+}
+.brand-line-1 { top: 16%; left: -60%; transform: rotate(-28deg); }
+.brand-line-2 { bottom: 20%; left: -30%; transform: rotate(-18deg); opacity: 0.4; }
+
+/* ---------- Form Panel ---------- */
+.form-panel {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
-	background: rgba(255, 255, 255, 0.75);
-	backdrop-filter: blur(6px);
-	padding: 32px 44px 24px;
+	background: var(--panel-bg);
+	padding: 32px 44px 20px;
 	min-width: 0;
 	overflow: hidden;
 }
 
-/* ===== Tab 切换 ===== */
-.login-tabs {
+/* ---------- Tab Bar ---------- */
+.tab-bar {
 	position: relative;
 	display: flex;
-	background: #f1f5f9;
+	background: #e7e5e4;
 	border-radius: 10px;
 	padding: 3px;
 	flex-shrink: 0;
-
-	.tab-item {
-		position: relative;
-		z-index: 1;
-		flex: 1;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 5px;
-		padding: 9px 0;
-		border-radius: 8px;
-		font-size: 13px;
-		font-weight: 500;
-		color: #64748b;
-		cursor: pointer;
-		transition: color 0.25s ease;
-		user-select: none;
-
-		&:hover { color: #4f46e5; }
-
-		&.active {
-			color: #4f46e5;
-		}
-	}
-
-	.tab-indicator {
-		position: absolute;
-		top: 3px;
-		left: 3px;
-		width: calc(50% - 3px);
-		height: calc(100% - 6px);
-		background: #fff;
-		border-radius: 8px;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
-		transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-		z-index: 0;
-
-		&.slide-right {
-			transform: translateX(100%);
-		}
-	}
 }
 
-/* ===== 内容区 ===== */
-.login-content {
+.tab-btn {
+	position: relative;
+	z-index: 1;
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	padding: 9px 0;
+	border-radius: 8px;
+	font-size: 13px;
+	font-weight: 500;
+	font-family: inherit;
+	color: var(--muted);
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	transition: color 0.25s ease;
+	user-select: none;
+
+	&:hover { color: var(--accent); }
+	&.active { color: var(--accent); }
+}
+
+.tab-pill {
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	width: calc(50% - 3px);
+	height: calc(100% - 6px);
+	background: #fff;
+	border-radius: 8px;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	z-index: 0;
+
+	&.right { transform: translateX(100%); }
+}
+
+/* ---------- Form Body ---------- */
+.form-body {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
@@ -612,323 +649,282 @@ const handleGithubLogin = () => {
 	overflow: hidden;
 }
 
-/* 模式切换过渡 */
-.mode-fade-enter-active {
-	transition: opacity 0.2s ease, transform 0.25s ease;
-}
-.mode-fade-leave-active {
-	transition: opacity 0.15s ease, transform 0.2s ease;
-}
-.mode-fade-enter-from {
-	opacity: 0;
-	transform: translateY(8px);
-}
-.mode-fade-leave-to {
-	opacity: 0;
-	transform: translateY(-6px);
-}
+.fade-slide-enter-active { transition: opacity 0.2s ease, transform 0.25s ease; }
+.fade-slide-leave-active { transition: opacity 0.15s ease, transform 0.2s ease; }
+.fade-slide-enter-from { opacity: 0; transform: translateY(8px); }
+.fade-slide-leave-to { opacity: 0; transform: translateY(-6px); }
 
-/* ===== 表单头部 ===== */
-.form-header {
+/* ---------- Section Head ---------- */
+.section-head {
 	margin-bottom: 24px;
 
 	h2 {
 		font-size: 22px;
 		font-weight: 700;
-		color: #0f172a;
+		color: var(--ink);
 		margin: 0 0 4px;
 		letter-spacing: -0.3px;
 	}
 
 	p {
-		color: #64748b;
+		color: var(--muted);
 		font-size: 13px;
 		margin: 0;
-		line-height: 1.5;
 	}
+
+	&.center { text-align: center; }
 }
 
-/* ===== 账号表单 ===== */
+/* ---------- Form ---------- */
 .login-form {
-	.custom-input {
+	.styled-input {
 		:deep(.el-input__wrapper) {
-			background: #f8fafc;
+			background: var(--input-bg);
 			box-shadow: none;
-			border: 1.5px solid #e2e8f0;
+			border: 1.5px solid var(--input-border);
 			border-radius: 10px;
 			transition: all 0.2s ease;
 			padding: 6px 12px;
 
 			&.is-focus {
 				background: #fff;
-				border-color: #4f46e5;
-				box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.08);
+				border-color: var(--accent);
+				box-shadow: 0 0 0 3px var(--accent-glow);
 			}
-
-			&:hover:not(.is-focus) {
-				border-color: #cbd5e1;
-			}
+			&:hover:not(.is-focus) { border-color: var(--subtle); }
 		}
 
 		:deep(.el-input__inner) {
-			color: #1e293b;
+			color: var(--ink);
 			height: 36px;
 			font-size: 14px;
+			font-family: inherit;
 		}
-
-		:deep(.el-input__inner::placeholder) {
-			color: #94a3b8;
-		}
+		:deep(.el-input__inner::placeholder) { color: var(--muted); }
 	}
 
-	.el-form-item {
-		margin-bottom: 16px;
-	}
-
-	.form-options {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin-bottom: 20px;
-
-		.forgot-pwd {
-			font-size: 13px;
-			color: #4f46e5;
-			transition: color 0.2s ease;
-			cursor: pointer;
-
-			&:hover { color: #4338ca; }
-		}
-	}
-
-	.submit-btn {
-		width: 100%;
-		height: 44px;
-		font-size: 15px;
-		font-weight: 600;
-		background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-		border: none;
-		border-radius: 10px;
-		transition: all 0.25s ease;
-		cursor: pointer;
-
-		&:hover {
-			transform: translateY(-1px);
-			box-shadow: 0 8px 24px -6px rgba(79, 70, 229, 0.45);
-		}
-
-		&:active {
-			transform: translateY(0);
-			box-shadow: 0 2px 8px -2px rgba(79, 70, 229, 0.4);
-		}
-	}
+	.el-form-item { margin-bottom: 16px; }
 }
 
-.login-error {
-	margin-bottom: 14px;
-}
-
-/* ===== 扫码面板 ===== */
-.qrcode-panel {
+.form-row {
 	display: flex;
-	flex-direction: column;
+	justify-content: space-between;
 	align-items: center;
+	margin-bottom: 20px;
 
-	.form-header {
-		text-align: center;
-		margin-bottom: 20px;
-	}
-}
-
-.qrcode-wrapper {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 12px;
-
-	.qrcode-box {
-		position: relative;
-		width: 168px;
-		height: 168px;
-		border-radius: 14px;
-		overflow: hidden;
-		border: 2px solid #e2e8f0;
-		background: #fff;
-		transition: border-color 0.25s ease, box-shadow 0.25s ease;
-
-		.qrcode-img {
-			display: block;
-			width: 168px;
-			height: 168px;
-		}
-
-		&:hover {
-			border-color: #c7d2fe;
-			box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.06);
-		}
-
-		&.is-scanned {
-			border-color: #4f46e5;
-			box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-		}
-
-		&.is-expired .qrcode-img {
-			filter: blur(4px);
-		}
-	}
-
-	.qrcode-overlay {
-		position: absolute;
-		inset: 0;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: 6px;
-		background: rgba(255, 255, 255, 0.94);
-		border-radius: 12px;
-		animation: overlayIn 0.25s ease;
-
-		.overlay-title {
-			color: #0f172a;
-			font-size: 14px;
-			font-weight: 600;
-			margin: 0;
-		}
-
-		.overlay-sub {
-			color: #64748b;
-			font-size: 12px;
-			margin: 0;
-		}
-	}
-
-	.qrcode-tip {
-		color: #64748b;
+	.link-accent {
 		font-size: 13px;
-		margin: 0;
-
-		strong { color: #4f46e5; font-weight: 600; }
+		color: var(--accent);
+		cursor: pointer;
+		&:hover { color: var(--accent-hover); }
 	}
 }
 
-@keyframes overlayIn {
-	from { opacity: 0; transform: scale(0.95); }
+.form-alert { margin-bottom: 14px; }
+
+/* ---------- Submit Button ---------- */
+.submit-btn {
+	width: 100%;
+	height: 44px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	font-size: 15px;
+	font-weight: 600;
+	font-family: inherit;
+	color: #fff;
+	background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+	border: none;
+	border-radius: 10px;
+	cursor: pointer;
+	transition: all 0.25s ease;
+
+	&:hover:not(:disabled) {
+		transform: translateY(-1px);
+		box-shadow: 0 10px 28px -8px rgba(13, 148, 136, 0.45);
+	}
+	&:active:not(:disabled) {
+		transform: translateY(0);
+		box-shadow: 0 4px 12px -4px rgba(13, 148, 136, 0.35);
+	}
+	&:disabled { opacity: 0.8; cursor: wait; }
+	&.loading { pointer-events: none; }
+}
+
+.btn-loader {
+	width: 16px;
+	height: 16px;
+	border: 2px solid rgba(255, 255, 255, 0.3);
+	border-top-color: #fff;
+	border-radius: 50%;
+	animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- QR Section ---------- */
+.qr-section {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.qr-frame {
+	position: relative;
+	width: 160px;
+	height: 160px;
+	border-radius: 16px;
+	overflow: hidden;
+	border: 2px solid var(--input-border);
+	background: #fff;
+	transition: border-color 0.25s ease, box-shadow 0.25s ease;
+
+	.qr-img { display: block; width: 160px; height: 160px; }
+
+	&:hover {
+		border-color: rgba(13, 148, 136, 0.25);
+		box-shadow: 0 0 0 3px var(--accent-glow);
+	}
+	&.scanned {
+		border-color: var(--accent);
+		box-shadow: 0 0 0 3px var(--accent-glow);
+	}
+	&.expired .qr-img { filter: blur(4px); }
+}
+
+.qr-mask {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	background: rgba(255, 255, 255, 0.94);
+	border-radius: 14px;
+	animation: pop-in 0.25s ease;
+
+	.mask-title { font-size: 14px; font-weight: 600; color: var(--ink); margin: 0; }
+	.mask-sub { font-size: 12px; color: var(--muted); margin: 0; }
+}
+
+.refresh-btn {
+	font-size: 13px;
+	font-family: inherit;
+	font-weight: 500;
+	color: var(--accent);
+	background: none;
+	border: 1px solid var(--accent);
+	border-radius: 20px;
+	padding: 4px 16px;
+	cursor: pointer;
+	transition: background 0.2s;
+
+	&:hover { background: var(--accent-glow); }
+}
+
+@keyframes pop-in {
+	from { opacity: 0; transform: scale(0.92); }
 	to { opacity: 1; transform: scale(1); }
 }
 
-.qrcode-steps {
-	display: flex;
-	gap: 24px;
-	margin-top: 20px;
+.qr-hint {
+	color: var(--muted);
+	font-size: 13px;
+	margin: 12px 0 0;
+	strong { color: var(--accent); font-weight: 600; }
+}
 
-	.step-item {
+.qr-steps {
+	display: flex;
+	gap: 20px;
+	margin-top: 20px;
+}
+
+.qr-step {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 12px;
+	color: var(--muted);
+
+	.step-dot {
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		background: linear-gradient(135deg, #0d9488, #0f766e);
+		color: #fff;
+		font-size: 11px;
+		font-weight: 600;
 		display: flex;
 		align-items: center;
-		gap: 6px;
-		font-size: 12px;
-		color: #94a3b8;
-
-		.step-num {
-			width: 20px;
-			height: 20px;
-			border-radius: 50%;
-			background: linear-gradient(135deg, #4f46e5, #7c3aed);
-			color: #fff;
-			font-size: 11px;
-			font-weight: 600;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-shrink: 0;
-		}
+		justify-content: center;
+		flex-shrink: 0;
 	}
 }
 
-/* ===== 底部 ===== */
-.form-footer {
+/* ---------- Footer ---------- */
+.form-foot {
 	flex-shrink: 0;
-	padding-top: 16px;
-	border-top: 1px solid #f1f5f9;
+	padding-top: 14px;
+	border-top: 1px solid var(--input-border);
 	margin-top: auto;
 }
 
-.social-login {
+.divider-line {
+	display: flex;
+	align-items: center;
 	margin-bottom: 12px;
 
-	.divider {
-		display: flex;
-		align-items: center;
-		margin-bottom: 14px;
-
-		&::before,
-		&::after {
-			content: '';
-			flex: 1;
-			height: 1px;
-			background: #e2e8f0;
-		}
-
-		span {
-			padding: 0 12px;
-			font-size: 12px;
-			color: #94a3b8;
-			white-space: nowrap;
-		}
+	&::before, &::after {
+		content: '';
+		flex: 1;
+		height: 1px;
+		background: var(--input-border);
 	}
+	span { padding: 0 12px; font-size: 12px; color: var(--muted); white-space: nowrap; }
+}
 
-	.social-buttons {
-		display: flex;
-		justify-content: center;
-		gap: 16px;
-	}
+.social-row {
+	display: flex;
+	justify-content: center;
+	gap: 12px;
+	margin-bottom: 12px;
 }
 
 .social-btn {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 6px;
+	gap: 7px;
 	padding: 8px 20px;
 	border-radius: 8px;
-	border: 1.5px solid #e2e8f0;
+	border: 1.5px solid var(--input-border);
 	background: #fff;
-	cursor: pointer;
-	transition: all 0.2s ease;
 	font-size: 13px;
 	font-weight: 500;
-	color: #334155;
+	font-family: inherit;
+	color: #44403c;
+	cursor: pointer;
+	transition: all 0.2s ease;
 
 	&:hover {
-		border-color: #cbd5e1;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+		border-color: var(--subtle);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 	}
-
-	&:active {
-		transform: scale(0.98);
-	}
+	&:active { transform: scale(0.98); }
 }
 
-.github-btn {
-	svg {
-		flex-shrink: 0;
-	}
-
-	&:hover {
-		border-color: #6e7681;
-		background: #f6f8fa;
-	}
-}
-
-.register-link {
+.foot-link {
 	text-align: center;
 	font-size: 13px;
-	color: #94a3b8;
+	color: var(--muted);
 	margin: 0;
 }
 
-/* ===== ICP ===== */
-.icp-info {
+/* ---------- ICP ---------- */
+.icp {
 	position: absolute;
 	bottom: 20px;
 	left: 0;
@@ -937,26 +933,25 @@ const handleGithubLogin = () => {
 	z-index: 1;
 
 	a {
-		color: rgba(255, 255, 255, 0.45);
+		color: rgba(255, 255, 255, 0.25);
 		font-size: 12px;
 		text-decoration: none;
-		transition: color 0.25s ease;
+		transition: color 0.25s;
 
-		&:hover { color: rgba(255, 255, 255, 0.8); }
+		&:hover { color: rgba(255, 255, 255, 0.55); }
 	}
 }
 
-/* ===== prefers-reduced-motion ===== */
+/* ---------- Reduced Motion ---------- */
 @media (prefers-reduced-motion: reduce) {
-	.background-shapes .shape { animation: none; }
-	.slide-in { animation: none; }
-	.mode-fade-enter-active,
-	.mode-fade-leave-active { transition: none; }
+	.aurora-bg .aurora { animation: none; }
+	.login-card { transition: none; opacity: 1; transform: none; }
+	.fade-slide-enter-active, .fade-slide-leave-active { transition: none; }
 }
 
-/* ===== 移动端 ===== */
+/* ---------- Mobile ---------- */
 @media (max-width: 960px) {
-	.login-box {
+	.login-card {
 		width: 92%;
 		max-width: 420px;
 		height: auto;
@@ -964,23 +959,17 @@ const handleGithubLogin = () => {
 		flex-direction: column;
 	}
 
-	.login-left {
+	.brand-panel {
 		width: auto;
 		padding: 28px 24px;
-		min-height: 130px;
+		min-height: 120px;
 
-		.brand-features { display: none; }
-		.brand-title { font-size: 20px; }
+		.feature-list { display: none; }
+		.brand-title { font-size: 22px; }
+		.brand-subtitle { margin-bottom: 0; }
 	}
 
-	.login-right {
-		padding: 24px;
-	}
-
-	.qrcode-steps {
-		flex-direction: column;
-		gap: 8px;
-		align-items: center;
-	}
+	.form-panel { padding: 24px; }
+	.qr-steps { flex-direction: column; gap: 8px; align-items: center; }
 }
 </style>
