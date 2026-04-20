@@ -4,6 +4,44 @@
  */
 
 export interface paths {
+    "/wechat/user-binding": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有用户绑定 */
+        get: operations["listAll"];
+        /** 更新用户绑定 */
+        put: operations["update"];
+        /** 新增用户绑定 */
+        post: operations["create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wechat/app-config": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有应用配置 */
+        get: operations["listAll_1"];
+        /** 更新应用配置 */
+        put: operations["update_1"];
+        /** 新增应用配置 */
+        post: operations["create_1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/sys/user": {
         parameters: {
             query?: never;
@@ -11,9 +49,9 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["listAll"];
-        put: operations["update"];
-        post: operations["create"];
+        get: operations["listAll_2"];
+        put: operations["update_2"];
+        post: operations["create_2"];
         delete?: never;
         options?: never;
         head?: never;
@@ -28,8 +66,27 @@ export interface paths {
             cookie?: never;
         };
         get: operations["getAll"];
-        put: operations["update_1"];
+        put: operations["update_3"];
         post: operations["add"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sys/userconfig": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有用户配置列表 */
+        get: operations["list"];
+        /** 修改用户配置 */
+        put: operations["update_4"];
+        /** 新增用户配置 */
+        post: operations["add_1"];
         delete?: never;
         options?: never;
         head?: never;
@@ -43,9 +100,9 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["listAll_1"];
-        put: operations["update_2"];
-        post: operations["add_1"];
+        get: operations["listAll_3"];
+        put: operations["update_5"];
+        post: operations["add_2"];
         delete?: never;
         options?: never;
         head?: never;
@@ -60,8 +117,8 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        put: operations["update_3"];
-        post: operations["create_1"];
+        put: operations["update_6"];
+        post: operations["create_3"];
         delete?: never;
         options?: never;
         head?: never;
@@ -75,9 +132,9 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["listAll_2"];
-        put: operations["update_4"];
-        post: operations["create_2"];
+        get: operations["listAll_4"];
+        put: operations["update_7"];
+        post: operations["create_4"];
         delete?: never;
         options?: never;
         head?: never;
@@ -92,8 +149,8 @@ export interface paths {
             cookie?: never;
         };
         get: operations["getAll_1"];
-        put: operations["update_5"];
-        post: operations["add_2"];
+        put: operations["update_8"];
+        post: operations["add_3"];
         delete?: never;
         options?: never;
         head?: never;
@@ -107,9 +164,9 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["listAll_3"];
-        put: operations["update_6"];
-        post: operations["create_3"];
+        get: operations["listAll_5"];
+        put: operations["update_9"];
+        post: operations["create_5"];
         delete?: never;
         options?: never;
         head?: never;
@@ -123,9 +180,9 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["list"];
-        put: operations["update_7"];
-        post: operations["add_3"];
+        get: operations["list_1"];
+        put: operations["update_10"];
+        post: operations["add_4"];
         delete?: never;
         options?: never;
         head?: never;
@@ -140,8 +197,8 @@ export interface paths {
             cookie?: never;
         };
         get: operations["getAll_2"];
-        put: operations["update_8"];
-        post: operations["add_4"];
+        put: operations["update_11"];
+        post: operations["add_5"];
         delete?: never;
         options?: never;
         head?: never;
@@ -155,9 +212,9 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["listAll_4"];
-        put: operations["update_9"];
-        post: operations["create_4"];
+        get: operations["listAll_6"];
+        put: operations["update_12"];
+        post: operations["create_6"];
         delete?: never;
         options?: never;
         head?: never;
@@ -171,9 +228,9 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["list_1"];
-        put: operations["update_10"];
-        post: operations["add_5"];
+        get: operations["list_2"];
+        put: operations["update_13"];
+        post: operations["add_6"];
         delete?: never;
         options?: never;
         head?: never;
@@ -188,11 +245,11 @@ export interface paths {
             cookie?: never;
         };
         /** 查询所有交易标签列表 */
-        get: operations["list_2"];
+        get: operations["list_3"];
         /** 修改交易标签 */
-        put: operations["update_11"];
+        put: operations["update_14"];
         /** 新增交易标签 */
-        post: operations["add_6"];
+        post: operations["add_7"];
         delete?: never;
         options?: never;
         head?: never;
@@ -207,9 +264,9 @@ export interface paths {
             cookie?: never;
         };
         /** 查询所有财务交易记录列表 */
-        get: operations["list_3"];
+        get: operations["list_4"];
         /** 修改财务交易记录 */
-        put: operations["update_12"];
+        put: operations["update_15"];
         post?: never;
         delete?: never;
         options?: never;
@@ -225,11 +282,11 @@ export interface paths {
             cookie?: never;
         };
         /** 查询所有标签列表 */
-        get: operations["list_4"];
+        get: operations["list_5"];
         /** 修改标签 */
-        put: operations["update_13"];
+        put: operations["update_16"];
         /** 新增标签 */
-        post: operations["add_7"];
+        post: operations["add_8"];
         delete?: never;
         options?: never;
         head?: never;
@@ -244,11 +301,11 @@ export interface paths {
             cookie?: never;
         };
         /** 查询所有价格列表 */
-        get: operations["list_5"];
+        get: operations["list_6"];
         /** 修改价格 */
-        put: operations["update_14"];
+        put: operations["update_17"];
         /** 新增价格 */
-        post: operations["add_8"];
+        post: operations["add_9"];
         delete?: never;
         options?: never;
         head?: never;
@@ -263,11 +320,11 @@ export interface paths {
             cookie?: never;
         };
         /** 查询所有财务分录列表 */
-        get: operations["list_6"];
+        get: operations["list_7"];
         /** 修改财务分录 */
-        put: operations["update_15"];
+        put: operations["update_18"];
         /** 新增财务分录 */
-        post: operations["add_9"];
+        post: operations["add_10"];
         delete?: never;
         options?: never;
         head?: never;
@@ -282,11 +339,11 @@ export interface paths {
             cookie?: never;
         };
         /** 查询所有预算列表 */
-        get: operations["list_7"];
+        get: operations["list_8"];
         /** 修改预算 */
-        put: operations["update_16"];
+        put: operations["update_19"];
         /** 新增预算 */
-        post: operations["add_10"];
+        post: operations["add_11"];
         delete?: never;
         options?: never;
         head?: never;
@@ -301,11 +358,11 @@ export interface paths {
             cookie?: never;
         };
         /** 查询所有账簿列表 */
-        get: operations["list_8"];
+        get: operations["list_9"];
         /** 修改账簿 */
-        put: operations["update_17"];
+        put: operations["update_20"];
         /** 新增账簿 */
-        post: operations["add_11"];
+        post: operations["add_12"];
         delete?: never;
         options?: never;
         head?: never;
@@ -320,11 +377,11 @@ export interface paths {
             cookie?: never;
         };
         /** 查询所有账本成员列表 */
-        get: operations["list_9"];
+        get: operations["list_10"];
         /** 修改账本成员 */
-        put: operations["update_18"];
+        put: operations["update_21"];
         /** 新增账本成员 */
-        post: operations["add_12"];
+        post: operations["add_13"];
         delete?: never;
         options?: never;
         head?: never;
@@ -339,11 +396,35 @@ export interface paths {
             cookie?: never;
         };
         /** 查询所有账户列表 */
-        get: operations["list_10"];
+        get: operations["list_11"];
         /** 修改账户 */
-        put: operations["update_19"];
+        put: operations["update_22"];
         /** 新增账户 */
-        post: operations["add_13"];
+        post: operations["add_14"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wechat/callback/{agentId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 验证回调URL
+         * @description 企业微信后台验证回调URL时调用
+         */
+        get: operations["verifyUrl"];
+        put?: never;
+        /**
+         * 接收消息和事件
+         * @description 企业微信消息和事件回调
+         */
+        post: operations["receiveMessage"];
         delete?: never;
         options?: never;
         head?: never;
@@ -380,7 +461,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** 新增财务交易记录 */
-        post: operations["add_14"];
+        post: operations["add_15"];
         delete?: never;
         options?: never;
         head?: never;
@@ -436,6 +517,264 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/wechat/user-binding/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询用户绑定 */
+        get: operations["getById"];
+        put?: never;
+        post?: never;
+        /** 删除用户绑定 */
+        delete: operations["delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wechat/user-binding/test": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 测试接口 */
+        get: operations["test"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wechat/user-binding/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询用户绑定 */
+        get: operations["pageAll"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wechat/user-binding/by-wxuser-app": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据企业微信UserID和应用ID查询绑定 */
+        get: operations["getByWxUserIdAndAppId"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wechat/user-binding/by-user-app": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据用户ID和应用ID查询绑定 */
+        get: operations["getByUserIdAndAppId"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wechat/message": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有消息 */
+        get: operations["listAll_7"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wechat/message/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询消息 */
+        get: operations["getById_1"];
+        put?: never;
+        post?: never;
+        /** 删除消息记录 */
+        delete: operations["delete_1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wechat/message/test": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 测试接口 */
+        get: operations["test_1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wechat/message/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询消息 */
+        get: operations["pageAll_1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wechat/message/by-user/{userId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据用户ID查询消息 */
+        get: operations["listByUserId"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wechat/message/by-direction/{direction}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据消息方向查询 */
+        get: operations["listByDirection"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wechat/message/by-app/{appId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据应用ID查询消息 */
+        get: operations["listByAppId"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wechat/app-config/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询应用配置 */
+        get: operations["getById_2"];
+        put?: never;
+        post?: never;
+        /** 删除应用配置 */
+        delete: operations["delete_2"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wechat/app-config/test": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 测试接口 */
+        get: operations["test_2"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wechat/app-config/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询应用配置 */
+        get: operations["pageAll_2"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/sys/userrole/{id}": {
         parameters: {
             query?: never;
@@ -443,10 +782,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById"];
+        get: operations["getById_3"];
         put?: never;
         post?: never;
-        delete: operations["delete"];
+        delete: operations["delete_3"];
         options?: never;
         head?: never;
         patch?: never;
@@ -468,6 +807,41 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/sys/userconfig/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询用户配置 */
+        get: operations["getById_4"];
+        put?: never;
+        post?: never;
+        /** 删除用户配置 */
+        delete: operations["delete_4"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sys/userconfig/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询用户配置 */
+        get: operations["page"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/sys/userapp/{id}": {
         parameters: {
             query?: never;
@@ -475,10 +849,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_1"];
+        get: operations["getById_5"];
         put?: never;
         post?: never;
-        delete: operations["delete_1"];
+        delete: operations["delete_5"];
         options?: never;
         head?: never;
         patch?: never;
@@ -491,10 +865,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_2"];
+        get: operations["getById_6"];
         put?: never;
         post?: never;
-        delete: operations["delete_2"];
+        delete: operations["delete_6"];
         options?: never;
         head?: never;
         patch?: never;
@@ -507,7 +881,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["test"];
+        get: operations["test_3"];
         put?: never;
         post?: never;
         delete?: never;
@@ -523,7 +897,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["pageAll"];
+        get: operations["pageAll_3"];
         put?: never;
         post?: never;
         delete?: never;
@@ -539,10 +913,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_3"];
+        get: operations["getById_7"];
         put?: never;
         post?: never;
-        delete: operations["delete_3"];
+        delete: operations["delete_7"];
         options?: never;
         head?: never;
         patch?: never;
@@ -555,10 +929,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_4"];
+        get: operations["getById_8"];
         put?: never;
         post?: never;
-        delete: operations["delete_4"];
+        delete: operations["delete_8"];
         options?: never;
         head?: never;
         patch?: never;
@@ -571,10 +945,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_5"];
+        get: operations["getById_9"];
         put?: never;
         post?: never;
-        delete: operations["delete_5"];
+        delete: operations["delete_9"];
         options?: never;
         head?: never;
         patch?: never;
@@ -603,7 +977,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["test_1"];
+        get: operations["test_4"];
         put?: never;
         post?: never;
         delete?: never;
@@ -619,7 +993,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["pageAll_1"];
+        get: operations["pageAll_4"];
         put?: never;
         post?: never;
         delete?: never;
@@ -635,10 +1009,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_6"];
+        get: operations["getById_10"];
         put?: never;
         post?: never;
-        delete: operations["delete_6"];
+        delete: operations["delete_10"];
         options?: never;
         head?: never;
         patch?: never;
@@ -651,10 +1025,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_7"];
+        get: operations["getById_11"];
         put?: never;
         post?: never;
-        delete: operations["delete_7"];
+        delete: operations["delete_11"];
         options?: never;
         head?: never;
         patch?: never;
@@ -667,10 +1041,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_8"];
+        get: operations["getById_12"];
         put?: never;
         post?: never;
-        delete: operations["delete_8"];
+        delete: operations["delete_12"];
         options?: never;
         head?: never;
         patch?: never;
@@ -715,7 +1089,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["pageAll_2"];
+        get: operations["pageAll_5"];
         put?: never;
         post?: never;
         delete?: never;
@@ -747,10 +1121,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_9"];
+        get: operations["getById_13"];
         put?: never;
         post?: never;
-        delete: operations["delete_9"];
+        delete: operations["delete_13"];
         options?: never;
         head?: never;
         patch?: never;
@@ -795,10 +1169,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_10"];
+        get: operations["getById_14"];
         put?: never;
         post?: never;
-        delete: operations["delete_10"];
+        delete: operations["delete_14"];
         options?: never;
         head?: never;
         patch?: never;
@@ -844,11 +1218,11 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询交易标签 */
-        get: operations["getById_11"];
+        get: operations["getById_15"];
         put?: never;
         post?: never;
         /** 删除交易标签 */
-        delete: operations["delete_11"];
+        delete: operations["delete_15"];
         options?: never;
         head?: never;
         patch?: never;
@@ -862,7 +1236,7 @@ export interface paths {
             cookie?: never;
         };
         /** 分页查询交易标签 */
-        get: operations["page"];
+        get: operations["page_1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -879,11 +1253,11 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询财务交易记录 */
-        get: operations["getById_12"];
+        get: operations["getById_16"];
         put?: never;
         post?: never;
         /** 根据ID删除财务交易记录 */
-        delete: operations["delete_12"];
+        delete: operations["delete_16"];
         options?: never;
         head?: never;
         patch?: never;
@@ -897,7 +1271,27 @@ export interface paths {
             cookie?: never;
         };
         /** 分页查询财务交易记录 */
-        get: operations["page_1"];
+        get: operations["page_2"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/transactions/monthly-statistics": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 获取本月收支统计
+         * @description 统计本月的收入总额、支出总额和结余
+         */
+        get: operations["getMonthlyStatistics"];
         put?: never;
         post?: never;
         delete?: never;
@@ -914,11 +1308,11 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询标签 */
-        get: operations["getById_13"];
+        get: operations["getById_17"];
         put?: never;
         post?: never;
         /** 删除标签 */
-        delete: operations["delete_13"];
+        delete: operations["delete_17"];
         options?: never;
         head?: never;
         patch?: never;
@@ -932,7 +1326,7 @@ export interface paths {
             cookie?: never;
         };
         /** 分页查询标签 */
-        get: operations["page_2"];
+        get: operations["page_3"];
         put?: never;
         post?: never;
         delete?: never;
@@ -949,11 +1343,11 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询价格 */
-        get: operations["getById_14"];
+        get: operations["getById_18"];
         put?: never;
         post?: never;
         /** 根据ID删除价格 */
-        delete: operations["delete_14"];
+        delete: operations["delete_18"];
         options?: never;
         head?: never;
         patch?: never;
@@ -967,7 +1361,7 @@ export interface paths {
             cookie?: never;
         };
         /** 分页查询价格 */
-        get: operations["page_3"];
+        get: operations["page_4"];
         put?: never;
         post?: never;
         delete?: never;
@@ -984,11 +1378,11 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询财务分录 */
-        get: operations["getById_15"];
+        get: operations["getById_19"];
         put?: never;
         post?: never;
         /** 根据ID删除财务分录 */
-        delete: operations["delete_15"];
+        delete: operations["delete_19"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1002,7 +1396,7 @@ export interface paths {
             cookie?: never;
         };
         /** 分页查询财务分录 */
-        get: operations["page_4"];
+        get: operations["page_5"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1019,11 +1413,11 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询预算 */
-        get: operations["getById_16"];
+        get: operations["getById_20"];
         put?: never;
         post?: never;
         /** 删除预算 */
-        delete: operations["delete_16"];
+        delete: operations["delete_20"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1037,7 +1431,7 @@ export interface paths {
             cookie?: never;
         };
         /** 分页查询预算 */
-        get: operations["page_5"];
+        get: operations["page_6"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1054,11 +1448,28 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询账簿 */
-        get: operations["getById_17"];
+        get: operations["getById_21"];
         put?: never;
         post?: never;
         /** 根据ID删除账簿 */
-        delete: operations["delete_17"];
+        delete: operations["delete_21"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/books/{bookId}/asset-summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询账本资产概览（总资产、总负债、净资产） */
+        get: operations["getAssetSummary"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -1072,7 +1483,7 @@ export interface paths {
             cookie?: never;
         };
         /** 分页查询账簿 */
-        get: operations["page_6"];
+        get: operations["page_7"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1106,11 +1517,11 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询账本成员 */
-        get: operations["getById_18"];
+        get: operations["getById_22"];
         put?: never;
         post?: never;
         /** 根据ID删除账本成员 */
-        delete: operations["delete_18"];
+        delete: operations["delete_22"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1124,7 +1535,7 @@ export interface paths {
             cookie?: never;
         };
         /** 分页查询账本成员 */
-        get: operations["page_7"];
+        get: operations["page_8"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1141,11 +1552,11 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询账户 */
-        get: operations["getById_19"];
+        get: operations["getById_23"];
         put?: never;
         post?: never;
         /** 删除账户 */
-        delete: operations["delete_19"];
+        delete: operations["delete_23"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1193,7 +1604,127 @@ export interface paths {
             cookie?: never;
         };
         /** 分页查询账户 */
-        get: operations["page_8"];
+        get: operations["page_9"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/fin/transactions/yearly-trend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 查询年度收支趋势
+         * @description 按月统计一年12个月的收入、支出、结余趋势
+         */
+        get: operations["getYearlyTrend"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/fin/transactions/tag-statistics": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 查询标签统计
+         * @description 按标签分组统计支出金额、笔数和占比
+         */
+        get: operations["getTagStatistics"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/fin/transactions/monthly-statistics": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 查询指定月份收支统计
+         * @description 查询账本某月的收入总额、支出总额和结余，不传年月则默认当月
+         */
+        get: operations["getMonthlyStatistics_1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/fin/transactions/details": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 查询交易流水明细
+         * @description 按日期分组的流水账视图，每笔交易展示收支类型、金额、科目、标签等信息，支持按时间范围筛选
+         */
+        get: operations["getTransactionDetails"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/fin/transactions/category-rank": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 查询分类排行
+         * @description 按科目分类统计支出或收入排行，含金额和占比
+         */
+        get: operations["getCategoryRank"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/fin/transactions/account-balances": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 查询资产/负债各科目余额明细
+         * @description 查询指定类型（ASSET/LIABILITY）下每个叶子科目的当前余额
+         */
+        get: operations["getAccountBalances"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1222,6 +1753,131 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** @description 企业微信用户绑定表实体基类 */
+        BaseWeChatUserBinding: {
+            /**
+             * Format: int64
+             * @description 主键ID
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 系统用户ID(关联sys_user.user_id)
+             */
+            userId?: number;
+            /** @description 企业微信UserID */
+            wxUserId?: string;
+            /**
+             * Format: int64
+             * @description 应用ID(关联wechat_app_config.id)
+             */
+            appId?: number;
+            /** @description 企业微信OpenID */
+            wxOpenid?: string;
+            /** @description 企业微信用户姓名 */
+            wxName?: string;
+            /** @description 所属部门 */
+            wxDepartment?: string;
+            /** @description 职位 */
+            wxPosition?: string;
+            /** @description 手机号 */
+            wxMobile?: string;
+            /** @description 邮箱 */
+            wxEmail?: string;
+            /**
+             * Format: int32
+             * @description 激活状态(0=已停用,1=已激活,2=未激活,4=被禁用)
+             */
+            wxStatus?: number;
+            /**
+             * Format: int32
+             * @description 是否为主账号(0=否,1=是)
+             */
+            isPrimary?: number;
+            /**
+             * Format: date-time
+             * @description 绑定时间
+             */
+            bindTime?: string;
+            /**
+             * Format: date-time
+             * @description 最后同步时间
+             */
+            lastSyncTime?: string;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt?: string;
+        };
+        ResponseResultBaseWeChatUserBinding: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["BaseWeChatUserBinding"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        /** @description 企业微信应用配置表实体基类 */
+        BaseWeChatAppConfig: {
+            /**
+             * Format: int64
+             * @description 主键ID
+             */
+            id?: number;
+            /** @description 应用名称 */
+            appName?: string;
+            /** @description 企业微信企业ID */
+            corpId?: string;
+            /** @description 企业微信应用密钥 */
+            corpSecret?: string;
+            /**
+             * Format: int64
+             * @description 企业微信应用AgentId
+             */
+            agentId?: number;
+            /** @description 回调验证Token */
+            token?: string;
+            /** @description 消息加密密钥 */
+            encodingAesKey?: string;
+            /**
+             * Format: int32
+             * @description 是否启用(0=禁用,1=启用)
+             */
+            isEnabled?: number;
+            /** @description 消息处理器Bean名称（完整类名） */
+            handlerBeanName?: string;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt?: string;
+            /**
+             * Format: int64
+             * @description 创建人ID
+             */
+            createdBy?: number;
+        };
+        ResponseResultBaseWeChatAppConfig: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["BaseWeChatAppConfig"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
         SysUser: {
             /**
              * Format: int64
@@ -1309,6 +1965,43 @@ export interface components {
             timestamp?: number;
             success?: boolean;
         };
+        SysUserConfig: {
+            /**
+             * Format: int64
+             * @description 配置项唯一ID
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 用户ID
+             */
+            userId?: number;
+            /** @description 配置键名 */
+            configKey?: string;
+            /** @description 配置值 */
+            configValue?: string;
+            /** @description 配置描述 */
+            description?: string;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt?: string;
+        };
+        ResponseResultBoolean: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: boolean;
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
         SysUserApp: {
             /** Format: int64 */
             id?: number;
@@ -1391,15 +2084,6 @@ export interface components {
             permissionId?: number;
             /** Format: date-time */
             createdAt?: string;
-        };
-        ResponseResultBoolean: {
-            /** Format: int32 */
-            code?: number;
-            message?: string;
-            data?: boolean;
-            /** Format: int64 */
-            timestamp?: number;
-            success?: boolean;
         };
         SysPermission: {
             /** Format: int32 */
@@ -1559,13 +2243,13 @@ export interface components {
              * @description 交易发生的实际时间
              */
             transDate?: string;
-            /** @description 交易描述 */
+            /** @description 交易描述 (如：周末超市采购) */
             description?: string;
-            /** @description 附件ID(关联MinIO文件对象) */
+            /** @description 附件ID (关联MinIO文件对象) */
             attachmentId?: string;
             /**
              * Format: int64
-             * @description 创建人ID(关联RBAC用户表)
+             * @description 创建人ID (关联RBAC用户表)
              */
             createdBy?: number;
             /**
@@ -1575,7 +2259,7 @@ export interface components {
             createdAt?: string;
             /**
              * Format: int64
-             * @description 用户id
+             * @description 用户ID
              */
             userId?: number;
             /**
@@ -1583,6 +2267,13 @@ export interface components {
              * @description 所属账本ID
              */
             bookId?: number;
+            /** @description 单边金额 */
+            amount?: number;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt?: string;
         };
         FinTags: {
             /**
@@ -1814,11 +2505,11 @@ export interface components {
             balanceDirectionEnum?: "借" | "贷";
             /** @enum {string} */
             accountTypeEnum?: "资产" | "负债" | "权益" | "收入" | "支出";
-            liability?: boolean;
-            income?: boolean;
-            expense?: boolean;
-            equity?: boolean;
             asset?: boolean;
+            equity?: boolean;
+            income?: boolean;
+            liability?: boolean;
+            expense?: boolean;
         };
         /** @description 分录请求 */
         EntryRequest: {
@@ -1868,6 +2559,15 @@ export interface components {
             bookId?: number;
             /** @description 分录列表 */
             entries: components["schemas"]["EntryRequest"][];
+            /**
+             * @description 标签ID列表
+             * @example [
+             *       1,
+             *       2,
+             *       3
+             *     ]
+             */
+            tagIds?: number[];
         };
         ResponseResultTransactionEntryResponseDTO: {
             /** Format: int32 */
@@ -1939,6 +2639,181 @@ export interface components {
             timestamp?: number;
             success?: boolean;
         };
+        ResponseResultListBaseWeChatUserBinding: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["BaseWeChatUserBinding"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultString: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: string;
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        OrderItem: {
+            column?: string;
+            asc?: boolean;
+        };
+        PageBaseWeChatUserBinding: {
+            records?: components["schemas"]["BaseWeChatUserBinding"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageBaseWeChatUserBinding"];
+            searchCount?: components["schemas"]["PageBaseWeChatUserBinding"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageBaseWeChatUserBinding: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageBaseWeChatUserBinding"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        /** @description 企业微信消息记录表实体基类 */
+        BaseWeChatMessage: {
+            /**
+             * Format: int64
+             * @description 主键ID
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 应用ID(关联wechat_app_config.id)
+             */
+            appId?: number;
+            /** @description 消息方向(inbound=接收,outbound=发送) */
+            msgDirection?: string;
+            /** @description 消息类型(text,image,voice,video,file,event等) */
+            msgType?: string;
+            /** @description 发送方UserID */
+            fromUser?: string;
+            /** @description 接收方UserID */
+            toUser?: string;
+            /** @description 消息内容 */
+            content?: string;
+            /** @description 消息ID */
+            msgId?: string;
+            /** @description 消息状态(success,failed,pending) */
+            status?: string;
+            /** @description 错误码 */
+            errorCode?: string;
+            /** @description 错误信息 */
+            errorMsg?: string;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+        };
+        ResponseResultListBaseWeChatMessage: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["BaseWeChatMessage"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultBaseWeChatMessage: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["BaseWeChatMessage"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageBaseWeChatMessage: {
+            records?: components["schemas"]["BaseWeChatMessage"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageBaseWeChatMessage"];
+            searchCount?: components["schemas"]["PageBaseWeChatMessage"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageBaseWeChatMessage: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageBaseWeChatMessage"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListBaseWeChatAppConfig: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["BaseWeChatAppConfig"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageBaseWeChatAppConfig: {
+            records?: components["schemas"]["BaseWeChatAppConfig"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageBaseWeChatAppConfig"];
+            searchCount?: components["schemas"]["PageBaseWeChatAppConfig"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageBaseWeChatAppConfig: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageBaseWeChatAppConfig"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
         ResponseResultListSysUser: {
             /** Format: int32 */
             code?: number;
@@ -1966,6 +2841,54 @@ export interface components {
             timestamp?: number;
             success?: boolean;
         };
+        ResponseResultListSysUserConfig: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["SysUserConfig"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultSysUserConfig: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["SysUserConfig"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageSysUserConfig: {
+            records?: components["schemas"]["SysUserConfig"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageSysUserConfig"];
+            searchCount?: components["schemas"]["PageSysUserConfig"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageSysUserConfig: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageSysUserConfig"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
         ResponseResultListSysUserApp: {
             /** Format: int32 */
             code?: number;
@@ -1974,19 +2897,6 @@ export interface components {
             /** Format: int64 */
             timestamp?: number;
             success?: boolean;
-        };
-        ResponseResultString: {
-            /** Format: int32 */
-            code?: number;
-            message?: string;
-            data?: string;
-            /** Format: int64 */
-            timestamp?: number;
-            success?: boolean;
-        };
-        OrderItem: {
-            column?: string;
-            asc?: boolean;
         };
         PageSysUser: {
             records?: components["schemas"]["SysUser"][];
@@ -2337,6 +3247,24 @@ export interface components {
             timestamp?: number;
             success?: boolean;
         };
+        /** @description 本月收支统计 */
+        MonthlyStatisticsDTO: {
+            /** @description 本月收入总额 */
+            totalIncome?: number;
+            /** @description 本月支出总额 */
+            totalExpense?: number;
+            /** @description 本月结余（收入 - 支出） */
+            balance?: number;
+        };
+        ResponseResultMonthlyStatisticsDTO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["MonthlyStatisticsDTO"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
         ResponseResultListFinTags: {
             /** Format: int32 */
             code?: number;
@@ -2547,6 +3475,24 @@ export interface components {
             timestamp?: number;
             success?: boolean;
         };
+        /** @description 账本资产概览 */
+        BookAssetSummaryDTO: {
+            /** @description 总资产 */
+            totalAssets?: number;
+            /** @description 总负债 */
+            totalLiabilities?: number;
+            /** @description 净资产（总资产 - 总负债） */
+            netAssets?: number;
+        };
+        ResponseResultBookAssetSummaryDTO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["BookAssetSummaryDTO"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
         PageFinBooks: {
             records?: components["schemas"]["FinBooks"][];
             /** Format: int64 */
@@ -2725,6 +3671,231 @@ export interface components {
             timestamp?: number;
             success?: boolean;
         };
+        /** @description 单月数据 */
+        MonthData: {
+            /**
+             * Format: int32
+             * @description 月份 (1-12)
+             */
+            month?: number;
+            /** @description 收入总额 */
+            income?: number;
+            /** @description 支出总额 */
+            expense?: number;
+            /** @description 结余 */
+            balance?: number;
+        };
+        ResponseResultYearlyTrendDTO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["YearlyTrendDTO"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        /** @description 年度收支趋势 */
+        YearlyTrendDTO: {
+            /**
+             * Format: int32
+             * @description 年份
+             */
+            year?: number;
+            /** @description 月度数据列表（1-12月） */
+            months?: components["schemas"]["MonthData"][];
+        };
+        ResponseResultTagStatisticsDTO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["TagStatisticsDTO"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        /** @description 标签统计项 */
+        TagItem: {
+            /**
+             * Format: int64
+             * @description 标签ID
+             */
+            tagId?: number;
+            /** @description 标签名称 */
+            tagName?: string;
+            /** @description 标签颜色 */
+            color?: string;
+            /** @description 标签图标 */
+            icon?: string;
+            /** @description 金额 */
+            amount?: number;
+            /**
+             * Format: int32
+             * @description 交易笔数
+             */
+            count?: number;
+            /** @description 占比（百分比） */
+            percentage?: number;
+        };
+        /** @description 标签统计 */
+        TagStatisticsDTO: {
+            /** @description 合计金额 */
+            total?: number;
+            /** @description 标签统计列表（按金额降序） */
+            tags?: components["schemas"]["TagItem"][];
+        };
+        /** @description 日分组 */
+        DailyGroup: {
+            /**
+             * Format: date
+             * @description 日期
+             * @example 2026-02-12
+             */
+            date?: string;
+            /** @description 当日收入合计 */
+            dailyIncome?: number;
+            /** @description 当日支出合计 */
+            dailyExpense?: number;
+            /** @description 当日交易列表 */
+            transactions?: components["schemas"]["TransactionItem"][];
+        };
+        ResponseResultTransactionDetailDTO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["TransactionDetailDTO"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        /** @description 标签信息 */
+        TagInfo: {
+            /**
+             * Format: int64
+             * @description 标签ID
+             */
+            tagId?: number;
+            /** @description 标签名称 */
+            tagName?: string;
+            /** @description 标签颜色 */
+            color?: string;
+            /** @description 标签图标 */
+            icon?: string;
+        };
+        /** @description 交易明细（流水账视图） */
+        TransactionDetailDTO: {
+            /** @description 按日期分组的交易列表 */
+            dailyGroups?: components["schemas"]["DailyGroup"][];
+            /**
+             * Format: int64
+             * @description 总记录数
+             */
+            total?: number;
+            /**
+             * Format: int32
+             * @description 当前页码
+             */
+            pageNum?: number;
+            /**
+             * Format: int32
+             * @description 每页数量
+             */
+            pageSize?: number;
+        };
+        /** @description 单笔交易流水 */
+        TransactionItem: {
+            /**
+             * Format: int64
+             * @description 交易ID
+             */
+            transId?: number;
+            /**
+             * Format: date-time
+             * @description 交易时间
+             */
+            transDate?: string;
+            /** @description 交易类型：INCOME(收入)/EXPENSE(支出)/TRANSFER(转账)/OTHER(其他) */
+            transType?: string;
+            /** @description 显示金额（正数=收入，负数=支出） */
+            displayAmount?: number;
+            /** @description 交易描述 */
+            description?: string;
+            /** @description 主科目名称（如：午餐、工资） */
+            categoryName?: string;
+            /** @description 主科目图标 */
+            categoryIcon?: string;
+            /** @description 对方科目名称（如：支付宝、招商银行） */
+            targetAccountName?: string;
+            /** @description 对方科目图标 */
+            targetAccountIcon?: string;
+            /** @description 标签列表 */
+            tags?: components["schemas"]["TagInfo"][];
+        };
+        /** @description 分类项 */
+        CategoryItem: {
+            /**
+             * Format: int64
+             * @description 科目ID
+             */
+            accountId?: number;
+            /** @description 科目名称 */
+            accountName?: string;
+            /** @description 科目图标 */
+            accountIcon?: string;
+            /** @description 金额 */
+            amount?: number;
+            /** @description 占比（百分比，如 35.5） */
+            percentage?: number;
+        };
+        /** @description 分类排行统计 */
+        CategoryRankDTO: {
+            /** @description 统计类型：EXPENSE(支出)/INCOME(收入) */
+            type?: string;
+            /** @description 合计金额 */
+            total?: number;
+            /** @description 分类排行列表（按金额降序） */
+            categories?: components["schemas"]["CategoryItem"][];
+        };
+        ResponseResultCategoryRankDTO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["CategoryRankDTO"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        /** @description 科目余额明细 */
+        AccountBalanceDTO: {
+            /** @description 科目类型：ASSET/LIABILITY */
+            accountType?: string;
+            /** @description 合计余额 */
+            total?: number;
+            /** @description 各科目余额列表 */
+            accounts?: components["schemas"]["AccountItem"][];
+        };
+        /** @description 科目余额项 */
+        AccountItem: {
+            /**
+             * Format: int64
+             * @description 科目ID
+             */
+            accountId?: number;
+            /** @description 科目名称 */
+            accountName?: string;
+            /** @description 科目图标 */
+            accountIcon?: string;
+            /** @description 当前余额 */
+            balance?: number;
+        };
+        ResponseResultAccountBalanceDTO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["AccountBalanceDTO"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
         ResponseResultVoid: {
             /** Format: int32 */
             code?: number;
@@ -2758,12 +3929,148 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultListSysUser"];
+                    "*/*": components["schemas"]["ResponseResultListBaseWeChatUserBinding"];
                 };
             };
         };
     };
     update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BaseWeChatUserBinding"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBaseWeChatUserBinding"];
+                };
+            };
+        };
+    };
+    create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BaseWeChatUserBinding"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBaseWeChatUserBinding"];
+                };
+            };
+        };
+    };
+    listAll_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListBaseWeChatAppConfig"];
+                };
+            };
+        };
+    };
+    update_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BaseWeChatAppConfig"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBaseWeChatAppConfig"];
+                };
+            };
+        };
+    };
+    create_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BaseWeChatAppConfig"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBaseWeChatAppConfig"];
+                };
+            };
+        };
+    };
+    listAll_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListSysUser"];
+                };
+            };
+        };
+    };
+    update_2: {
         parameters: {
             query?: never;
             header?: never;
@@ -2787,7 +4094,7 @@ export interface operations {
             };
         };
     };
-    create: {
+    create_2: {
         parameters: {
             query?: never;
             header?: never;
@@ -2831,7 +4138,7 @@ export interface operations {
             };
         };
     };
-    update_1: {
+    update_3: {
         parameters: {
             query?: never;
             header?: never;
@@ -2879,7 +4186,75 @@ export interface operations {
             };
         };
     };
-    listAll_1: {
+    list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListSysUserConfig"];
+                };
+            };
+        };
+    };
+    update_4: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysUserConfig"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysUserConfig"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    listAll_3: {
         parameters: {
             query?: never;
             header?: never;
@@ -2899,7 +4274,7 @@ export interface operations {
             };
         };
     };
-    update_2: {
+    update_5: {
         parameters: {
             query?: never;
             header?: never;
@@ -2923,7 +4298,7 @@ export interface operations {
             };
         };
     };
-    add_1: {
+    add_2: {
         parameters: {
             query?: never;
             header?: never;
@@ -2947,7 +4322,7 @@ export interface operations {
             };
         };
     };
-    update_3: {
+    update_6: {
         parameters: {
             query?: never;
             header?: never;
@@ -2971,7 +4346,7 @@ export interface operations {
             };
         };
     };
-    create_1: {
+    create_3: {
         parameters: {
             query?: never;
             header?: never;
@@ -2995,7 +4370,7 @@ export interface operations {
             };
         };
     };
-    listAll_2: {
+    listAll_4: {
         parameters: {
             query?: never;
             header?: never;
@@ -3015,7 +4390,7 @@ export interface operations {
             };
         };
     };
-    update_4: {
+    update_7: {
         parameters: {
             query?: never;
             header?: never;
@@ -3039,7 +4414,7 @@ export interface operations {
             };
         };
     };
-    create_2: {
+    create_4: {
         parameters: {
             query?: never;
             header?: never;
@@ -3083,7 +4458,7 @@ export interface operations {
             };
         };
     };
-    update_5: {
+    update_8: {
         parameters: {
             query?: never;
             header?: never;
@@ -3107,7 +4482,7 @@ export interface operations {
             };
         };
     };
-    add_2: {
+    add_3: {
         parameters: {
             query?: never;
             header?: never;
@@ -3131,7 +4506,7 @@ export interface operations {
             };
         };
     };
-    listAll_3: {
+    listAll_5: {
         parameters: {
             query?: never;
             header?: never;
@@ -3151,7 +4526,7 @@ export interface operations {
             };
         };
     };
-    update_6: {
+    update_9: {
         parameters: {
             query?: never;
             header?: never;
@@ -3175,7 +4550,7 @@ export interface operations {
             };
         };
     };
-    create_3: {
+    create_5: {
         parameters: {
             query?: never;
             header?: never;
@@ -3199,7 +4574,7 @@ export interface operations {
             };
         };
     };
-    list: {
+    list_1: {
         parameters: {
             query?: never;
             header?: never;
@@ -3219,7 +4594,7 @@ export interface operations {
             };
         };
     };
-    update_7: {
+    update_10: {
         parameters: {
             query?: never;
             header?: never;
@@ -3243,7 +4618,7 @@ export interface operations {
             };
         };
     };
-    add_3: {
+    add_4: {
         parameters: {
             query?: never;
             header?: never;
@@ -3287,7 +4662,7 @@ export interface operations {
             };
         };
     };
-    update_8: {
+    update_11: {
         parameters: {
             query?: never;
             header?: never;
@@ -3311,7 +4686,7 @@ export interface operations {
             };
         };
     };
-    add_4: {
+    add_5: {
         parameters: {
             query?: never;
             header?: never;
@@ -3335,7 +4710,7 @@ export interface operations {
             };
         };
     };
-    listAll_4: {
+    listAll_6: {
         parameters: {
             query?: never;
             header?: never;
@@ -3355,7 +4730,7 @@ export interface operations {
             };
         };
     };
-    update_9: {
+    update_12: {
         parameters: {
             query?: never;
             header?: never;
@@ -3379,7 +4754,7 @@ export interface operations {
             };
         };
     };
-    create_4: {
+    create_6: {
         parameters: {
             query?: never;
             header?: never;
@@ -3399,74 +4774,6 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ResponseResultSysMenu"];
-                };
-            };
-        };
-    };
-    list_1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultListSysApp"];
-                };
-            };
-        };
-    };
-    update_10: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysApp"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultBoolean"];
-                };
-            };
-        };
-    };
-    add_5: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysApp"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultBoolean"];
                 };
             };
         };
@@ -3486,12 +4793,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultListFinTransTags"];
+                    "*/*": components["schemas"]["ResponseResultListSysApp"];
                 };
             };
         };
     };
-    update_11: {
+    update_13: {
         parameters: {
             query?: never;
             header?: never;
@@ -3500,7 +4807,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinTransTags"];
+                "application/json": components["schemas"]["SysApp"];
             };
         };
         responses: {
@@ -3524,7 +4831,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinTransTags"];
+                "application/json": components["schemas"]["SysApp"];
             };
         };
         responses: {
@@ -3541,53 +4848,6 @@ export interface operations {
     };
     list_3: {
         parameters: {
-            query: {
-                /** @description 账本ID */
-                bookId: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultListFinTransactions"];
-                };
-            };
-        };
-    };
-    update_12: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["FinTransactions"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultBoolean"];
-                };
-            };
-        };
-    };
-    list_4: {
-        parameters: {
             query?: never;
             header?: never;
             path?: never;
@@ -3601,12 +4861,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultListFinTags"];
+                    "*/*": components["schemas"]["ResponseResultListFinTransTags"];
                 };
             };
         };
     };
-    update_13: {
+    update_14: {
         parameters: {
             query?: never;
             header?: never;
@@ -3615,7 +4875,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinTags"];
+                "application/json": components["schemas"]["FinTransTags"];
             };
         };
         responses: {
@@ -3639,7 +4899,54 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinTags"];
+                "application/json": components["schemas"]["FinTransTags"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_4: {
+        parameters: {
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinTransactions"];
+                };
+            };
+        };
+    };
+    update_15: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinTransactions"];
             };
         };
         responses: {
@@ -3669,12 +4976,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultListFinPrices"];
+                    "*/*": components["schemas"]["ResponseResultListFinTags"];
                 };
             };
         };
     };
-    update_14: {
+    update_16: {
         parameters: {
             query?: never;
             header?: never;
@@ -3683,7 +4990,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinPrices"];
+                "application/json": components["schemas"]["FinTags"];
             };
         };
         responses: {
@@ -3707,7 +5014,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinPrices"];
+                "application/json": components["schemas"]["FinTags"];
             };
         };
         responses: {
@@ -3724,10 +5031,7 @@ export interface operations {
     };
     list_6: {
         parameters: {
-            query: {
-                /** @description 账本ID */
-                bookId: number;
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
@@ -3740,12 +5044,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultListFinEntries"];
+                    "*/*": components["schemas"]["ResponseResultListFinPrices"];
                 };
             };
         };
     };
-    update_15: {
+    update_17: {
         parameters: {
             query?: never;
             header?: never;
@@ -3754,7 +5058,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinEntries"];
+                "application/json": components["schemas"]["FinPrices"];
             };
         };
         responses: {
@@ -3778,7 +5082,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinEntries"];
+                "application/json": components["schemas"]["FinPrices"];
             };
         };
         responses: {
@@ -3795,7 +5099,10 @@ export interface operations {
     };
     list_7: {
         parameters: {
-            query?: never;
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -3808,12 +5115,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultListFinBudgets"];
+                    "*/*": components["schemas"]["ResponseResultListFinEntries"];
                 };
             };
         };
     };
-    update_16: {
+    update_18: {
         parameters: {
             query?: never;
             header?: never;
@@ -3822,7 +5129,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinBudgets"];
+                "application/json": components["schemas"]["FinEntries"];
             };
         };
         responses: {
@@ -3846,7 +5153,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinBudgets"];
+                "application/json": components["schemas"]["FinEntries"];
             };
         };
         responses: {
@@ -3876,12 +5183,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultListFinBooks"];
+                    "*/*": components["schemas"]["ResponseResultListFinBudgets"];
                 };
             };
         };
     };
-    update_17: {
+    update_19: {
         parameters: {
             query?: never;
             header?: never;
@@ -3890,7 +5197,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinBooks"];
+                "application/json": components["schemas"]["FinBudgets"];
             };
         };
         responses: {
@@ -3914,7 +5221,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinBooks"];
+                "application/json": components["schemas"]["FinBudgets"];
             };
         };
         responses: {
@@ -3944,12 +5251,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultListFinBookMembers"];
+                    "*/*": components["schemas"]["ResponseResultListFinBooks"];
                 };
             };
         };
     };
-    update_18: {
+    update_20: {
         parameters: {
             query?: never;
             header?: never;
@@ -3958,7 +5265,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinBookMembers"];
+                "application/json": components["schemas"]["FinBooks"];
             };
         };
         responses: {
@@ -3982,7 +5289,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinBookMembers"];
+                "application/json": components["schemas"]["FinBooks"];
             };
         };
         responses: {
@@ -3999,10 +5306,7 @@ export interface operations {
     };
     list_10: {
         parameters: {
-            query: {
-                /** @description 账本ID */
-                bookId: number;
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
@@ -4015,12 +5319,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultListFinAccounts"];
+                    "*/*": components["schemas"]["ResponseResultListFinBookMembers"];
                 };
             };
         };
     };
-    update_19: {
+    update_21: {
         parameters: {
             query?: never;
             header?: never;
@@ -4029,7 +5333,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinAccounts"];
+                "application/json": components["schemas"]["FinBookMembers"];
             };
         };
         responses: {
@@ -4053,6 +5357,53 @@ export interface operations {
         };
         requestBody: {
             content: {
+                "application/json": components["schemas"]["FinBookMembers"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_11: {
+        parameters: {
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinAccounts"];
+                };
+            };
+        };
+    };
+    update_22: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
                 "application/json": components["schemas"]["FinAccounts"];
             };
         };
@@ -4064,6 +5415,83 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_14: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinAccounts"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    verifyUrl: {
+        parameters: {
+            query: {
+                msg_signature: string;
+                timestamp: string;
+                nonce: string;
+                echostr: string;
+            };
+            header?: never;
+            path: {
+                agentId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/plain": string;
+                };
+            };
+        };
+    };
+    receiveMessage: {
+        parameters: {
+            query: {
+                msg_signature: string;
+                timestamp: string;
+                nonce: string;
+            };
+            header?: never;
+            path: {
+                agentId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/xml": string;
                 };
             };
         };
@@ -4092,7 +5520,7 @@ export interface operations {
             };
         };
     };
-    add_14: {
+    add_15: {
         parameters: {
             query?: never;
             header?: never;
@@ -4204,122 +5632,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultSysUserRole"];
+                    "*/*": components["schemas"]["ResponseResultBaseWeChatUserBinding"];
                 };
             };
         };
     };
     delete: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultVoid"];
-                };
-            };
-        };
-    };
-    getRolesByUserId: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                userId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultListSysRole"];
-                };
-            };
-        };
-    };
-    getById_1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultSysUserApp"];
-                };
-            };
-        };
-    };
-    delete_1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultVoid"];
-                };
-            };
-        };
-    };
-    getById_2: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultSysUser"];
-                };
-            };
-        };
-    };
-    delete_2: {
         parameters: {
             query?: never;
             header?: never;
@@ -4379,7 +5697,313 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultPageSysUser"];
+                    "*/*": components["schemas"]["ResponseResultPageBaseWeChatUserBinding"];
+                };
+            };
+        };
+    };
+    getByWxUserIdAndAppId: {
+        parameters: {
+            query: {
+                wxUserId: string;
+                appId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBaseWeChatUserBinding"];
+                };
+            };
+        };
+    };
+    getByUserIdAndAppId: {
+        parameters: {
+            query: {
+                userId: number;
+                appId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBaseWeChatUserBinding"];
+                };
+            };
+        };
+    };
+    listAll_7: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListBaseWeChatMessage"];
+                };
+            };
+        };
+    };
+    getById_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBaseWeChatMessage"];
+                };
+            };
+        };
+    };
+    delete_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    test_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultString"];
+                };
+            };
+        };
+    };
+    pageAll_1: {
+        parameters: {
+            query: {
+                pageNum: number;
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageBaseWeChatMessage"];
+                };
+            };
+        };
+    };
+    listByUserId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                userId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListBaseWeChatMessage"];
+                };
+            };
+        };
+    };
+    listByDirection: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                direction: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListBaseWeChatMessage"];
+                };
+            };
+        };
+    };
+    listByAppId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                appId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListBaseWeChatMessage"];
+                };
+            };
+        };
+    };
+    getById_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBaseWeChatAppConfig"];
+                };
+            };
+        };
+    };
+    delete_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    test_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultString"];
+                };
+            };
+        };
+    };
+    pageAll_2: {
+        parameters: {
+            query: {
+                pageNum: number;
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageBaseWeChatAppConfig"];
                 };
             };
         };
@@ -4401,7 +6025,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultSysTemplate"];
+                    "*/*": components["schemas"]["ResponseResultSysUserRole"];
                 };
             };
         };
@@ -4423,7 +6047,29 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                    "*/*": components["schemas"]["ResponseResultVoid"];
+                };
+            };
+        };
+    };
+    getRolesByUserId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                userId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListSysRole"];
                 };
             };
         };
@@ -4433,6 +6079,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
+                /** @description 配置ID */
                 id: number;
             };
             cookie?: never;
@@ -4445,7 +6092,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultSysRolePermission"];
+                    "*/*": components["schemas"]["ResponseResultSysUserConfig"];
                 };
             };
         };
@@ -4455,6 +6102,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
+                /** @description 配置ID */
                 id: number;
             };
             cookie?: never;
@@ -4468,6 +6116,31 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    page: {
+        parameters: {
+            query: {
+                /** @description 页码 */
+                pageNum: number;
+                /** @description 每页数量 */
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageSysUserConfig"];
                 };
             };
         };
@@ -4489,7 +6162,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultSysRole"];
+                    "*/*": components["schemas"]["ResponseResultSysUserApp"];
                 };
             };
         };
@@ -4516,71 +6189,6 @@ export interface operations {
             };
         };
     };
-    getPermissionsByRoleId: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultListSysPermission"];
-                };
-            };
-        };
-    };
-    test_1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResult"];
-                };
-            };
-        };
-    };
-    pageAll_1: {
-        parameters: {
-            query: {
-                pageNum: number;
-                pageSize: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultPageSysRole"];
-                };
-            };
-        };
-    };
     getById_6: {
         parameters: {
             query?: never;
@@ -4598,7 +6206,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultSysPermissionMenu"];
+                    "*/*": components["schemas"]["ResponseResultSysUser"];
                 };
             };
         };
@@ -4620,7 +6228,50 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultVoid"];
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    test_3: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultString"];
+                };
+            };
+        };
+    };
+    pageAll_3: {
+        parameters: {
+            query: {
+                pageNum: number;
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageSysUser"];
                 };
             };
         };
@@ -4642,7 +6293,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultSysPermissionApi"];
+                    "*/*": components["schemas"]["ResponseResultSysTemplate"];
                 };
             };
         };
@@ -4686,12 +6337,253 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultSysPermission"];
+                    "*/*": components["schemas"]["ResponseResultSysRolePermission"];
                 };
             };
         };
     };
     delete_8: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    getById_9: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultSysRole"];
+                };
+            };
+        };
+    };
+    delete_9: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultVoid"];
+                };
+            };
+        };
+    };
+    getPermissionsByRoleId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListSysPermission"];
+                };
+            };
+        };
+    };
+    test_4: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResult"];
+                };
+            };
+        };
+    };
+    pageAll_4: {
+        parameters: {
+            query: {
+                pageNum: number;
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageSysRole"];
+                };
+            };
+        };
+    };
+    getById_10: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultSysPermissionMenu"];
+                };
+            };
+        };
+    };
+    delete_10: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultVoid"];
+                };
+            };
+        };
+    };
+    getById_11: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultSysPermissionApi"];
+                };
+            };
+        };
+    };
+    delete_11: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    getById_12: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultSysPermission"];
+                };
+            };
+        };
+    };
+    delete_12: {
         parameters: {
             query?: never;
             header?: never;
@@ -4755,7 +6647,7 @@ export interface operations {
             };
         };
     };
-    pageAll_2: {
+    pageAll_5: {
         parameters: {
             query: {
                 pageNum: number;
@@ -4798,7 +6690,7 @@ export interface operations {
             };
         };
     };
-    getById_9: {
+    getById_13: {
         parameters: {
             query?: never;
             header?: never;
@@ -4820,7 +6712,7 @@ export interface operations {
             };
         };
     };
-    delete_9: {
+    delete_13: {
         parameters: {
             query?: never;
             header?: never;
@@ -4882,7 +6774,7 @@ export interface operations {
             };
         };
     };
-    getById_10: {
+    getById_14: {
         parameters: {
             query?: never;
             header?: never;
@@ -4904,7 +6796,7 @@ export interface operations {
             };
         };
     };
-    delete_10: {
+    delete_14: {
         parameters: {
             query?: never;
             header?: never;
@@ -4966,7 +6858,7 @@ export interface operations {
             };
         };
     };
-    getById_11: {
+    getById_15: {
         parameters: {
             query?: never;
             header?: never;
@@ -4989,7 +6881,7 @@ export interface operations {
             };
         };
     };
-    delete_11: {
+    delete_15: {
         parameters: {
             query?: never;
             header?: never;
@@ -5012,7 +6904,7 @@ export interface operations {
             };
         };
     };
-    page: {
+    page_1: {
         parameters: {
             query: {
                 /** @description 页码 */
@@ -5037,7 +6929,7 @@ export interface operations {
             };
         };
     };
-    getById_12: {
+    getById_16: {
         parameters: {
             query: {
                 /** @description 账本ID */
@@ -5063,7 +6955,7 @@ export interface operations {
             };
         };
     };
-    delete_12: {
+    delete_16: {
         parameters: {
             query: {
                 /** @description 账本ID */
@@ -5089,7 +6981,7 @@ export interface operations {
             };
         };
     };
-    page_1: {
+    page_2: {
         parameters: {
             query: {
                 /** @description 页码 */
@@ -5120,7 +7012,30 @@ export interface operations {
             };
         };
     };
-    getById_13: {
+    getMonthlyStatistics: {
+        parameters: {
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultMonthlyStatisticsDTO"];
+                };
+            };
+        };
+    };
+    getById_17: {
         parameters: {
             query?: never;
             header?: never;
@@ -5143,83 +7058,12 @@ export interface operations {
             };
         };
     };
-    delete_13: {
+    delete_17: {
         parameters: {
             query?: never;
             header?: never;
             path: {
                 /** @description 标签ID */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultBoolean"];
-                };
-            };
-        };
-    };
-    page_2: {
-        parameters: {
-            query: {
-                /** @description 页码 */
-                pageNum: number;
-                /** @description 每页数量 */
-                pageSize: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultPageFinTags"];
-                };
-            };
-        };
-    };
-    getById_14: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 价格ID */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultFinPrices"];
-                };
-            };
-        };
-    };
-    delete_14: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 价格ID */
                 id: number;
             };
             cookie?: never;
@@ -5257,12 +7101,83 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    "*/*": components["schemas"]["ResponseResultPageFinTags"];
+                };
+            };
+        };
+    };
+    getById_18: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 价格ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultFinPrices"];
+                };
+            };
+        };
+    };
+    delete_18: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 价格ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    page_4: {
+        parameters: {
+            query: {
+                /** @description 页码 */
+                pageNum: number;
+                /** @description 每页数量 */
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
                     "*/*": components["schemas"]["ResponseResultPageFinPrices"];
                 };
             };
         };
     };
-    getById_15: {
+    getById_19: {
         parameters: {
             query: {
                 /** @description 账本ID */
@@ -5288,7 +7203,7 @@ export interface operations {
             };
         };
     };
-    delete_15: {
+    delete_19: {
         parameters: {
             query: {
                 /** @description 账本ID */
@@ -5314,7 +7229,7 @@ export interface operations {
             };
         };
     };
-    page_4: {
+    page_5: {
         parameters: {
             query: {
                 /** @description 页码 */
@@ -5341,7 +7256,7 @@ export interface operations {
             };
         };
     };
-    getById_16: {
+    getById_20: {
         parameters: {
             query?: never;
             header?: never;
@@ -5364,7 +7279,7 @@ export interface operations {
             };
         };
     };
-    delete_16: {
+    delete_20: {
         parameters: {
             query?: never;
             header?: never;
@@ -5387,7 +7302,7 @@ export interface operations {
             };
         };
     };
-    page_5: {
+    page_6: {
         parameters: {
             query?: {
                 /** @description 页码 */
@@ -5412,7 +7327,7 @@ export interface operations {
             };
         };
     };
-    getById_17: {
+    getById_21: {
         parameters: {
             query?: never;
             header?: never;
@@ -5435,7 +7350,7 @@ export interface operations {
             };
         };
     };
-    delete_17: {
+    delete_21: {
         parameters: {
             query?: never;
             header?: never;
@@ -5458,7 +7373,30 @@ export interface operations {
             };
         };
     };
-    page_6: {
+    getAssetSummary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 账本ID */
+                bookId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBookAssetSummaryDTO"];
+                };
+            };
+        };
+    };
+    page_7: {
         parameters: {
             query: {
                 /** @description 页码 */
@@ -5503,7 +7441,7 @@ export interface operations {
             };
         };
     };
-    getById_18: {
+    getById_22: {
         parameters: {
             query?: never;
             header?: never;
@@ -5526,7 +7464,7 @@ export interface operations {
             };
         };
     };
-    delete_18: {
+    delete_22: {
         parameters: {
             query?: never;
             header?: never;
@@ -5549,7 +7487,7 @@ export interface operations {
             };
         };
     };
-    page_7: {
+    page_8: {
         parameters: {
             query: {
                 /** @description 页码 */
@@ -5574,7 +7512,7 @@ export interface operations {
             };
         };
     };
-    getById_19: {
+    getById_23: {
         parameters: {
             query: {
                 /** @description 账本ID */
@@ -5600,7 +7538,7 @@ export interface operations {
             };
         };
     };
-    delete_19: {
+    delete_23: {
         parameters: {
             query: {
                 /** @description 账本ID */
@@ -5676,7 +7614,7 @@ export interface operations {
             };
         };
     };
-    page_8: {
+    page_9: {
         parameters: {
             query: {
                 /** @description 页码 */
@@ -5699,6 +7637,170 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ResponseResultPageFinAccounts"];
+                };
+            };
+        };
+    };
+    getYearlyTrend: {
+        parameters: {
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+                /** @description 年份，如 2026，不传默认当年 */
+                year?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultYearlyTrendDTO"];
+                };
+            };
+        };
+    };
+    getTagStatistics: {
+        parameters: {
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+                /** @description 年份 */
+                year?: number;
+                /** @description 月份 (1-12) */
+                month?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultTagStatisticsDTO"];
+                };
+            };
+        };
+    };
+    getMonthlyStatistics_1: {
+        parameters: {
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+                /** @description 年份，如 2026 */
+                year?: number;
+                /** @description 月份 (1-12) */
+                month?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultMonthlyStatisticsDTO"];
+                };
+            };
+        };
+    };
+    getTransactionDetails: {
+        parameters: {
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+                /** @description 开始日期 (yyyy-MM-dd) */
+                startDate?: string;
+                /** @description 结束日期 (yyyy-MM-dd) */
+                endDate?: string;
+                /** @description 页码 */
+                pageNum?: number;
+                /** @description 每页数量 */
+                pageSize?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultTransactionDetailDTO"];
+                };
+            };
+        };
+    };
+    getCategoryRank: {
+        parameters: {
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+                /** @description 类型：EXPENSE(支出)/INCOME(收入) */
+                type?: string;
+                /** @description 年份 */
+                year?: number;
+                /** @description 月份 (1-12) */
+                month?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultCategoryRankDTO"];
+                };
+            };
+        };
+    };
+    getAccountBalances: {
+        parameters: {
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+                /** @description 科目类型：ASSET(资产)/LIABILITY(负债) */
+                accountType?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultAccountBalanceDTO"];
                 };
             };
         };

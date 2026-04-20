@@ -9,6 +9,12 @@ export interface ApiResponse<T = any> {
     code: number;
     data: T;
     message: string;
+    timestamp?: number;
+    success?: boolean;
+}
+
+export interface AppRequestConfig extends AxiosRequestConfig {
+    skipAuth?: boolean;
 }
 
 // 创建 axios 实例
@@ -36,7 +42,7 @@ const service: AxiosInstance = axios.create({
 
 // 请求拦截器
 service.interceptors.request.use(
-    (config) => {
+    (config: AppRequestConfig) => {
         // 从 localStorage 获取 token
         const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
         const tokenExpiresAt = localStorage.getItem(STORAGE_KEYS.TOKEN_EXPIRES_AT);
@@ -51,7 +57,7 @@ service.interceptors.request.use(
              }
         }
 
-        if (token && config.headers) {
+        if (!config.skipAuth && token && config.headers) {
             config.headers['Authorization'] = `Bearer ${token}`;
         }
         return config;
@@ -138,24 +144,24 @@ service.interceptors.response.use(
 
 // 封装请求方法
 export const http = {
-    get<T = any>(url: string, params?: object, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+    get<T = any>(url: string, params?: object, config?: AppRequestConfig): Promise<ApiResponse<T>> {
         return service.get<ApiResponse<T>>(url, { params, ...config }).then((r) => r.data);
     },
 
-    post<T = any>(url: string, data?: object, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+    post<T = any>(url: string, data?: object, config?: AppRequestConfig): Promise<ApiResponse<T>> {
         return service.post<ApiResponse<T>>(url, data, config).then((r) => r.data);
     },
 
-    put<T = any>(url: string, data?: object, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+    put<T = any>(url: string, data?: object, config?: AppRequestConfig): Promise<ApiResponse<T>> {
         return service.put<ApiResponse<T>>(url, data, config).then((r) => r.data);
     },
 
-    delete<T = any>(url: string, params?: object, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+    delete<T = any>(url: string, params?: object, config?: AppRequestConfig): Promise<ApiResponse<T>> {
         return service.delete<ApiResponse<T>>(url, { params, ...config }).then((r) => r.data);
     },
 
     // 上传文件
-    upload<T = any>(url: string, file: File, fieldName = 'file', config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+    upload<T = any>(url: string, file: File, fieldName = 'file', config?: AppRequestConfig): Promise<ApiResponse<T>> {
         const formData = new FormData();
         formData.append(fieldName, file);
         return service.post<ApiResponse<T>>(url, formData, {

@@ -38,6 +38,7 @@ export interface BookAssetSummaryDTO {
   totalAssets: number;
   totalLiabilities: number;
   netAssets: number;
+  availableBalance: number;  // 可用余额
 }
 
 /** 查询账本资产概览（总资产、总负债、净资产） */

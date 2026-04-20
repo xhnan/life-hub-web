@@ -53,6 +53,7 @@ export interface AccountRow {
   currencyCode: string;
   initialBalance: number;
   currentBalance: number;
+  availableBalance: number;   // 可用余额
   isArchived: boolean;        // true:归档, false:启用
   description?: string;
   isLeaf: boolean;            // 是否叶子节点
@@ -134,4 +135,22 @@ export const deleteAccountApi = (id: number) => {
  */
 export const initAccountsApi = (bookId: number) => {
   return http.post<void>(`${prefix}/init`, undefined, { params: { bookId } });
+};
+
+/**
+ * 余额调整请求参数
+ */
+export interface AdjustBalanceParams {
+  accountId: number | string;
+  targetBalance: number;
+  description?: string;
+  equityAccountId?: number;
+}
+
+/**
+ * 余额调整
+ * 接口地址: POST /fin/accounts/adjust-balance
+ */
+export const adjustBalanceApi = (data: AdjustBalanceParams) => {
+  return http.post<void>(`${prefix}/adjust-balance`, data);
 };

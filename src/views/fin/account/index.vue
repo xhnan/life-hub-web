@@ -2,7 +2,7 @@
   <div class="account-page">
     <!-- 顶部统计卡片 -->
     <el-row :gutter="16" class="mb-4">
-      <el-col :span="8">
+      <el-col :span="6">
         <el-card shadow="hover" class="stat-card asset-card">
           <div class="stat-content">
             <div class="stat-icon">
@@ -15,7 +15,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="6">
         <el-card shadow="hover" class="stat-card liability-card">
           <div class="stat-content">
             <div class="stat-icon">
@@ -28,7 +28,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="6">
         <el-card shadow="hover" class="stat-card net-worth-card">
           <div class="stat-content">
             <div class="stat-icon">
@@ -37,6 +37,19 @@
             <div class="stat-info">
               <div class="stat-label">净资产</div>
               <div class="stat-value text-blue">¥ {{ formatCurrency(assetSummary.netAssets) }}</div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card shadow="hover" class="stat-card available-balance-card">
+          <div class="stat-content">
+            <div class="stat-icon">
+              <el-icon><WalletFilled /></el-icon>
+            </div>
+            <div class="stat-info">
+              <div class="stat-label">可用余额</div>
+              <div class="stat-value text-purple">¥ {{ formatCurrency(assetSummary.availableBalance) }}</div>
             </div>
           </div>
         </el-card>
@@ -73,6 +86,9 @@
             
             <!-- 操作按钮移到这里 -->
             <div class="action-buttons ml-4">
+              <el-tooltip content="余额调整" placement="top">
+                <el-button @click="handleBalanceAdjust" :icon="Money" circle size="default" type="primary" plain />
+              </el-tooltip>
               <el-tooltip content="初始化默认账户" placement="top">
                 <el-button @click="handleInit" :icon="MagicStick" circle size="default" type="warning" plain />
               </el-tooltip>
@@ -160,10 +176,17 @@
     </el-card>
 
     <!-- 新增/编辑弹窗 -->
-    <AccountDialog 
-      ref="dialogRef" 
-      :all-data="allData" 
+    <AccountDialog
+      ref="dialogRef"
+      :all-data="allData"
       @success="loadData"
+    />
+
+    <!-- 余额调整弹窗 -->
+    <BalanceAdjustDialog
+      ref="balanceAdjustRef"
+      :account-tree-data="allData"
+      @success="handleBalanceAdjustSuccess"
     />
   </div>
 </template>
@@ -172,7 +195,7 @@
 import { ref, reactive, onMounted, watch } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { TabsPaneContext, ElTable } from 'element-plus'
-import { Money, CreditCard, Wallet, Search, Refresh, Plus, Edit, Delete, Folder, Document, MagicStick } from '@element-plus/icons-vue'
+import { Money, CreditCard, Wallet, WalletFilled, Search, Refresh, Plus, Edit, Delete, Folder, Document, MagicStick } from '@element-plus/icons-vue'
 import { 
   getAccountTreeApi, 
   deleteAccountApi, 
@@ -181,6 +204,7 @@ import {
 } from '@/api/fin/account'
 import { getAssetSummaryApi, type BookAssetSummaryDTO } from '@/api/fin/ledger'
 import AccountDialog from './components/AccountDialog.vue'
+import BalanceAdjustDialog from './components/BalanceAdjustDialog.vue'
 import { ledgerStore } from '@/store/ledger'
 import LedgerSelect from "@/components/LedgerSelect/index.vue"
 import ReIcon from "@/components/ReIcon/index.vue"
@@ -197,12 +221,14 @@ const searchForm = reactive({
 })
 
 const dialogRef = ref<InstanceType<typeof AccountDialog>>()
+const balanceAdjustRef = ref<InstanceType<typeof BalanceAdjustDialog>>()
 
 // 资产概览
 const assetSummary = ref<BookAssetSummaryDTO>({
   totalAssets: 0,
   totalLiabilities: 0,
-  netAssets: 0
+  netAssets: 0,
+  availableBalance: 0
 })
 
 // 辅助函数
@@ -329,7 +355,7 @@ const loadData = async (type: string = activeTab.value) => {
 
 const loadAssetSummary = async () => {
   if (!ledgerStore.currentLedgerId) {
-    assetSummary.value = { totalAssets: 0, totalLiabilities: 0, netAssets: 0 }
+    assetSummary.value = { totalAssets: 0, totalLiabilities: 0, netAssets: 0, availableBalance: 0 }
     return
   }
   try {
@@ -399,6 +425,15 @@ const handleAddChild = (row: AccountRow) => {
 
 const handleEdit = (row: AccountRow) => {
   dialogRef.value?.open('edit', row)
+}
+
+const handleBalanceAdjust = () => {
+  balanceAdjustRef.value?.open()
+}
+
+const handleBalanceAdjustSuccess = () => {
+  loadData()
+  loadAssetSummary()
 }
 
 const handleDelete = (row: AccountRow) => {
@@ -495,6 +530,10 @@ $shadow-glass: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0
   
   &.net-worth-card .stat-icon {
     background: linear-gradient(135deg, #3B82F6, #60A5FA);
+  }
+
+  &.available-balance-card .stat-icon {
+    background: linear-gradient(135deg, #8B5CF6, #A78BFA);
   }
 
   .stat-info {
@@ -696,6 +735,7 @@ $shadow-glass: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0
 .text-green { color: $success-color; }
 .text-red { color: $danger-color; }
 .text-blue { color: #3B82F6; }
+.text-purple { color: #8B5CF6; }
 .text-gray { color: #94A3B8; }
 .font-medium { font-weight: 500; }
 .font-bold { font-weight: 700; }
