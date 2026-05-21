@@ -107,8 +107,8 @@
 							</div>
 							<div class="stat-content">
 								<div class="stat-label">本周步数</div>
-								<div class="stat-value">8,432</div>
-								<div class="stat-change positive">
+								<div class="stat-value">{{ healthStats.hasData ? healthStats.steps.toLocaleString() : '暂无数据' }}</div>
+								<div v-if="healthStats.hasHistoryData" class="stat-change positive">
 									<el-icon :size="12"><CaretTop /></el-icon>
 									+12%
 								</div>
@@ -120,8 +120,8 @@
 							</div>
 							<div class="stat-content">
 								<div class="stat-label">运动时长</div>
-								<div class="stat-value">356 分钟</div>
-								<div class="stat-change positive">
+								<div class="stat-value">{{ healthStats.hasData ? healthStats.activeMinutes + ' 分钟' : '暂无数据' }}</div>
+								<div v-if="healthStats.hasHistoryData" class="stat-change positive">
 									<el-icon :size="12"><CaretTop /></el-icon>
 									+8%
 								</div>
@@ -133,8 +133,8 @@
 							</div>
 							<div class="stat-content">
 								<div class="stat-label">平均睡眠</div>
-								<div class="stat-value">7.5 小时</div>
-								<div class="stat-change neutral">
+								<div class="stat-value">暂无数据</div>
+								<div v-if="healthStats.hasHistoryData" class="stat-change neutral">
 									<el-icon :size="12"><Minus /></el-icon>
 									持平
 								</div>
@@ -160,7 +160,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, onMounted } from 'vue';
+import { ref, reactive, nextTick, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
 import {
 	User,
@@ -177,6 +177,7 @@ import {
 	Minus
 } from '@element-plus/icons-vue';
 import { streamChatApi, type SSEChunk } from '@/api/health/aiApi';
+import { http } from '@/utils/http';
 
 interface Message {
 	role: 'user' | 'assistant';
@@ -195,6 +196,29 @@ const messages = ref<Message[]>([
 const userInput = ref('');
 const isAiThinking = ref(false);
 const messagesContainer = ref<HTMLElement>();
+
+const healthStats = reactive({
+	steps: 0,
+	activeMinutes: 0,
+	hasData: false,
+	hasHistoryData: false
+});
+
+async function loadHealthStats() {
+	try {
+		const today = new Date().toISOString().slice(0, 10);
+		const res = await http.get<any>(`/health/daily-summaries/date/${today}`);
+		if (res.data) {
+			healthStats.steps = res.data.steps ?? 0;
+			healthStats.activeMinutes = res.data.activeMinutes ?? 0;
+			healthStats.hasData = true;
+		} else {
+			healthStats.hasData = false;
+		}
+	} catch {
+		healthStats.hasData = false;
+	}
+}
 
 const quickActions = [
 	{ key: 'analysis', label: '健康分析', icon: TrendCharts, color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
@@ -498,6 +522,7 @@ function copyMessage(content: string) {
 
 onMounted(() => {
 	scrollToBottom();
+	loadHealthStats();
 });
 </script>
 
