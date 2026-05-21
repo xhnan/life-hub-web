@@ -27,18 +27,16 @@ export interface SysRole {
     description?: string;
 }
 
-export interface SysPermission {
-    id: number;
-    name: string;
+export interface PermissionItem {
     permissionKey: string;
-    description?: string;
+    name: string;
 }
 
 export interface UserPermissionsDTO {
     userId: number;
     isSuperAdmin: boolean;
     roles: SysRole[];
-    permissions: SysPermission[];
+    permissions: PermissionItem[];
 }
 
 export const loginApi = (data: LoginForm) => {
