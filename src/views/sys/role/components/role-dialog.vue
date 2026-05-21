@@ -2,70 +2,94 @@
   <el-dialog
     :model-value="modelValue"
     :title="title"
-    width="500px"
+    width="560px"
     @close="handleClose"
+    :close-on-click-modal="false"
+    destroy-on-close
   >
     <el-form
       ref="formRef"
       :model="formData"
       :rules="rules"
-      label-width="100px"
+      label-width="90px"
+      label-position="right"
+      class="role-form"
     >
-      <el-form-item label="角色编码" prop="roleCode">
-        <el-input
-          v-model="formData.roleCode"
-          placeholder="请输入角色编码，如 ADMIN"
-          :disabled="isEdit"
-          clearable
-        />
-      </el-form-item>
-      <el-form-item label="角色名称" prop="roleName">
-        <el-input
-          v-model="formData.roleName"
-          placeholder="请输入角色名称"
-          clearable
-        />
-      </el-form-item>
-      <el-form-item label="角色排序" prop="sortOrder">
-        <el-input-number
-          v-model="formData.sortOrder"
-          :min="0"
-          :max="9999"
-          controls-position="right"
-        />
-      </el-form-item>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-form-item label="角色编码" prop="roleCode">
+            <el-input
+              v-model="formData.roleCode"
+              placeholder="如 ADMIN"
+              :disabled="isEdit"
+              clearable
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="角色名称" prop="roleName">
+            <el-input
+              v-model="formData.roleName"
+              placeholder="请输入角色名称"
+              clearable
+            />
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-form-item label="角色排序" prop="sortOrder">
+            <el-input-number
+              v-model="formData.sortOrder"
+              :min="0"
+              :max="9999"
+              controls-position="right"
+              style="width: 100%"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="状态" prop="status">
+            <el-switch
+              v-model="formData.status"
+              inline-prompt
+              active-text="启用"
+              inactive-text="禁用"
+            />
+          </el-form-item>
+        </el-col>
+      </el-row>
+
       <el-form-item label="数据范围" prop="dataScope">
-        <el-select v-model="formData.dataScope" placeholder="请选择数据范围" style="width: 100%">
-          <el-option label="全部数据" :value="1" />
-          <el-option label="指定部门数据" :value="2" />
-          <el-option label="本部门数据" :value="3" />
-          <el-option label="本部门及以下数据" :value="4" />
-          <el-option label="仅本人数据" :value="5" />
-        </el-select>
+        <el-radio-group v-model="formData.dataScope">
+          <el-radio-button :value="1">全部</el-radio-button>
+          <el-radio-button :value="2">指定部门</el-radio-button>
+          <el-radio-button :value="3">本部门</el-radio-button>
+          <el-radio-button :value="4">本部门及以下</el-radio-button>
+          <el-radio-button :value="5">仅本人</el-radio-button>
+        </el-radio-group>
       </el-form-item>
-      <el-form-item label="角色描述" prop="description">
+
+      <el-form-item label="备注" prop="description">
         <el-input
           v-model="formData.description"
           type="textarea"
           :rows="3"
-          placeholder="请输入角色描述"
-          clearable
-        />
-      </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-switch
-          v-model="formData.status"
-          active-text="启用"
-          inactive-text="禁用"
+          placeholder="请输入角色描述（可选）"
+          :maxlength="200"
+          show-word-limit
         />
       </el-form-item>
     </el-form>
 
     <template #footer>
-      <el-button @click="handleClose">取消</el-button>
-      <el-button type="primary" :loading="loading" @click="handleSubmit">
-        确定
-      </el-button>
+      <div class="dialog-footer">
+        <el-button @click="handleClose">取消</el-button>
+        <el-button type="primary" :loading="loading" @click="handleSubmit">
+          确定
+        </el-button>
+      </div>
     </template>
   </el-dialog>
 </template>
@@ -111,15 +135,14 @@ const formData = reactive<Partial<RoleRow>>({
 const rules: FormRules = {
   roleCode: [
     { required: true, message: '请输入角色编码', trigger: 'blur' },
-    { pattern: /^[a-zA-Z0-9_-]+$/, message: '角色编码只能包含字母、数字、下划线和中划线', trigger: 'blur' }
+    { pattern: /^[A-Z][A-Z0-9_]*$/, message: '建议使用大写字母+下划线格式', trigger: 'blur' }
   ],
   roleName: [
     { required: true, message: '请输入角色名称', trigger: 'blur' }
   ]
 }
 
-// 监听对话框打开
-watch(() => props.modelValue, async (val) => {
+watch(() => props.modelValue, (val) => {
   if (val) {
     if (props.isEdit && props.roleData) {
       Object.assign(formData, props.roleData)
@@ -129,7 +152,6 @@ watch(() => props.modelValue, async (val) => {
   }
 })
 
-// 重置表单
 const resetForm = () => {
   formData.id = undefined
   formData.roleCode = ''
@@ -141,12 +163,10 @@ const resetForm = () => {
   formRef.value?.clearValidate()
 }
 
-// 关闭对话框
 const handleClose = () => {
   emit('update:modelValue', false)
 }
 
-// 提交表单
 const handleSubmit = async () => {
   if (!formRef.value) return
 
@@ -166,7 +186,7 @@ const handleSubmit = async () => {
       emit('success')
       handleClose()
     } catch (error: any) {
-      // error handled by http interceptor
+      // handled by http interceptor
     } finally {
       loading.value = false
     }
@@ -174,5 +194,13 @@ const handleSubmit = async () => {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.role-form {
+  padding: 8px 0;
+}
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
 </style>
