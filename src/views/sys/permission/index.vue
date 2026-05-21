@@ -46,14 +46,26 @@
 
       <div class="search-section">
         <el-form :inline="true">
-          <el-form-item label="用户ID">
-            <el-input
+          <el-form-item label="选择用户">
+            <el-select
               v-model="userId"
-              placeholder="请输入用户ID"
+              filterable
+              remote
+              reserve-keyword
               clearable
-              style="width: 200px"
-              @keyup.enter="handleSearchUserRoles"
-            />
+              placeholder="输入用户名或昵称搜索"
+              :remote-method="handleUserSearch"
+              :loading="userSearchLoading"
+              style="width: 280px"
+              @change="handleSearchUserRoles"
+            >
+              <el-option
+                v-for="user in userSearchResults"
+                :key="user.userId"
+                :label="`${user.username}${user.nickname ? ' (' + user.nickname + ')' : ''}`"
+                :value="user.userId"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleSearchUserRoles" :disabled="!userId" :loading="userRoleLoading">
@@ -168,11 +180,36 @@ import { Search, Check, Key, User, Menu } from '@element-plus/icons-vue'
 import { getRoleSimpleListApi, type RoleRow } from '@/api/roleApi'
 import { getUserRoleListApi, assignUserRoleApi, getRoleMenuListApi } from '@/api/permissionApi'
 import { getMenuListApi, type MenuRow } from '@/api/menuApi'
+import { getUserListPageApi, type UserRow } from '@/api/userApi'
 
 const activeTab = ref<'user-role' | 'role-menu'>('user-role')
 
+// === 用户搜索 ===
+const userSearchLoading = ref(false)
+const userSearchResults = ref<UserRow[]>([])
+let searchTimer: ReturnType<typeof setTimeout> | null = null
+
+const handleUserSearch = (query: string) => {
+  if (searchTimer) clearTimeout(searchTimer)
+  if (!query) {
+    userSearchResults.value = []
+    return
+  }
+  searchTimer = setTimeout(async () => {
+    userSearchLoading.value = true
+    try {
+      const res = await getUserListPageApi({ pageNum: 1, pageSize: 20, username: query })
+      userSearchResults.value = res.data?.records || []
+    } catch (e) {
+      console.error('搜索用户失败', e)
+    } finally {
+      userSearchLoading.value = false
+    }
+  }, 300)
+}
+
 // === 用户角色分配 ===
-const userId = ref('')
+const userId = ref<string | number>('')
 const userRoleLoading = ref(false)
 const submitLoading = ref(false)
 const showUserRoleResult = ref(false)
