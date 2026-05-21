@@ -8,12 +8,14 @@ export interface MenuRow {
 	parentId?: number; // 父菜单ID，0表示根菜单
 	menuName: string; // 菜单名称
     routerName?: string; // 路由名称
-	menuCode?: string; // 菜单权限标识（按钮或接口权限）
+	menuCode?: string; // 菜单权限标识（来自 SysMenu.menuCode，用于 GET /sys/menu 接口）
+	permission?: string; // 权限标识（来自 MenuTreeModel.permission，用于 GET /sys/menu/user/tree 接口）
 	menuType: number; // 菜单类型：1目录 2菜单 3按钮
 	path: string; // 前端路由路径
 	component?: string; // 前端组件路径
 	icon?: string; // 菜单图标
-	sortOrder?: number; // 菜单排序
+	sortOrder?: number; // 菜单排序（SysMenu.sortOrder）
+	sort?: number; // 菜单排序（MenuTreeModel.sort）
 	visible?: boolean; // 是否在菜单中显示
 	status?: boolean; // 是否启用
 	remark?: string; // 备注说明

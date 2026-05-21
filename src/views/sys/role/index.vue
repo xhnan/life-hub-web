@@ -44,7 +44,7 @@
         <div class="card-header">
           <span class="title">角色列表</span>
           <div class="right-actions">
-            <el-button type="primary" @click="handleAdd">
+            <el-button type="primary" @click="handleAdd" v-permission="['system:role:create']">
               <el-icon class="el-icon--left"><Plus /></el-icon>新增角色
             </el-button>
             <el-button @click="loadRoleList" :loading="loading">
@@ -92,13 +92,13 @@
         <el-table-column prop="createdAt" label="创建时间" width="170" align="center" />
         <el-table-column label="操作" width="220" fixed="right" align="center">
           <template #default="{ row }">
-            <el-button link type="primary" size="small" @click="handleGrant(row)">
+            <el-button link type="primary" size="small" @click="handleGrant(row)" v-permission="['system:permission:assign-role-menu']">
               <el-icon class="el-icon--left"><Setting /></el-icon>菜单权限
             </el-button>
-            <el-button link type="primary" size="small" @click="handleEdit(row)">
+            <el-button link type="primary" size="small" @click="handleEdit(row)" v-permission="['system:role:update']">
               编辑
             </el-button>
-            <el-button link type="danger" size="small" @click="handleDelete(row)" :disabled="row.type === 1">
+            <el-button link type="danger" size="small" @click="handleDelete(row)" :disabled="row.type === 1" v-permission="['system:role:delete']">
               删除
             </el-button>
           </template>
