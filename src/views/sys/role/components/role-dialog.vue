@@ -14,7 +14,7 @@
       <el-form-item label="角色编码" prop="roleCode">
         <el-input
           v-model="formData.roleCode"
-          placeholder="请输入角色编码"
+          placeholder="请输入角色编码，如 ADMIN"
           :disabled="isEdit"
           clearable
         />
@@ -26,7 +26,23 @@
           clearable
         />
       </el-form-item>
-
+      <el-form-item label="角色排序" prop="sortOrder">
+        <el-input-number
+          v-model="formData.sortOrder"
+          :min="0"
+          :max="9999"
+          controls-position="right"
+        />
+      </el-form-item>
+      <el-form-item label="数据范围" prop="dataScope">
+        <el-select v-model="formData.dataScope" placeholder="请选择数据范围" style="width: 100%">
+          <el-option label="全部数据" :value="1" />
+          <el-option label="指定部门数据" :value="2" />
+          <el-option label="本部门数据" :value="3" />
+          <el-option label="本部门及以下数据" :value="4" />
+          <el-option label="仅本人数据" :value="5" />
+        </el-select>
+      </el-form-item>
       <el-form-item label="角色描述" prop="description">
         <el-input
           v-model="formData.description"
@@ -86,6 +102,8 @@ const formData = reactive<Partial<RoleRow>>({
   id: undefined,
   roleCode: '',
   roleName: '',
+  sortOrder: 0,
+  dataScope: 1,
   description: '',
   status: true
 })
@@ -116,6 +134,8 @@ const resetForm = () => {
   formData.id = undefined
   formData.roleCode = ''
   formData.roleName = ''
+  formData.sortOrder = 0
+  formData.dataScope = 1
   formData.description = ''
   formData.status = true
   formRef.value?.clearValidate()
@@ -146,7 +166,7 @@ const handleSubmit = async () => {
       emit('success')
       handleClose()
     } catch (error: any) {
-      // ElMessage.error(error?.message || '操作失败')
+      // error handled by http interceptor
     } finally {
       loading.value = false
     }

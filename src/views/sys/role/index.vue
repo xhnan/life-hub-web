@@ -19,7 +19,6 @@
           <el-button type="primary" @click="handleSearch">搜索</el-button>
           <el-button @click="handleReset">重置</el-button>
           <el-button type="success" @click="handleAdd">新增角色</el-button>
-          <el-button type="success" @click="test">测试按钮</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -33,9 +32,16 @@
         stripe
         style="width: 100%"
       >
-        <el-table-column prop="id" label="ID" width="180" show-overflow-tooltip />
+        <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="roleCode" label="角色编码" width="150" />
         <el-table-column prop="roleName" label="角色名称" width="150" />
+        <el-table-column prop="type" label="角色类型" width="100">
+          <template #default="{ row }">
+            <el-tag v-if="row.type === 1" type="warning">内置</el-tag>
+            <el-tag v-else>自定义</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="sortOrder" label="排序" width="80" />
         <el-table-column prop="description" label="描述" min-width="200" show-overflow-tooltip />
         <el-table-column prop="status" label="状态" width="80">
           <template #default="{ row }">
@@ -46,9 +52,9 @@
         <el-table-column prop="createdAt" label="创建时间" width="180" />
         <el-table-column label="操作" width="250" fixed="right">
           <template #default="{ row }">
-            <el-button type="success" size="small" @click="handleGrant(row)">授权</el-button>
+            <el-button type="success" size="small" @click="handleGrant(row)">菜单权限</el-button>
             <el-button type="primary" size="small" @click="handleEdit(row)">编辑</el-button>
-            <el-button type="danger" size="small" @click="handleDelete(row)">删除</el-button>
+            <el-button type="danger" size="small" @click="handleDelete(row)" :disabled="row.type === 1">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -75,8 +81,8 @@
       @success="handleDialogSuccess"
     />
 
-    <!-- 授权抽屉 -->
-    <role-grant-drawer
+    <!-- 菜单权限分配抽屉 -->
+    <role-menu-drawer
       v-model="drawerVisible"
       :role-data="drawerRoleData"
       @success="handleDialogSuccess"
@@ -88,9 +94,8 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import RoleDialog from '@/views/sys/role/components/role-dialog.vue'
-import RoleGrantDrawer from '@/views/sys/role/components/role-grant-drawer.vue'
-import {type RoleRow, type RolePageParams, testApi} from '@/api/roleApi'
-import { getRoleListPageApi, deleteRoleApi } from '@/api/roleApi'
+import RoleMenuDrawer from '@/views/sys/role/components/role-menu-drawer.vue'
+import { type RoleRow, type RolePageParams, getRoleListPageApi, deleteRoleApi } from '@/api/roleApi'
 
 const loading = ref(false)
 const tableData = ref<RoleRow[]>([])
@@ -113,7 +118,7 @@ const dialogTitle = ref('')
 const isEdit = ref(false)
 const dialogRoleData = ref<RoleRow | null>(null)
 
-// 授权抽屉相关
+// 菜单权限抽屉相关
 const drawerVisible = ref(false)
 const drawerRoleData = ref<RoleRow | null>(null)
 
@@ -145,10 +150,6 @@ const handleSearch = () => {
   loadRoleList()
 }
 
-const test=()=>{
-   testApi()
-}
-
 // 重置
 const handleReset = () => {
   searchForm.roleCode = ''
@@ -173,7 +174,7 @@ const handleEdit = (row: RoleRow) => {
   dialogVisible.value = true
 }
 
-// 授权
+// 菜单权限分配
 const handleGrant = (row: RoleRow) => {
   drawerRoleData.value = { ...row }
   drawerVisible.value = true

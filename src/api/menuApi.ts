@@ -54,9 +54,7 @@ export const deleteMenuApi = (id: string | number) => {
 	return http.delete<void>(`${prefix}/${id}`);
 };
 
-// 生成权限（同步生成权限）- 预留接口
-export const generatePermissionApi = (menuId: string | number) => {
-    // 假设后端接口路径为 /sys/permission/generate/{menuId}
-    // 暂时用 mock 或者实际请求，这里写实际请求定义的格式
-    return http.post<void>(`/sys/permission/generate/${menuId}`);
+// 获取菜单树（全量，用于菜单管理界面）
+export const getMenuFullTreeApi = () => {
+	return http.get<MenuRow[]>(`${prefix}/tree`);
 };

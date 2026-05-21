@@ -2,18 +2,20 @@ import { http } from "@/utils/http";
 
 const prefix = '/sys/role';
 
-// 角色数据结构
+// 角色数据结构（参考芋道 RBAC 重设计）
 export interface RoleRow {
 	id: number | string;
-	roleCode: string; // 角色编码（唯一标识）
+	roleCode: string; // 角色编码（唯一标识），如 SUPER_ADMIN、ADMIN、USER
 	roleName: string; // 角色名称
-	description?: string; // 角色描述
+	sortOrder?: number; // 角色排序
 	status?: boolean; // 是否启用
+	type?: number; // 角色类型：1=内置角色 2=自定义角色
+	dataScope?: number; // 数据范围：1=全部 2=指定部门 3=本部门 4=本部门及以下 5=仅本人
+	description?: string; // 角色描述
 	createdBy?: number;
 	createdAt?: string;
 	updatedBy?: number;
 	updatedAt?: string;
-	permissionIds?: (number | string)[]; // 关联的权限ID列表
 }
 
 // 分页参数
@@ -33,22 +35,19 @@ export interface PageResult<T> {
 	pageSize: number;
 }
 
-// 角色-权限关联数据
-export interface RolePermissionRelation {
-	roleId: number | string;
-	permissionIds: (number | string)[];
-}
-
 // 获取角色列表（分页）
 export const getRoleListPageApi = (params: RolePageParams) => {
 	return http.get<PageResult<RoleRow>>(`${prefix}/page`, params);
 };
-export const testApi = () => {
-    return http.get(`${prefix}/test`);
-}
+
 // 获取所有角色列表（不分页）
 export const getRoleListApi = () => {
 	return http.get<RoleRow[]>(`${prefix}`);
+};
+
+// 获取角色精简列表（用于角色分配时的选项列表，仅返回启用的角色）
+export const getRoleSimpleListApi = () => {
+	return http.get<RoleRow[]>(`${prefix}/simple-list`);
 };
 
 // 获取角色详情
@@ -69,36 +68,4 @@ export const updateRoleApi = (data: Partial<RoleRow>) => {
 // 删除角色
 export const deleteRoleApi = (id: string | number) => {
 	return http.delete<void>(`${prefix}/${id}`);
-};
-
-// 获取角色的权限ID列表
-export const getRolePermissionIdsApi = (roleId: string | number) => {
-	return http.get<(number | string)[]>(`${prefix}/${roleId}/permissions`);
-};
-// 兼容旧名
-export const getRolePermissionsApi = getRolePermissionIdsApi;
-
-// 分配角色权限
-export const assignRolePermissionsApi = (roleId: string | number, permissionIds: (number | string)[]) => {
-	return http.post<void>(`${prefix}/${roleId}/permissions`, { permissionIds });
-};
-
-// 获取角色关联的菜单ID列表
-export const getRoleMenuIdsApi = (roleId: string | number) => {
-	return http.get<number[]>(`${prefix}/${roleId}/menus`);
-};
-
-// 分配角色菜单
-export const assignRoleMenusApi = (roleId: string | number, menuIds: number[]) => {
-	return http.post<void>(`${prefix}/${roleId}/menus`, { menuIds });
-};
-
-// 批量删除角色
-export const batchDeleteRoleApi = (ids: (string | number)[]) => {
-	return http.delete<void>(`${prefix}/batch`, { data: ids });
-};
-
-// 根据用户ID获取角色列表
-export const getRolesByUserIdApi = (userId: string | number) => {
-	return http.get<RoleRow[]>(`${prefix}/user/${userId}`);
 };

@@ -27,6 +27,7 @@
               <el-checkbox :label="role.id" border style="width: 100%; margin-bottom: 10px">
                 {{ role.roleName }}
                 <span class="role-code">({{ role.roleCode }})</span>
+                <el-tag v-if="role.type === 1" size="small" type="warning" style="margin-left: 4px">内置</el-tag>
               </el-checkbox>
             </el-col>
           </el-row>
@@ -54,9 +55,9 @@
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { UserRow } from '@/api/userApi'
-import { getUserRolesApi, sysUserRoleApi } from '@/api/userApi'
 import type { RoleRow } from '@/api/roleApi'
-import { getRoleListPageApi } from '@/api/roleApi'
+import { getRoleSimpleListApi } from '@/api/roleApi'
+import { getUserRoleListApi, assignUserRoleApi } from '@/api/permissionApi'
 
 const emit = defineEmits<{
   'success': []
@@ -66,62 +67,25 @@ const visible = ref(false)
 const loading = ref(false)
 const submitLoading = ref(false)
 const roleList = ref<RoleRow[]>([])
-const selectedRoles = ref<(string | number)[]>([]) // 存储选中的 roleId
+const selectedRoles = ref<(string | number)[]>([])
 const userData = ref<UserRow | null>(null)
-// 存储原始的关联关系，用于删除时查找 id
-// 结构: { roleId: sysUserRoleId }
-const originalUserRoleMap = ref<Record<string | number, string | number>>({})
 
-// 加载所有角色
+// 加载所有可用角色（精简列表，仅启用的）
 const loadAllRoles = async () => {
   try {
-    // 使用分页接口获取所有角色（假设最大1000条）
-    const res = await getRoleListPageApi({ pageNum: 1, pageSize: 1000 })
-    const list = res.data?.records || []
-    // 只显示启用的角色
-    roleList.value = list.filter(r => r.status !== false)
+    const res = await getRoleSimpleListApi()
+    roleList.value = res.data || []
   } catch (error) {
     console.error('获取角色列表失败', error)
     ElMessage.error('获取角色列表失败')
   }
 }
 
-// 加载用户已有的角色
+// 加载用户已有的角色ID列表
 const loadUserRoles = async (userId: string | number) => {
   try {
-    // 1. 获取用户角色列表 (List<SysRole>)
-    const res = await getUserRolesApi(userId)
-    const roles = res.data || []
-    
-    // 2. 这里的 getUserRolesApi 只返回了 SysRole，没有中间表 ID
-    // 导致我们无法调用 delete 接口。
-    // 我们必须获取 SysUserRole 列表才能知道删除时的 ID。
-    // 由于后端只提供了 getAll() 接口，我们可以尝试调用它并在前端过滤 (虽然效率低，但这是目前唯一的方法)
-    // 或者，我们可以赌一把，也许 delete 接口也支持传 roleId (虽然用户给的代码写的是 delete(@PathVariable Long id))
-    
-    // 鉴于无法直接获取中间表ID，我们尝试调用 getAll 获取所有关联，然后过滤
-    // 注意：如果数据量大，这会很慢。
-    const allRelationsRes = await sysUserRoleApi.getAll()
-    const allRelations = allRelationsRes.data || []
-    
-    // 过滤出当前用户的关联
-    const userRelations = allRelations.filter((item: any) => String(item.userId) === String(userId))
-    
-    originalUserRoleMap.value = {}
-    selectedRoles.value = []
-    
-    userRelations.forEach((item: any) => {
-      // 记录 roleId -> id 的映射
-      originalUserRoleMap.value[item.roleId] = item.id
-      selectedRoles.value.push(item.roleId)
-    })
-    
-    // 如果 getAll 不可用或为空，尝试回退到旧逻辑（仅用于显示，无法删除）
-    if (userRelations.length === 0 && roles.length > 0) {
-      console.warn('无法获取关联表ID，只能显示角色，可能无法删除')
-      selectedRoles.value = roles.map((r: any) => r.id)
-    }
-
+    const res = await getUserRoleListApi(userId)
+    selectedRoles.value = res.data || []
   } catch (error) {
     console.error('获取用户角色失败', error)
     ElMessage.error('获取用户角色失败')
@@ -130,10 +94,9 @@ const loadUserRoles = async (userId: string | number) => {
 
 // 打开对话框
 const openDialog = async (userInfo: UserRow) => {
-  console.log('openDialog', userInfo)
   visible.value = true
   userData.value = userInfo
-  
+
   if (userInfo.userId) {
     loading.value = true
     selectedRoles.value = []
@@ -154,33 +117,11 @@ const handleSubmit = async () => {
 
   submitLoading.value = true
   try {
-    const currentRoleIds = selectedRoles.value
-    const userId = userData.value.userId
+    await assignUserRoleApi({
+      userId: userData.value.userId,
+      roleIds: selectedRoles.value as number[]
+    })
 
-    // 计算差异
-    // 需要新增的：currentRoleIds 中有，但 originalUserRoleMap 中没有的
-    const toAdd = currentRoleIds.filter(id => !originalUserRoleMap.value[id])
-    
-    // 需要删除的：originalUserRoleMap 中有，但 currentRoleIds 中没有的
-    const originalIds = Object.keys(originalUserRoleMap.value).map(k => Number(k))
-    const toRemove = originalIds.filter(id => !currentRoleIds.includes(id))
-
-    // 执行删除
-    for (const roleId of toRemove) {
-      const relationId = originalUserRoleMap.value[roleId]
-      if (relationId) {
-        await sysUserRoleApi.delete(relationId)
-      }
-    }
-
-    // 执行新增
-    for (const roleId of toAdd) {
-      await sysUserRoleApi.add({
-        userId,
-        roleId
-      })
-    }
-    
     ElMessage.success('分配角色成功')
     emit('success')
     handleClose()
