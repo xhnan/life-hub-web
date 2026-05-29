@@ -134,10 +134,10 @@
 
 <script setup lang="ts">
 import { ref, reactive, watch, computed } from 'vue'
-import { ElMessage, ElNotification, type FormInstance, type FormRules } from 'element-plus'
+import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import type { MenuRow } from '@/api/menuApi'
 import type { components } from '@/types/api-schema'
-import { addMenuApi, updateMenuApi, getMenuDetailApi, generatePermissionApi } from '@/api/menuApi'
+import { addMenuApi, updateMenuApi, getMenuDetailApi } from '@/api/menuApi'
 import IconSelector from '@/components/IconSelector/index.vue'
 
 type SysMenu = components['schemas']['SysMenu']
@@ -305,28 +305,6 @@ const handleSubmit = async () => {
       // 新增
       result = await addMenuApi(submitData)
       ElMessage.success('菜单创建成功')
-      
-      // 处理同步生成权限逻辑
-      if (syncPermission.value && result.data && result.data.id) {
-          try {
-              // 调用预留的生成权限接口
-              await generatePermissionApi(result.data.id)
-              ElNotification({
-                  title: '权限生成成功',
-                  message: `已为菜单 "${result.data.menuName}" 自动生成相关权限点`,
-                  type: 'success',
-                  duration: 4000
-              })
-          } catch (permError) {
-              console.error('权限生成失败:', permError)
-              ElNotification({
-                  title: '权限生成失败',
-                  message: '菜单已创建，但自动生成权限失败，请稍后手动处理',
-                  type: 'warning',
-                  duration: 6000
-              })
-          }
-      }
     }
     
     handleClose()
