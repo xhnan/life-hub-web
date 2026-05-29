@@ -37,7 +37,7 @@ const router = createRouter({
 
 import { getUserInfoApi } from "@/api/authApi";
 import { userStore, setUserInfo } from "@/store/user";
-import { generateRoutes } from "@/store/permission";
+import { generateRoutes, getMenuPermissions } from "@/store/permission";
 import { hasPermission, clearAuthData } from "@/utils/auth";
 import { STORAGE_KEYS } from "@/utils/constants";
 
@@ -104,8 +104,16 @@ router.beforeEach(async (to, _, next) => {
                     setUserInfo(roles, permissions);
                     
                     // 生成并添加路由
-                    // generateRoutes 已经修改为 async，需要 await
                     const accessRoutes = await generateRoutes(roles);
+
+                    // 合并菜单树中提取的权限标识（新 RBAC 模型的 menuCode）
+                    const menuPerms = getMenuPermissions();
+                    if (menuPerms.length > 0) {
+                        const mergedPermissions = [...new Set([...permissions, ...menuPerms])];
+                        setUserInfo(roles, mergedPermissions);
+                        sessionStorage.setItem(STORAGE_KEYS.USER_PERMISSIONS, JSON.stringify(mergedPermissions));
+                    }
+
                     accessRoutes.forEach(route => {
                         // 移除之前的 router.hasRoute 检查，因为 addRoute 会自动覆盖同名路由（但最好还是保持单一来源）
                         // 由于 permissionStore 已经做了去重，这里直接添加即可

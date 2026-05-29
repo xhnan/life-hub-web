@@ -1,5 +1,4 @@
 import { http } from "@/utils/http";
-import type { RoleRow } from './roleApi';
 
 const prefix = '/sys/user'
 
@@ -44,10 +43,6 @@ export interface PageResult<T> {
 	pageSize: number;
 }
 
-export function testUserApi(){
-    return http.get(`${prefix}/test`);
-}
-
 // 获取用户列表（分页）
 export const getUserListApi = (params: PageParams) => {
 	return http.get<PageResult<UserRow>>(`${prefix}`, params);
@@ -76,37 +71,5 @@ export const deleteUserApi = (id: string | number) => {
 	return http.delete<void>(`${prefix}/${id}`);
 };
 
-const userRolePrefix = '/sys/userrole'
-
-// 获取用户的角色ID列表
-export const getUserRolesApi = (userId: string | number) => {
-	return http.get<RoleRow[]>(`${userRolePrefix}/user/${userId}/roles`);
-};
-
-// 这里的定义是基于后端 SysUserRoleController 的推断
-// 但由于缺失关键的批量接口或根据(userId, roleId)删除的接口，
-// 我们暂时只能保留这些定义，并在前端做相应处理或假设后端有隐藏接口。
-
-// 修正：我们先定义出标准的增删改查对应接口
-export const sysUserRoleApi = {
-    // 新增关联
-    add: (data: { userId: number | string; roleId: number | string }) => {
-        return http.post<any>(`${userRolePrefix}`, data);
-    },
-    // 删除关联 (需要中间表ID)
-    delete: (id: number | string) => {
-        return http.delete<void>(`${userRolePrefix}/${id}`);
-    },
-    // 更新关联
-    update: (data: { id: number | string; userId: number | string; roleId: number | string }) => {
-        return http.put<any>(`${userRolePrefix}`, data);
-    },
-    // 根据ID获取
-    getById: (id: number | string) => {
-        return http.get<any>(`${userRolePrefix}/${id}`);
-    },
-    // 获取所有
-    getAll: () => {
-        return http.get<any[]>(`${userRolePrefix}`);
-    }
-}
+// ========== 以下为旧接口，已迁移到 permissionApi.ts 的新 RBAC 模型 ==========
+// 用户角色分配请使用: getUserRoleListApi / assignUserRoleApi from '@/api/permissionApi'

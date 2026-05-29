@@ -318,8 +318,18 @@ const handleLogin = async () => {
 			const res = await loginApi(loginForm);
 			if (res.code === 200 && res.data) {
 				localStorage.setItem(STORAGE_KEYS.TOKEN, res.data.token);
-				localStorage.setItem(STORAGE_KEYS.TOKEN_EXPIRES_AT, (Date.now() + res.data.expiresIn * 1000).toString());
-				localStorage.setItem(STORAGE_KEYS.USER_INFO, JSON.stringify({ username: res.data.username, avatar: res.data.avatar }));
+				// 默认 token 有效期 24 小时（后端未在此响应中返回 expiresIn）
+				const defaultExpiry = 24 * 60 * 60 * 1000;
+				localStorage.setItem(STORAGE_KEYS.TOKEN_EXPIRES_AT, (Date.now() + defaultExpiry).toString());
+				const profile = res.data.userProfile;
+				if (profile) {
+					localStorage.setItem(STORAGE_KEYS.USER_INFO, JSON.stringify({
+						userId: profile.userId,
+						username: profile.username,
+						nickname: profile.nickname,
+						avatar: profile.avatar
+					}));
+				}
 				ElMessage.success('登录成功，欢迎回来！');
 				router.push('/');
 			} else {

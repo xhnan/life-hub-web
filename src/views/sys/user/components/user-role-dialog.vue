@@ -5,40 +5,50 @@
     width="650px"
     @close="handleClose"
     :close-on-click-modal="false"
+    destroy-on-close
   >
-    <div v-loading="loading">
+    <div v-loading="loading" class="role-assign-body">
       <!-- 用户信息 -->
       <div class="user-info">
-        <div class="info-item">
-          <span class="label">当前用户：</span>
-          <span class="value">{{ userData?.username }}</span>
-          <span class="nickname" v-if="userData?.nickname">({{ userData?.nickname }})</span>
-        </div>
+        <el-icon :size="20" color="#6366f1"><UserFilled /></el-icon>
+        <span class="username">{{ userData?.username }}</span>
+        <span class="nickname" v-if="userData?.nickname">({{ userData?.nickname }})</span>
       </div>
 
-      <el-divider>角色列表</el-divider>
+      <!-- 角色选择区域 -->
+      <div class="role-grid">
+        <div
+          v-for="role in roleList"
+          :key="role.id"
+          class="role-card"
+          :class="{ selected: selectedRoles.includes(role.id as number) }"
+          @click="toggleRole(role)"
+        >
+          <div class="role-card-left">
+            <el-checkbox
+              :model-value="selectedRoles.includes(role.id as number)"
+              @change="toggleRole(role)"
+              @click.stop
+            />
+          </div>
+          <div class="role-card-content">
+            <div class="role-card-name">
+              {{ role.roleName }}
+              <el-tag v-if="role.type === 1" size="small" type="warning" effect="light">内置</el-tag>
+            </div>
+            <div class="role-card-code">{{ role.roleCode }}</div>
+          </div>
+        </div>
 
-      <!-- 角色选择 -->
-      <div class="role-list-container">
-        <el-checkbox-group v-model="selectedRoles">
-          <div v-if="roleList.length === 0" class="empty-text">暂无可用角色</div>
-          <el-row :gutter="10">
-            <el-col :span="12" v-for="role in roleList" :key="role.id">
-              <el-checkbox :label="role.id" border style="width: 100%; margin-bottom: 10px">
-                {{ role.roleName }}
-                <span class="role-code">({{ role.roleCode }})</span>
-              </el-checkbox>
-            </el-col>
-          </el-row>
-        </el-checkbox-group>
+        <div v-if="roleList.length === 0" class="empty-text">暂无可用角色</div>
       </div>
     </div>
 
     <template #footer>
       <div class="dialog-footer">
-        <div class="selected-count">
-          已选择 <span class="count">{{ selectedRoles.length }}</span> 个角色
-        </div>
+        <span class="selected-count">
+          已选择 <em>{{ selectedRoles.length }}</em> 个角色
+        </span>
         <div>
           <el-button @click="handleClose">取消</el-button>
           <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
@@ -53,10 +63,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { UserFilled } from '@element-plus/icons-vue'
 import type { UserRow } from '@/api/userApi'
-import { getUserRolesApi, sysUserRoleApi } from '@/api/userApi'
 import type { RoleRow } from '@/api/roleApi'
-import { getRoleListPageApi } from '@/api/roleApi'
+import { getRoleSimpleListApi } from '@/api/roleApi'
+import { getUserRoleListApi, assignUserRoleApi } from '@/api/permissionApi'
 
 const emit = defineEmits<{
   'success': []
@@ -66,74 +77,43 @@ const visible = ref(false)
 const loading = ref(false)
 const submitLoading = ref(false)
 const roleList = ref<RoleRow[]>([])
-const selectedRoles = ref<(string | number)[]>([]) // 存储选中的 roleId
+const selectedRoles = ref<number[]>([])
 const userData = ref<UserRow | null>(null)
-// 存储原始的关联关系，用于删除时查找 id
-// 结构: { roleId: sysUserRoleId }
-const originalUserRoleMap = ref<Record<string | number, string | number>>({})
 
-// 加载所有角色
+const toggleRole = (role: RoleRow) => {
+  const id = role.id as number
+  const idx = selectedRoles.value.indexOf(id)
+  if (idx > -1) {
+    selectedRoles.value.splice(idx, 1)
+  } else {
+    selectedRoles.value.push(id)
+  }
+}
+
 const loadAllRoles = async () => {
   try {
-    // 使用分页接口获取所有角色（假设最大1000条）
-    const res = await getRoleListPageApi({ pageNum: 1, pageSize: 1000 })
-    const list = res.data?.records || []
-    // 只显示启用的角色
-    roleList.value = list.filter(r => r.status !== false)
+    const res = await getRoleSimpleListApi()
+    roleList.value = res.data || []
   } catch (error) {
     console.error('获取角色列表失败', error)
     ElMessage.error('获取角色列表失败')
   }
 }
 
-// 加载用户已有的角色
 const loadUserRoles = async (userId: string | number) => {
   try {
-    // 1. 获取用户角色列表 (List<SysRole>)
-    const res = await getUserRolesApi(userId)
-    const roles = res.data || []
-    
-    // 2. 这里的 getUserRolesApi 只返回了 SysRole，没有中间表 ID
-    // 导致我们无法调用 delete 接口。
-    // 我们必须获取 SysUserRole 列表才能知道删除时的 ID。
-    // 由于后端只提供了 getAll() 接口，我们可以尝试调用它并在前端过滤 (虽然效率低，但这是目前唯一的方法)
-    // 或者，我们可以赌一把，也许 delete 接口也支持传 roleId (虽然用户给的代码写的是 delete(@PathVariable Long id))
-    
-    // 鉴于无法直接获取中间表ID，我们尝试调用 getAll 获取所有关联，然后过滤
-    // 注意：如果数据量大，这会很慢。
-    const allRelationsRes = await sysUserRoleApi.getAll()
-    const allRelations = allRelationsRes.data || []
-    
-    // 过滤出当前用户的关联
-    const userRelations = allRelations.filter((item: any) => String(item.userId) === String(userId))
-    
-    originalUserRoleMap.value = {}
-    selectedRoles.value = []
-    
-    userRelations.forEach((item: any) => {
-      // 记录 roleId -> id 的映射
-      originalUserRoleMap.value[item.roleId] = item.id
-      selectedRoles.value.push(item.roleId)
-    })
-    
-    // 如果 getAll 不可用或为空，尝试回退到旧逻辑（仅用于显示，无法删除）
-    if (userRelations.length === 0 && roles.length > 0) {
-      console.warn('无法获取关联表ID，只能显示角色，可能无法删除')
-      selectedRoles.value = roles.map((r: any) => r.id)
-    }
-
+    const res = await getUserRoleListApi(userId)
+    selectedRoles.value = (res.data || []) as number[]
   } catch (error) {
     console.error('获取用户角色失败', error)
     ElMessage.error('获取用户角色失败')
   }
 }
 
-// 打开对话框
 const openDialog = async (userInfo: UserRow) => {
-  console.log('openDialog', userInfo)
   visible.value = true
   userData.value = userInfo
-  
+
   if (userInfo.userId) {
     loading.value = true
     selectedRoles.value = []
@@ -154,33 +134,11 @@ const handleSubmit = async () => {
 
   submitLoading.value = true
   try {
-    const currentRoleIds = selectedRoles.value
-    const userId = userData.value.userId
+    await assignUserRoleApi({
+      userId: userData.value.userId,
+      roleIds: selectedRoles.value
+    })
 
-    // 计算差异
-    // 需要新增的：currentRoleIds 中有，但 originalUserRoleMap 中没有的
-    const toAdd = currentRoleIds.filter(id => !originalUserRoleMap.value[id])
-    
-    // 需要删除的：originalUserRoleMap 中有，但 currentRoleIds 中没有的
-    const originalIds = Object.keys(originalUserRoleMap.value).map(k => Number(k))
-    const toRemove = originalIds.filter(id => !currentRoleIds.includes(id))
-
-    // 执行删除
-    for (const roleId of toRemove) {
-      const relationId = originalUserRoleMap.value[roleId]
-      if (relationId) {
-        await sysUserRoleApi.delete(relationId)
-      }
-    }
-
-    // 执行新增
-    for (const roleId of toAdd) {
-      await sysUserRoleApi.add({
-        userId,
-        roleId
-      })
-    }
-    
     ElMessage.success('分配角色成功')
     emit('success')
     handleClose()
@@ -196,57 +154,101 @@ defineExpose({
 })
 </script>
 
-<style scoped>
-.user-info {
-  margin-bottom: 20px;
-  padding: 10px;
-  background-color: #f5f7fa;
-  border-radius: 4px;
+<style scoped lang="scss">
+.role-assign-body {
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border-radius: 8px;
+    margin-bottom: 20px;
+
+    .username {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .nickname {
+      font-size: 13px;
+      color: #6b7280;
+    }
+  }
+
+  .role-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 4px;
+
+    .role-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover {
+        border-color: #c7d2fe;
+        box-shadow: 0 2px 6px rgba(99, 102, 241, 0.06);
+      }
+
+      &.selected {
+        border-color: #6366f1;
+        background: #f5f3ff;
+      }
+
+      .role-card-content {
+        flex: 1;
+
+        .role-card-name {
+          font-size: 14px;
+          font-weight: 500;
+          color: #1f2937;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .role-card-code {
+          font-size: 12px;
+          font-family: 'SF Mono', 'Cascadia Code', monospace;
+          color: #9ca3af;
+          margin-top: 2px;
+        }
+      }
+    }
+
+    .empty-text {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: #9ca3af;
+      padding: 32px;
+    }
+  }
 }
-.info-item {
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-}
-.label {
-  color: #606266;
-  width: 80px;
-}
-.value {
-  font-weight: 500;
-  color: #303133;
-}
-.nickname {
-  margin-left: 8px;
-  color: #909399;
-}
-.role-list-container {
-  max-height: 400px;
-  overflow-y: auto;
-  padding: 10px 0;
-}
-.role-code {
-  color: #909399;
-  font-size: 12px;
-  margin-left: 4px;
-}
-.empty-text {
-  text-align: center;
-  color: #909399;
-  padding: 20px;
-}
+
 .dialog-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-.selected-count {
-  color: #606266;
-  font-size: 14px;
-}
-.count {
-  color: #409eff;
-  font-weight: bold;
-  margin: 0 4px;
+
+  .selected-count {
+    font-size: 13px;
+    color: #6b7280;
+
+    em {
+      font-style: normal;
+      font-weight: 600;
+      color: #6366f1;
+    }
+  }
 }
 </style>

@@ -8,12 +8,16 @@ export interface LoginForm {
     rememberMe?: boolean;
 }
 
-export interface LoginResponse {
-	token: string;
-	tokenType: string;
-	expiresIn: number;
+export interface AuthUserProfile {
+	userId: number;
 	username: string;
-	avatar?: string;
+	nickname: string;
+	avatar: string;
+}
+
+export interface AuthLoginPayload {
+	token: string;
+	userProfile: AuthUserProfile;
 }
 
 export interface SysRole {
@@ -23,27 +27,37 @@ export interface SysRole {
     description?: string;
 }
 
-export interface SysPermission {
-    id: number;
-    name: string; // 后端返回的是 name
-    permissionKey: string; // 后端返回的是 permissionKey
-    description?: string;
+export interface PermissionItem {
+    permissionKey: string;
+    name: string;
 }
 
 export interface UserPermissionsDTO {
     userId: number;
     isSuperAdmin: boolean;
     roles: SysRole[];
-    permissions: SysPermission[];
+    permissions: PermissionItem[];
 }
 
 export const loginApi = (data: LoginForm) => {
-	return http.post<LoginResponse>(`${prefix}/login`, data);
+	return http.post<AuthLoginPayload>(`${prefix}/login`, data);
 };
 
+/**
+ * 获取当前用户的权限和角色信息
+ * 调用旧的 /sys/permission/user/current 接口
+ * 注意：在新 RBAC 模型中，真实权限标识来自菜单的 menuCode 字段
+ * 此接口仍然返回旧的 SysPermission 数据，但前端会从菜单树中提取 menuCode 作为补充
+ */
 export const getUserInfoApi = () => {
-	// 调用新的后端接口
 	return http.get<UserPermissionsDTO>('/sys/permission/user/current');
+};
+
+/**
+ * 获取当前用户的个人信息
+ */
+export const getProfileApi = () => {
+	return http.get<AuthUserProfile>(`${prefix}/profile`);
 };
 
 export const logoutApi = () => {
@@ -55,7 +69,7 @@ export const logoutApi = () => {
 /** 生成二维码响应 */
 export interface QrcodeGenerateResponse {
 	qrCodeId: string;
-	expiresIn: number; // 有效期，固定 300 秒
+	expiresIn: number;
 }
 
 /** 二维码状态枚举 */
@@ -67,7 +81,7 @@ export interface QrcodeStatusResponse {
 	userId?: number | null;
 	token?: string | null;
 	refreshToken?: string | null;
-	expiresIn?: number | null; // 毫秒
+	expiresIn?: number | null;
 	username?: string | null;
 	avatar?: string | null;
 }
@@ -82,7 +96,6 @@ export const getQrcodeStatusApi = (qrCodeId: string) => {
 
 // ========== GitHub OAuth 登录 ==========
 
-/** GitHub OAuth 回调响应（与 LoginResponse 结构一致） */
 export interface GithubOAuthResponse {
 	token: string;
 	tokenType: string;

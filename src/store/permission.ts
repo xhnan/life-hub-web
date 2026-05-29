@@ -16,11 +16,13 @@ const ParentView = {
 interface PermissionState {
     routes: RouteRecordRaw[];
     addRoutes: RouteRecordRaw[];
+    menuPermissions: string[]; // 从菜单树提取的权限标识（menuCode）
 }
 
 export const permissionStore = reactive<PermissionState>({
     routes: [],
-    addRoutes: []
+    addRoutes: [],
+    menuPermissions: []
 });
 
 function hasPermission(roles: string[], route: RouteRecordRaw) {
@@ -67,7 +69,7 @@ function transformMenuToRoutes(menus: MenuRow[]): RouteRecordRaw[] {
             meta: {
                 title: menu.menuName,
                 icon: menu.icon,
-                permissions: menu.menuCode ? [menu.menuCode] : undefined,
+                permissions: getMenuPermissionCode(menu) ? [getMenuPermissionCode(menu)!] : undefined,
                 // rank: menu.sortOrder // 如果需要排序
             },
             component: undefined,
@@ -140,6 +142,44 @@ function transformMenuToRoutes(menus: MenuRow[]): RouteRecordRaw[] {
 }
 
 /**
+ * 获取菜单的权限标识（兼容两种后端返回格式）
+ * - SysMenu 接口返回 menuCode
+ * - MenuTreeModel 接口返回 permission
+ */
+function getMenuPermissionCode(menu: MenuRow): string | undefined {
+    return menu.menuCode || menu.permission;
+}
+
+/**
+ * 从菜单树中提取所有权限标识（menuCode / permission）
+ * 新 RBAC 模型中，menuCode 即为权限标识
+ */
+function extractPermissionsFromMenus(menus: MenuRow[]): string[] {
+    const permissions: string[] = [];
+    const traverse = (items: MenuRow[]) => {
+        items.forEach(item => {
+            const code = getMenuPermissionCode(item);
+            if (code) {
+                permissions.push(code);
+            }
+            if (item.children && item.children.length > 0) {
+                traverse(item.children);
+            }
+        });
+    };
+    traverse(menus);
+    return permissions;
+}
+
+/**
+ * 获取从后端菜单树中提取的权限标识列表
+ * 在路由生成后可用，供外部使用
+ */
+export const getMenuPermissions = (): string[] => {
+    return permissionStore.menuPermissions || [];
+}
+
+/**
  * 生成路由
  */
 export const generateRoutes = async (roles: string[]) => {
@@ -157,6 +197,9 @@ export const generateRoutes = async (roles: string[]) => {
         // 2. 转换为路由配置 (后端路由)
         const backendRoutes = transformMenuToRoutes(menuTree || []);
         console.log('Transformed Backend Routes:', backendRoutes); // DEBUG LOG
+
+        // 2.1 提取菜单权限标识（用于前端按钮级权限控制）
+        permissionStore.menuPermissions = extractPermissionsFromMenus(menuTree || []);
 
         // 3. 处理前端静态异步路由 (src/router/modules)
         let frontendRoutes: RouteRecordRaw[] = [];
