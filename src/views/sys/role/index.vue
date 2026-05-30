@@ -82,14 +82,14 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="description" label="备注" min-width="180" show-overflow-tooltip />
+        <el-table-column prop="remark" label="备注" min-width="180" show-overflow-tooltip />
         <el-table-column prop="status" label="状态" width="80" align="center">
           <template #default="{ row }">
             <el-tag v-if="row.status" type="success" effect="light">启用</el-tag>
             <el-tag v-else type="danger" effect="light">禁用</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="createdAt" label="创建时间" width="170" align="center" />
+        <el-table-column prop="createTime" label="创建时间" width="170" align="center" />
         <el-table-column label="操作" width="220" fixed="right" align="center">
           <template #default="{ row }">
             <el-button link type="primary" size="small" @click="handleGrant(row)" v-permission="['system:permission:assign-role-menu']">

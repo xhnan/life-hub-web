@@ -29,23 +29,19 @@
           />
         </el-form-item>
 
-        <el-form-item label="昵称" prop="nickname">
-          <el-input v-model="formData.nickname" placeholder="请输入昵称" />
+        <el-form-item label="昵称" prop="fullName">
+          <el-input v-model="formData.fullName" placeholder="请输入昵称" />
         </el-form-item>
 
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="formData.email" placeholder="请输入邮箱" />
         </el-form-item>
 
-        <el-form-item label="手机号" prop="phone">
-          <el-input v-model="formData.phone" placeholder="请输入手机号" />
-        </el-form-item>
-
         <el-form-item label="性别" prop="gender">
           <el-select v-model="formData.gender" placeholder="请选择性别" style="width: 100%">
-            <el-option label="未知" :value="0" />
-            <el-option label="男" :value="1" />
-            <el-option label="女" :value="2" />
+            <el-option label="未知" value="other" />
+            <el-option label="男" value="male" />
+            <el-option label="女" value="female" />
           </el-select>
         </el-form-item>
 
@@ -56,15 +52,6 @@
           <el-option label="禁用" value="banned" />
         </el-select>
       </el-form-item>
-
-        <el-form-item label="备注" prop="remark">
-          <el-input 
-            v-model="formData.remark" 
-            type="textarea" 
-            :rows="3" 
-            placeholder="请输入备注" 
-          />
-        </el-form-item>
       </el-form>
     </div>
 
@@ -104,12 +91,10 @@ const dataLoading = ref(false)
 const formData = reactive<Partial<UserRow & { password?: string }>>({
   username: '',
   password: '',
-  nickname: '',
+  fullName: '',
   email: '',
-  phone: '',
-  gender: 0,
-  status: 'active',
-  remark: ''
+  gender: 'other',
+  status: 'active'
 })
 
 // 表单验证规则
@@ -124,9 +109,6 @@ const formRules: FormRules = {
   ],
   email: [
     { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
-  ],
-  phone: [
-    { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' }
   ]
 }
 
@@ -144,12 +126,10 @@ watch(() => props.modelValue, async (val) => {
         Object.assign(formData, {
           userId: userDetail.userId,
           username: userDetail.username,
-          nickname: userDetail.nickname || '',
+          fullName: userDetail.fullName || '',
           email: userDetail.email || '',
-          phone: userDetail.phone || '',
-          gender: userDetail.gender ?? 0,
-          status: userDetail.status ?? 'active',
-          remark: userDetail.remark || ''
+          gender: userDetail.gender ?? 'other',
+          status: userDetail.status ?? 'active'
         })
       } catch (error: any) {
         ElMessage.error(error?.message || '获取用户详情失败')
@@ -175,12 +155,10 @@ const resetForm = () => {
   Object.assign(formData, {
     username: '',
     password: '',
-    nickname: '',
+    fullName: '',
     email: '',
-    phone: '',
-    gender: 0,
-    status: 'active',
-    remark: ''
+    gender: 'other',
+    status: 'active'
   })
   formRef.value?.clearValidate()
 }

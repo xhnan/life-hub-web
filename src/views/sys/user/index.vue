@@ -56,7 +56,7 @@
               </el-form-item>
               <el-form-item label="昵称">
                 <el-input
-                  v-model="searchForm.nickname"
+                  v-model="searchForm.fullName"
                   placeholder="请输入昵称"
                   clearable
                   style="width: 200px"
@@ -102,13 +102,12 @@
             >
               <el-table-column prop="userId" label="ID" width="80" />
               <el-table-column prop="username" label="用户名" min-width="140" />
-              <el-table-column prop="nickname" label="昵称" min-width="140" />
+              <el-table-column prop="fullName" label="昵称" min-width="140" />
               <el-table-column prop="email" label="邮箱" min-width="220" show-overflow-tooltip />
-              <el-table-column prop="phone" label="手机号" min-width="150" />
               <el-table-column prop="gender" label="性别" width="90">
                 <template #default="{ row }">
-                  <el-tag v-if="row.gender === 1" type="primary" round>男</el-tag>
-                  <el-tag v-else-if="row.gender === 2" type="danger" round>女</el-tag>
+                  <el-tag v-if="row.gender === 'male'" type="primary" round>男</el-tag>
+                  <el-tag v-else-if="row.gender === 'female'" type="danger" round>女</el-tag>
                   <el-tag v-else type="info" round>未知</el-tag>
                 </template>
               </el-table-column>
@@ -184,7 +183,7 @@ const pageParams = reactive<PageParams>({
 
 const searchForm = reactive({
   username: "",
-  nickname: "",
+  fullName: "",
   status: "" as string | undefined
 });
 
@@ -217,7 +216,7 @@ const handleSearch = () => {
 
 const handleReset = () => {
   searchForm.username = "";
-  searchForm.nickname = "";
+  searchForm.fullName = "";
   searchForm.status = undefined;
   pageParams.pageNum = 1;
   void loadUserList();

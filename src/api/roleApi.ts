@@ -2,7 +2,7 @@ import { http } from "@/utils/http";
 
 const prefix = '/sys/role';
 
-// 角色数据结构（参考芋道 RBAC 重设计）
+// 角色数据结构（对齐后端 RBAC 重构后的 SysRole 实体）
 export interface RoleRow {
 	id: number | string;
 	roleCode: string; // 角色编码（唯一标识），如 SUPER_ADMIN、ADMIN、USER
@@ -11,11 +11,10 @@ export interface RoleRow {
 	status?: boolean; // 是否启用
 	type?: number; // 角色类型：1=内置角色 2=自定义角色
 	dataScope?: number; // 数据范围：1=全部 2=指定部门 3=本部门 4=本部门及以下 5=仅本人
-	description?: string; // 角色描述
-	createdBy?: number;
-	createdAt?: string;
-	updatedBy?: number;
-	updatedAt?: string;
+	remark?: string; // 角色备注说明（后端字段为 remark）
+	deleted?: number; // 逻辑删除标志：0未删除 1已删除
+	createTime?: string; // 创建时间（后端字段为 createTime）
+	updateTime?: string; // 更新时间（后端字段为 updateTime）
 }
 
 // 分页参数

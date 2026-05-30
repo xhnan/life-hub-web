@@ -62,7 +62,7 @@
               <el-option
                 v-for="user in userSearchResults"
                 :key="user.userId"
-                :label="`${user.username}${user.nickname ? ' (' + user.nickname + ')' : ''}`"
+                :label="`${user.username}${user.fullName ? ' (' + user.fullName + ')' : ''}`"
                 :value="user.userId"
               />
             </el-select>

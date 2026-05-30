@@ -2,20 +2,18 @@ import { http } from "@/utils/http";
 
 const prefix = '/sys/user'
 
-// 用户数据结构
+// 用户数据结构（对齐后端 RBAC 重构后的 SysUser 实体）
 export interface UserRow {
 	userId: number | string;
 	username: string;
-	nickname?: string;
+	fullName?: string; // 用户全名（后端字段为 fullName，替代旧的 nickname）
 	email?: string;
-	phone?: string;
-	gender?: number; // 0:未知 1:男 2:女
-	avatar?: string;
+	gender?: string; // 性别：male / female / other（后端为字符串）
+	birthDate?: string; // 生日
+	avatarUrl?: string; // 头像 URL（后端字段为 avatarUrl）
 	status?: 'active' | 'inactive' | 'banned'; // 用户状态
-	remark?: string;
-	createdBy?: number;
+	lastLogin?: string;
 	createdAt?: string;
-	updatedBy?: number;
 	updatedAt?: string;
 	roleIds?: (number | string)[]; // 关联的角色ID列表
 }
@@ -31,7 +29,7 @@ export interface PageParams {
 	pageNum: number;
 	pageSize: number;
 	username?: string;
-	nickname?: string;
+	fullName?: string;
 	status?: string;
 }
 

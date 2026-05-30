@@ -12,7 +12,7 @@
       <div class="user-info">
         <el-icon :size="20" color="#6366f1"><UserFilled /></el-icon>
         <span class="username">{{ userData?.username }}</span>
-        <span class="nickname" v-if="userData?.nickname">({{ userData?.nickname }})</span>
+        <span class="nickname" v-if="userData?.fullName">({{ userData?.fullName }})</span>
       </div>
 
       <!-- 角色选择区域 -->

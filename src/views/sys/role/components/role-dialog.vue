@@ -71,9 +71,9 @@
         </el-radio-group>
       </el-form-item>
 
-      <el-form-item label="备注" prop="description">
+      <el-form-item label="备注" prop="remark">
         <el-input
-          v-model="formData.description"
+          v-model="formData.remark"
           type="textarea"
           :rows="3"
           placeholder="请输入角色描述（可选）"
@@ -128,7 +128,7 @@ const formData = reactive<Partial<RoleRow>>({
   roleName: '',
   sortOrder: 0,
   dataScope: 1,
-  description: '',
+  remark: '',
   status: true
 })
 
@@ -158,7 +158,7 @@ const resetForm = () => {
   formData.roleName = ''
   formData.sortOrder = 0
   formData.dataScope = 1
-  formData.description = ''
+  formData.remark = ''
   formData.status = true
   formRef.value?.clearValidate()
 }
