@@ -49,8 +49,11 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** 获得用户列表 */
         get: operations["listAll_2"];
+        /** 修改用户 */
         put: operations["update_2"];
+        /** 创建用户 */
         post: operations["create_2"];
         delete?: never;
         options?: never;
@@ -65,8 +68,11 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** 获得用户角色关联列表 */
         get: operations["getAll"];
+        /** 修改用户角色关联 */
         put: operations["update_3"];
+        /** 创建用户角色关联 */
         post: operations["add"];
         delete?: never;
         options?: never;
@@ -100,8 +106,11 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** 获得用户应用关联列表 */
         get: operations["listAll_3"];
+        /** 修改用户应用关联 */
         put: operations["update_5"];
+        /** 创建用户应用关联 */
         post: operations["add_2"];
         delete?: never;
         options?: never;
@@ -117,7 +126,9 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
+        /** 修改模板 */
         put: operations["update_6"];
+        /** 创建模板 */
         post: operations["create_3"];
         delete?: never;
         options?: never;
@@ -132,8 +143,11 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** 获得角色列表 */
         get: operations["listAll_4"];
+        /** 修改角色 */
         put: operations["update_7"];
+        /** 创建角色 */
         post: operations["create_4"];
         delete?: never;
         options?: never;
@@ -148,25 +162,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** 获得角色权限关联列表 */
         get: operations["getAll_1"];
+        /** 修改角色权限关联 */
         put: operations["update_8"];
+        /** 创建角色权限关联 */
         post: operations["add_3"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/sys/permission": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["listAll_5"];
-        put: operations["update_9"];
-        post: operations["create_5"];
         delete?: never;
         options?: never;
         head?: never;
@@ -180,8 +181,11 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** 获得权限菜单关联列表 */
         get: operations["list_1"];
-        put: operations["update_10"];
+        /** 修改权限菜单关联 */
+        put: operations["update_9"];
+        /** 创建权限菜单关联 */
         post: operations["add_4"];
         delete?: never;
         options?: never;
@@ -196,9 +200,31 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** 获得权限API列表 */
         get: operations["getAll_2"];
-        put: operations["update_11"];
+        /** 修改权限API */
+        put: operations["update_10"];
+        /** 创建权限API */
         post: operations["add_5"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sys/permission-legacy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @deprecated */
+        get: operations["listAll_5"];
+        /** @deprecated */
+        put: operations["update_11"];
+        /** @deprecated */
+        post: operations["create_5"];
         delete?: never;
         options?: never;
         head?: never;
@@ -212,8 +238,14 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /**
+         * 获取菜单列表
+         * @description 用于【菜单管理】界面
+         */
         get: operations["listAll_6"];
+        /** 修改菜单 */
         put: operations["update_12"];
+        /** 创建菜单 */
         post: operations["create_6"];
         delete?: never;
         options?: never;
@@ -228,9 +260,350 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** 获得应用列表 */
         get: operations["list_2"];
+        /** 修改应用 */
         put: operations["update_13"];
+        /** 创建应用 */
         post: operations["add_6"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sys/app-version": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询版本 */
+        get: operations["listVersions"];
+        /** 更新版本 */
+        put: operations["updateVersion"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/weight-logs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有体重记录列表 */
+        get: operations["list_3"];
+        /** 修改体重记录 */
+        put: operations["update_14"];
+        /** 新增体重记录 */
+        post: operations["add_7"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/user-profiles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** 修改用户健康档案 */
+        put: operations["update_15"];
+        /** 新增用户健康档案 */
+        post: operations["add_8"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/sleep-logs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** 修改睡眠记录 */
+        put: operations["update_16"];
+        /** 新增睡眠记录 */
+        post: operations["add_9"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/profiles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** 修改心理档案 */
+        put: operations["update_17"];
+        /** 新增心理档案 */
+        post: operations["add_10"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/knowledge-base": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有知识库记录列表 */
+        get: operations["list_4"];
+        /** 修改知识库记录 */
+        put: operations["update_18"];
+        /** 新增知识库记录 */
+        post: operations["add_11"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/daily-moods": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有心情记录列表 */
+        get: operations["list_5"];
+        /** 修改心情记录 */
+        put: operations["update_19"];
+        /** 新增心情记录 */
+        post: operations["add_12"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/chat-memories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有聊天记录列表 */
+        get: operations["list_6"];
+        /** 修改聊天记录 */
+        put: operations["update_20"];
+        /** 新增聊天记录 */
+        post: operations["add_13"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/assessments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有心理评估记录列表 */
+        get: operations["list_7"];
+        /** 修改心理评估记录 */
+        put: operations["update_21"];
+        /** 新增心理评估记录 */
+        post: operations["add_14"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/goals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有健康目标列表 */
+        get: operations["list_8"];
+        /** 修改健康目标 */
+        put: operations["update_22"];
+        /** 新增健康目标 */
+        post: operations["add_15"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/goals/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询健康目标 */
+        get: operations["getById"];
+        /** 根据ID更新健康目标（支持部分更新） */
+        put: operations["updateById"];
+        post?: never;
+        /** 根据ID删除健康目标 */
+        delete: operations["delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/diet-logs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有饮食日志列表 */
+        get: operations["list_9"];
+        /** 修改饮食日志 */
+        put: operations["update_23"];
+        /** 新增饮食日志 */
+        post: operations["add_16"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/daily-summaries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有每日健康汇总列表 */
+        get: operations["list_10"];
+        /** 修改每日健康汇总 */
+        put: operations["update_24"];
+        /** 新增每日健康汇总 */
+        post: operations["add_17"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/agent/user-preferences": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List user preferences */
+        get: operations["list_11"];
+        /** Update user preferences */
+        put: operations["update_25"];
+        /** Create user preferences */
+        post: operations["add_18"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/agent/followup-plans": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List followup plans */
+        get: operations["list_12"];
+        /** Update followup plan */
+        put: operations["update_26"];
+        /** Create followup plan */
+        post: operations["add_19"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/agent/checkins": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List checkins */
+        get: operations["list_13"];
+        /** Update checkin */
+        put: operations["update_27"];
+        /** Create checkin */
+        post: operations["add_20"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/agent/advice-records": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List advice records */
+        get: operations["list_14"];
+        /** Update advice record */
+        put: operations["update_28"];
+        /** Create advice record */
+        post: operations["add_21"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/activities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询所有健康活动列表 */
+        get: operations["list_15"];
+        /** 修改健康活动 */
+        put: operations["update_29"];
+        /** 新增健康活动 */
+        post: operations["add_22"];
         delete?: never;
         options?: never;
         head?: never;
@@ -245,11 +618,11 @@ export interface paths {
             cookie?: never;
         };
         /** 查询所有交易标签列表 */
-        get: operations["list_3"];
+        get: operations["list_16"];
         /** 修改交易标签 */
-        put: operations["update_14"];
+        put: operations["update_30"];
         /** 新增交易标签 */
-        post: operations["add_7"];
+        post: operations["add_23"];
         delete?: never;
         options?: never;
         head?: never;
@@ -264,9 +637,29 @@ export interface paths {
             cookie?: never;
         };
         /** 查询所有财务交易记录列表 */
-        get: operations["list_4"];
+        get: operations["list_17"];
         /** 修改财务交易记录 */
-        put: operations["update_15"];
+        put: operations["update_31"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/transactions/with-entries/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * 修改交易记录及分录（复式记账）
+         * @description 更新交易主表和分录表，自动校验借贷平衡，会删除旧行分录并创建新分录
+         */
+        put: operations["updateWithEntries"];
         post?: never;
         delete?: never;
         options?: never;
@@ -282,11 +675,11 @@ export interface paths {
             cookie?: never;
         };
         /** 查询所有标签列表 */
-        get: operations["list_5"];
+        get: operations["list_18"];
         /** 修改标签 */
-        put: operations["update_16"];
+        put: operations["update_32"];
         /** 新增标签 */
-        post: operations["add_8"];
+        post: operations["add_24"];
         delete?: never;
         options?: never;
         head?: never;
@@ -301,11 +694,11 @@ export interface paths {
             cookie?: never;
         };
         /** 查询所有价格列表 */
-        get: operations["list_6"];
+        get: operations["list_19"];
         /** 修改价格 */
-        put: operations["update_17"];
+        put: operations["update_33"];
         /** 新增价格 */
-        post: operations["add_9"];
+        post: operations["add_25"];
         delete?: never;
         options?: never;
         head?: never;
@@ -320,11 +713,11 @@ export interface paths {
             cookie?: never;
         };
         /** 查询所有财务分录列表 */
-        get: operations["list_7"];
+        get: operations["list_20"];
         /** 修改财务分录 */
-        put: operations["update_18"];
+        put: operations["update_34"];
         /** 新增财务分录 */
-        post: operations["add_10"];
+        post: operations["add_26"];
         delete?: never;
         options?: never;
         head?: never;
@@ -339,11 +732,11 @@ export interface paths {
             cookie?: never;
         };
         /** 查询所有预算列表 */
-        get: operations["list_8"];
+        get: operations["list_21"];
         /** 修改预算 */
-        put: operations["update_19"];
+        put: operations["update_35"];
         /** 新增预算 */
-        post: operations["add_11"];
+        post: operations["add_27"];
         delete?: never;
         options?: never;
         head?: never;
@@ -358,11 +751,11 @@ export interface paths {
             cookie?: never;
         };
         /** 查询所有账簿列表 */
-        get: operations["list_9"];
+        get: operations["list_22"];
         /** 修改账簿 */
-        put: operations["update_20"];
+        put: operations["update_36"];
         /** 新增账簿 */
-        post: operations["add_12"];
+        post: operations["add_28"];
         delete?: never;
         options?: never;
         head?: never;
@@ -377,11 +770,11 @@ export interface paths {
             cookie?: never;
         };
         /** 查询所有账本成员列表 */
-        get: operations["list_10"];
+        get: operations["list_23"];
         /** 修改账本成员 */
-        put: operations["update_21"];
+        put: operations["update_37"];
         /** 新增账本成员 */
-        post: operations["add_13"];
+        post: operations["add_29"];
         delete?: never;
         options?: never;
         head?: never;
@@ -396,11 +789,96 @@ export interface paths {
             cookie?: never;
         };
         /** 查询所有账户列表 */
-        get: operations["list_11"];
+        get: operations["list_24"];
         /** 修改账户 */
-        put: operations["update_22"];
+        put: operations["update_38"];
         /** 新增账户 */
-        post: operations["add_14"];
+        post: operations["add_30"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/accounts/sort-weight": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** 批量更新科目排序权重 */
+        put: operations["updateSortWeights"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/health/chat/stream": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send message and receive stream response */
+        post: operations["streamChat"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/chat/stream": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send message and receive stream response */
+        post: operations["streamChat_1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/health/chat/agent": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Call health agent and get final result */
+        post: operations["callAgent"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/chat/agent": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Call health agent and get final result */
+        post: operations["callAgent_1"];
         delete?: never;
         options?: never;
         head?: never;
@@ -425,6 +903,166 @@ export interface paths {
          * @description 企业微信消息和事件回调
          */
         post: operations["receiveMessage"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sys/user-api-keys": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询我的 API Key 列表 */
+        get: operations["list_25"];
+        put?: never;
+        /**
+         * 创建 API Key
+         * @description 创建一个属于当前登录用户的 API Key，明文只返回一次
+         */
+        post: operations["create_7"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sys/permission/assign-user-role": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 赋予用户角色 */
+        post: operations["assignUserRole"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sys/permission/assign-role-menu": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 赋予角色菜单 */
+        post: operations["assignRoleMenu"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sys/app-version/quick-publish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 快速发布版本
+         * @description 适用于第三方或自动化任务代用户快速发布版本
+         */
+        post: operations["quickPublish"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sys/app-version/publish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 发布版本 */
+        post: operations["publishVersion"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/water-logs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 新增饮水记录 */
+        post: operations["add_31"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/user-profiles/init": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 初始化或更新我的健康档案 */
+        post: operations["initOrUpdateProfile"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/profiles/init": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 初始化或更新我的心理档案 */
+        post: operations["initOrUpdateProfile_1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/agent/analyze": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 触发综合健康分析，生成 AI 建议 */
+        post: operations["analyze"];
         delete?: never;
         options?: never;
         head?: never;
@@ -461,7 +1099,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** 新增财务交易记录 */
-        post: operations["add_15"];
+        post: operations["add_32"];
         delete?: never;
         options?: never;
         head?: never;
@@ -485,6 +1123,119 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/fin/accounts/adjust-balance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 调整账户余额 */
+        post: operations["adjustBalance"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/wx-login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["wxLogin"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["refreshToken"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/qrcode/scan/{qrCodeId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["scanQrCode"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/qrcode/generate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["generateQrCode"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/qrcode/confirm/{qrCodeId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["confirmQrCode"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/qrcode/cancel/{qrCodeId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["cancelQrCode"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/login": {
         parameters: {
             query?: never;
@@ -495,6 +1246,40 @@ export interface paths {
         get?: never;
         put?: never;
         post: operations["login"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/fin/ai/chat/stream": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 财务 AI 流式聊天 */
+        post: operations["streamChat_2"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/fin/ai/analyze": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 月度财务智能分析 */
+        post: operations["analyzeMonthly"];
         delete?: never;
         options?: never;
         head?: never;
@@ -525,11 +1310,11 @@ export interface paths {
             cookie?: never;
         };
         /** 查询用户绑定 */
-        get: operations["getById"];
+        get: operations["getById_1"];
         put?: never;
         post?: never;
         /** 删除用户绑定 */
-        delete: operations["delete"];
+        delete: operations["delete_1"];
         options?: never;
         head?: never;
         patch?: never;
@@ -628,11 +1413,11 @@ export interface paths {
             cookie?: never;
         };
         /** 查询消息 */
-        get: operations["getById_1"];
+        get: operations["getById_2"];
         put?: never;
         post?: never;
         /** 删除消息记录 */
-        delete: operations["delete_1"];
+        delete: operations["delete_2"];
         options?: never;
         head?: never;
         patch?: never;
@@ -731,11 +1516,11 @@ export interface paths {
             cookie?: never;
         };
         /** 查询应用配置 */
-        get: operations["getById_2"];
+        get: operations["getById_3"];
         put?: never;
         post?: never;
         /** 删除应用配置 */
-        delete: operations["delete_2"];
+        delete: operations["delete_3"];
         options?: never;
         head?: never;
         patch?: never;
@@ -782,10 +1567,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_3"];
+        /** 获得用户角色关联 */
+        get: operations["getById_4"];
         put?: never;
         post?: never;
-        delete: operations["delete_3"];
+        /** 删除用户角色关联 */
+        delete: operations["delete_4"];
         options?: never;
         head?: never;
         patch?: never;
@@ -798,6 +1585,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** 获得指定用户的角色列表 */
         get: operations["getRolesByUserId"];
         put?: never;
         post?: never;
@@ -815,11 +1603,11 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询用户配置 */
-        get: operations["getById_4"];
+        get: operations["getById_5"];
         put?: never;
         post?: never;
         /** 删除用户配置 */
-        delete: operations["delete_4"];
+        delete: operations["delete_5"];
         options?: never;
         head?: never;
         patch?: never;
@@ -849,10 +1637,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_5"];
+        /** 获得用户应用关联 */
+        get: operations["getById_6"];
         put?: never;
         post?: never;
-        delete: operations["delete_5"];
+        /** 删除用户应用关联 */
+        delete: operations["delete_6"];
         options?: never;
         head?: never;
         patch?: never;
@@ -865,26 +1655,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_6"];
+        /** 获得用户信息 */
+        get: operations["getById_7"];
         put?: never;
         post?: never;
-        delete: operations["delete_6"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/sys/user/test": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["test_3"];
-        put?: never;
-        post?: never;
-        delete?: never;
+        /** 删除用户 */
+        delete: operations["delete_7"];
         options?: never;
         head?: never;
         patch?: never;
@@ -897,6 +1673,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** 获得用户分页 */
         get: operations["pageAll_3"];
         put?: never;
         post?: never;
@@ -913,10 +1690,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_7"];
+        /** 获得模板信息 */
+        get: operations["getById_8"];
         put?: never;
         post?: never;
-        delete: operations["delete_7"];
+        /** 删除模板 */
+        delete: operations["delete_8"];
         options?: never;
         head?: never;
         patch?: never;
@@ -929,10 +1708,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_8"];
+        /** 获得角色权限关联 */
+        get: operations["getById_9"];
         put?: never;
         post?: never;
-        delete: operations["delete_8"];
+        /** 删除角色权限关联 */
+        delete: operations["delete_9"];
         options?: never;
         head?: never;
         patch?: never;
@@ -945,39 +1726,29 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_9"];
+        /** 获得角色信息 */
+        get: operations["getById_10"];
         put?: never;
         post?: never;
-        delete: operations["delete_9"];
+        /** 删除角色 */
+        delete: operations["delete_10"];
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/sys/role/{id}/permissions": {
+    "/sys/role/simple-list": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["getPermissionsByRoleId"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/sys/role/test": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["test_4"];
+        /**
+         * 获得角色精简列表
+         * @description 用于角色分配时的选项列表
+         */
+        get: operations["getSimpleList"];
         put?: never;
         post?: never;
         delete?: never;
@@ -993,6 +1764,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** 获得角色分页 */
         get: operations["pageAll_4"];
         put?: never;
         post?: never;
@@ -1009,10 +1781,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_10"];
+        /** 获得权限菜单关联 */
+        get: operations["getById_11"];
         put?: never;
         post?: never;
-        delete: operations["delete_10"];
+        /** 删除权限菜单关联 */
+        delete: operations["delete_11"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1025,25 +1799,11 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_11"];
-        put?: never;
-        post?: never;
-        delete: operations["delete_11"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/sys/permission/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
+        /** 获得权限API */
         get: operations["getById_12"];
         put?: never;
         post?: never;
+        /** 删除权限API */
         delete: operations["delete_12"];
         options?: never;
         head?: never;
@@ -1057,7 +1817,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getUserPermissionsAndRoles"];
+        /** 获取指定用户的权限和角色 */
+        get: operations["getUserPermissions"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1073,6 +1834,116 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /**
+         * 获取当前登录用户的权限和角色
+         * @description 基于 User→Role→Menu 模型，返回 menuCode 作为权限标识
+         */
+        get: operations["getCurrentUserPermissions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sys/permission/permission-info": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 获取当前用户的聚合权限信息
+         * @description 一次返回 user/roles/permissions/menus(路由菜单树，排除按钮)，对齐 yudao get-permission-info
+         */
+        get: operations["getPermissionInfo"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sys/permission/list-user-roles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获得用户拥有的角色编号列表 */
+        get: operations["listUserRoles"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sys/permission/list-role-menus": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获得角色拥有的菜单编号 */
+        get: operations["getRoleMenuList"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sys/permission-legacy/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @deprecated */
+        get: operations["getById_13"];
+        put?: never;
+        post?: never;
+        /** @deprecated */
+        delete: operations["delete_13"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sys/permission-legacy/user/{userId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @deprecated */
+        get: operations["getUserPermissionsAndRoles"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sys/permission-legacy/user/current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @deprecated */
         get: operations["getCurrentUserPermissionsAndRoles"];
         put?: never;
         post?: never;
@@ -1082,13 +1953,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/sys/permission/page": {
+    "/sys/permission-legacy/page": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
+        /** @deprecated */
         get: operations["pageAll_5"];
         put?: never;
         post?: never;
@@ -1098,13 +1970,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/sys/permission/appCodes": {
+    "/sys/permission-legacy/appCodes": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
+        /** @deprecated */
         get: operations["getAppCodes"];
         put?: never;
         post?: never;
@@ -1121,10 +1994,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_13"];
+        /** 获取菜单信息 */
+        get: operations["getById_14"];
         put?: never;
         post?: never;
-        delete: operations["delete_13"];
+        /** 删除菜单 */
+        delete: operations["delete_14"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1137,6 +2012,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /**
+         * 获取当前用户的菜单树
+         * @description 超级管理员返回所有菜单，其他用户根据角色权限返回
+         */
         get: operations["getUserMenuTree"];
         put?: never;
         post?: never;
@@ -1153,6 +2032,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** 获取菜单树（全量） */
         get: operations["getMenuTree"];
         put?: never;
         post?: never;
@@ -1169,23 +2049,44 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["getById_14"];
+        /** 获得应用信息 */
+        get: operations["getById_15"];
         put?: never;
         post?: never;
-        delete: operations["delete_14"];
+        /** 删除应用 */
+        delete: operations["delete_15"];
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/grpc/health/ping": {
+    "/sys/app-version/{id}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["ping"];
+        /** 按 ID 查询版本 */
+        get: operations["getVersionById"];
+        put?: never;
+        post?: never;
+        /** 删除版本 */
+        delete: operations["deleteVersion"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sys/app-version/latest": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询最新版本 */
+        get: operations["getLatestVersion"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1194,14 +2095,1151 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/grpc/health/check": {
+    "/sys/app-version/app/app-version/latest": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["check"];
+        /** 客户端获取最新版本 */
+        get: operations["getLatestVersionForClient"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sys/app-version/app/app-version/check": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 客户端检查更新 */
+        get: operations["checkUpdate"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/weight-logs/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询体重记录 */
+        get: operations["getById_16"];
+        put?: never;
+        post?: never;
+        /** 根据ID删除体重记录 */
+        delete: operations["delete_16"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/weight-logs/range": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据日期范围查询我的体重记录 */
+        get: operations["getWeightLogsByRange"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/weight-logs/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询体重记录 */
+        get: operations["page_1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/weight-logs/my": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取我的体重记录列表 */
+        get: operations["getMyWeightLogs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/weight-logs/latest": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取我的最新体重记录 */
+        get: operations["getLatestWeightLog"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/weight-logs/date/{recordDate}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据日期查询我的体重记录 */
+        get: operations["getWeightLogByDate"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/water-logs/today-total": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取今日饮水总量 */
+        get: operations["getTodayTotal"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/water-logs/date/{date}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据日期查询我的饮水记录 */
+        get: operations["getWaterLogsByDate"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/user-profiles/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询用户健康档案 */
+        get: operations["getById_17"];
+        put?: never;
+        post?: never;
+        /** 根据ID删除用户健康档案 */
+        delete: operations["delete_17"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/user-profiles/my": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取我的健康档案 */
+        get: operations["getMyProfile"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/sleep-logs/range": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据日期范围查询我的睡眠记录 */
+        get: operations["getSleepLogsByRange"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/sleep-logs/my": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取我的睡眠记录列表 */
+        get: operations["getMySleepLogs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/sleep-logs/latest": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取我的最新睡眠记录 */
+        get: operations["getLatestSleepLog"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/sleep-logs/date/{sleepDate}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据日期查询我的睡眠记录 */
+        get: operations["getSleepLogByDate"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/profiles/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询心理档案 */
+        get: operations["getById_18"];
+        put?: never;
+        post?: never;
+        /** 根据ID删除心理档案 */
+        delete: operations["delete_18"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/profiles/my": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取我的心理档案 */
+        get: operations["getMyProfile_1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/knowledge-base/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询知识库记录 */
+        get: operations["getById_19"];
+        put?: never;
+        post?: never;
+        /** 根据ID删除知识库记录 */
+        delete: operations["delete_19"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/knowledge-base/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据标题关键词搜索知识 */
+        get: operations["searchByTitle"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/knowledge-base/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询知识库记录 */
+        get: operations["page_2"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/knowledge-base/category/{category}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据分类查询知识列表 */
+        get: operations["getByCategory"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/daily-moods/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询心情记录 */
+        get: operations["getById_20"];
+        put?: never;
+        post?: never;
+        /** 根据ID删除心情记录 */
+        delete: operations["delete_20"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/daily-moods/range": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据日期范围查询我的心情记录 */
+        get: operations["getMoodsByRange"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/daily-moods/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询心情记录 */
+        get: operations["page_3"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/daily-moods/my": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取我的心情记录列表 */
+        get: operations["getMyMoods"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/daily-moods/latest": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取我的最新心情记录 */
+        get: operations["getLatestMood"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/daily-moods/date/{recordDate}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据日期查询我的心情记录 */
+        get: operations["getMoodByDate"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/chat-memories/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询聊天记录 */
+        get: operations["getById_21"];
+        put?: never;
+        post?: never;
+        /** 根据ID删除聊天记录 */
+        delete: operations["delete_21"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/chat-memories/recent": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取我的最近聊天记录 */
+        get: operations["getRecentChatMemories"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/chat-memories/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询聊天记录 */
+        get: operations["page_4"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/chat-memories/my": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取我的聊天记录列表 */
+        get: operations["getMyChatMemories"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/assessments/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询心理评估记录 */
+        get: operations["getById_22"];
+        put?: never;
+        post?: never;
+        /** 根据ID删除心理评估记录 */
+        delete: operations["delete_22"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/assessments/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询心理评估记录 */
+        get: operations["page_5"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/assessments/my": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取我的心理评估记录列表 */
+        get: operations["getMyAssessments"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/psychology/assessments/latest": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取我的最新心理评估记录 */
+        get: operations["getLatestAssessment"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/goals/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询健康目标 */
+        get: operations["page_6"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/goals/my": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取我的健康目标列表 */
+        get: operations["getMyGoals"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/diet-logs/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询饮食日志 */
+        get: operations["getById_23"];
+        put?: never;
+        post?: never;
+        /** 根据ID删除饮食日志 */
+        delete: operations["delete_23"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/diet-logs/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询饮食日志 */
+        get: operations["page_7"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/diet-logs/my": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取我的饮食日志列表 */
+        get: operations["getMyDietLogs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/diet-logs/date/{date}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据日期查询我的饮食日志 */
+        get: operations["getDietLogsByDate"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/daily-summaries/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询每日健康汇总 */
+        get: operations["getById_24"];
+        put?: never;
+        post?: never;
+        /** 根据ID删除每日健康汇总 */
+        delete: operations["delete_24"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/daily-summaries/range": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据日期范围查询我的每日健康汇总 */
+        get: operations["getSummariesByRange"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/daily-summaries/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询每日健康汇总 */
+        get: operations["page_8"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/daily-summaries/my": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取我的每日健康汇总列表 */
+        get: operations["getMySummaries"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/daily-summaries/date/{recordDate}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据日期查询我的每日健康汇总 */
+        get: operations["getSummaryByDate"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/agent/user-preferences/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get user preferences by id */
+        get: operations["getById_25"];
+        put?: never;
+        post?: never;
+        /** Delete user preferences */
+        delete: operations["delete_25"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/agent/user-preferences/my": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get my user preferences */
+        get: operations["my"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/agent/reports": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 生成智能健康报告（含 AI 解读） */
+        get: operations["getReport"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/agent/followup-plans/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get followup plan by id */
+        get: operations["getById_26"];
+        put?: never;
+        post?: never;
+        /** Delete followup plan */
+        delete: operations["delete_26"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/agent/followup-plans/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Page followup plans */
+        get: operations["page_9"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/agent/followup-plans/my": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get my followup plans */
+        get: operations["my_1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/agent/checkins/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get checkin by id */
+        get: operations["getById_27"];
+        put?: never;
+        post?: never;
+        /** Delete checkin */
+        delete: operations["delete_27"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/agent/checkins/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Page checkins */
+        get: operations["page_10"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/agent/checkins/my": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get my checkins */
+        get: operations["my_2"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/agent/advice-records/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get advice record by id */
+        get: operations["getById_28"];
+        put?: never;
+        post?: never;
+        /** Delete advice record */
+        delete: operations["delete_28"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/agent/advice-records/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Page advice records */
+        get: operations["page_11"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/agent/advice-records/my": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get my advice records */
+        get: operations["my_3"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/admin/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询用户健康摘要列表 */
+        get: operations["getUserList"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/admin/users/{userId}/detail": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取用户健康详情 */
+        get: operations["getUserDetail"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/admin/stats/trends": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取趋势数据 */
+        get: operations["getTrends"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/admin/stats/overview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取平台健康数据总览 */
+        get: operations["getOverview"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/admin/psychology/alerts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取心理风险预警列表 */
+        get: operations["getPsychologyAlerts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/activities/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 根据ID查询健康活动 */
+        get: operations["getById_29"];
+        put?: never;
+        post?: never;
+        /** 根据ID删除健康活动 */
+        delete: operations["delete_29"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/activities/page": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分页查询健康活动 */
+        get: operations["page_12"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/activities/my": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取我的健康活动列表 */
+        get: operations["getMyActivities"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1218,11 +3256,11 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询交易标签 */
-        get: operations["getById_15"];
+        get: operations["getById_30"];
         put?: never;
         post?: never;
         /** 删除交易标签 */
-        delete: operations["delete_15"];
+        delete: operations["delete_30"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1236,7 +3274,7 @@ export interface paths {
             cookie?: never;
         };
         /** 分页查询交易标签 */
-        get: operations["page_1"];
+        get: operations["page_13"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1253,11 +3291,14 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询财务交易记录 */
-        get: operations["getById_16"];
+        get: operations["getById_31"];
         put?: never;
         post?: never;
-        /** 根据ID删除财务交易记录 */
-        delete: operations["delete_16"];
+        /**
+         * 删除交易记录（包括关联的分录和标签）
+         * @description 软删除交易记录及其所有关联数据（分录、标签关联），只能删除自己创建的交易
+         */
+        delete: operations["delete_31"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1271,7 +3312,7 @@ export interface paths {
             cookie?: never;
         };
         /** 分页查询财务交易记录 */
-        get: operations["page_2"];
+        get: operations["page_14"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1308,11 +3349,11 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询标签 */
-        get: operations["getById_17"];
+        get: operations["getById_32"];
         put?: never;
         post?: never;
         /** 删除标签 */
-        delete: operations["delete_17"];
+        delete: operations["delete_32"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1326,7 +3367,27 @@ export interface paths {
             cookie?: never;
         };
         /** 分页查询标签 */
-        get: operations["page_3"];
+        get: operations["page_15"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/skills/bookkeeping-context": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get bookkeeping context for skills
+         * @description Return the resolved default book and its subject categories for the current authenticated user
+         */
+        get: operations["getBookkeepingContext"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1343,11 +3404,11 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询价格 */
-        get: operations["getById_18"];
+        get: operations["getById_33"];
         put?: never;
         post?: never;
         /** 根据ID删除价格 */
-        delete: operations["delete_18"];
+        delete: operations["delete_33"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1361,7 +3422,7 @@ export interface paths {
             cookie?: never;
         };
         /** 分页查询价格 */
-        get: operations["page_4"];
+        get: operations["page_16"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1378,11 +3439,11 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询财务分录 */
-        get: operations["getById_19"];
+        get: operations["getById_34"];
         put?: never;
         post?: never;
         /** 根据ID删除财务分录 */
-        delete: operations["delete_19"];
+        delete: operations["delete_34"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1396,7 +3457,7 @@ export interface paths {
             cookie?: never;
         };
         /** 分页查询财务分录 */
-        get: operations["page_5"];
+        get: operations["page_17"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1413,11 +3474,11 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询预算 */
-        get: operations["getById_20"];
+        get: operations["getById_35"];
         put?: never;
         post?: never;
         /** 删除预算 */
-        delete: operations["delete_20"];
+        delete: operations["delete_35"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1431,7 +3492,7 @@ export interface paths {
             cookie?: never;
         };
         /** 分页查询预算 */
-        get: operations["page_6"];
+        get: operations["page_18"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1448,11 +3509,11 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询账簿 */
-        get: operations["getById_21"];
+        get: operations["getById_36"];
         put?: never;
         post?: never;
         /** 根据ID删除账簿 */
-        delete: operations["delete_21"];
+        delete: operations["delete_36"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1465,7 +3526,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** 查询账本资产概览（总资产、总负债、净资产） */
+        /** 查询账本资产概览（总资产、总负债、净资产，流动资产） */
         get: operations["getAssetSummary"];
         put?: never;
         post?: never;
@@ -1483,7 +3544,7 @@ export interface paths {
             cookie?: never;
         };
         /** 分页查询账簿 */
-        get: operations["page_7"];
+        get: operations["page_19"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1517,11 +3578,11 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询账本成员 */
-        get: operations["getById_22"];
+        get: operations["getById_37"];
         put?: never;
         post?: never;
         /** 根据ID删除账本成员 */
-        delete: operations["delete_22"];
+        delete: operations["delete_37"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1535,7 +3596,7 @@ export interface paths {
             cookie?: never;
         };
         /** 分页查询账本成员 */
-        get: operations["page_8"];
+        get: operations["page_20"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1552,11 +3613,11 @@ export interface paths {
             cookie?: never;
         };
         /** 根据ID查询账户 */
-        get: operations["getById_23"];
+        get: operations["getById_38"];
         put?: never;
         post?: never;
         /** 删除账户 */
-        delete: operations["delete_23"];
+        delete: operations["delete_38"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1604,7 +3665,89 @@ export interface paths {
             cookie?: never;
         };
         /** 分页查询账户 */
-        get: operations["page_9"];
+        get: operations["page_21"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/accounts/expense": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询支出类科目（按用户自定义排序） */
+        get: operations["listExpenseSubjects"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fin/accounts/categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 获取账本的科目分类（按支出/收入分类） */
+        get: operations["getSubjectCategories"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/qrcode/status/{qrCodeId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getQrCodeStatus"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["profile"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/fin/trend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["trend"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1733,6 +3876,199 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/app/fin/records": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["records"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/fin/overview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["overview"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/fin/monthly-summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["monthlySummary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/fin/monthly-report": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["monthlyReport"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/fin/monthly-rank": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["monthlyRank"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/fin/expense-categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["expenseCategories"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/fin/categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["categories"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/fin/calendar-summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["calendarSummary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/fin/ai/anomalies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 支出异常检测 */
+        get: operations["detectAnomalies"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/fin/accounts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["accounts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ai/health/ping": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ping"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ai/health/check": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["check"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/ai/code/health": {
         parameters: {
             query?: never;
@@ -1744,6 +4080,60 @@ export interface paths {
         put?: never;
         post?: never;
         delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sys/user-api-keys/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * 撤销 API Key
+         * @description 撤销后第三方将无法继续使用该 API Key
+         */
+        delete: operations["revoke"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/water-logs/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** 根据ID删除饮水记录 */
+        delete: operations["delete_39"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/sleep-logs/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** 根据ID删除睡眠记录 */
+        delete: operations["delete_40"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1928,6 +4318,8 @@ export interface components {
              * @description 用户软删除时间
              */
             deletedAt?: string;
+            /** @description GitHub用户ID，用于OAuth2登录关联 */
+            githubId?: string;
             /** @description 邮箱是否验证 */
             emailVerified?: boolean;
             /** @description 手机是否验证 */
@@ -2057,7 +4449,13 @@ export interface components {
             id?: number;
             roleCode?: string;
             roleName?: string;
+            /** Format: int32 */
+            sortOrder?: number;
             status?: boolean;
+            /** Format: int32 */
+            type?: number;
+            /** Format: int32 */
+            dataScope?: number;
             remark?: string;
             /** Format: int32 */
             deleted?: number;
@@ -2084,37 +4482,6 @@ export interface components {
             permissionId?: number;
             /** Format: date-time */
             createdAt?: string;
-        };
-        SysPermission: {
-            /** Format: int32 */
-            id?: number;
-            permissionKey?: string;
-            name?: string;
-            description?: string;
-            type?: string;
-            appCode?: string;
-            status?: boolean;
-            /** Format: int32 */
-            parentId?: number;
-            /** Format: int32 */
-            isDeleted?: number;
-            /** Format: int32 */
-            priority?: number;
-            /** Format: int32 */
-            isSystem?: number;
-            /** Format: date-time */
-            createdAt?: string;
-            /** Format: date-time */
-            updatedAt?: string;
-        };
-        ResponseResultSysPermission: {
-            /** Format: int32 */
-            code?: number;
-            message?: string;
-            data?: components["schemas"]["SysPermission"];
-            /** Format: int64 */
-            timestamp?: number;
-            success?: boolean;
         };
         SysPermissionMenu: {
             /** Format: int64 */
@@ -2160,6 +4527,37 @@ export interface components {
             code?: number;
             message?: string;
             data?: components["schemas"]["SysPermissionApi"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        SysPermission: {
+            /** Format: int32 */
+            id?: number;
+            permissionKey?: string;
+            name?: string;
+            description?: string;
+            type?: string;
+            appCode?: string;
+            status?: boolean;
+            /** Format: int32 */
+            parentId?: number;
+            /** Format: int32 */
+            isDeleted?: number;
+            /** Format: int32 */
+            priority?: number;
+            /** Format: int32 */
+            isSystem?: number;
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            updatedAt?: string;
+        };
+        ResponseResultSysPermission: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["SysPermission"];
             /** Format: int64 */
             timestamp?: number;
             success?: boolean;
@@ -2214,6 +4612,567 @@ export interface components {
             createTime?: string;
             /** Format: date-time */
             updateTime?: string;
+        };
+        SysAppVersion: {
+            /**
+             * Format: int64
+             * @description 主键 ID
+             */
+            id?: number;
+            /**
+             * Format: int32
+             * @description 版本号编码
+             */
+            versionCode?: number;
+            /** @description 版本名称 */
+            versionName?: string;
+            /** @description 文件存储地址 */
+            fileUrl?: string;
+            /**
+             * Format: int64
+             * @description 文件大小
+             */
+            fileSize?: number;
+            /** @description 文件 MD5 */
+            fileMd5?: string;
+            /** @description 更新日志 */
+            updateLog?: string;
+            /**
+             * Format: int32
+             * @description 是否强制更新
+             */
+            isForce?: number;
+            /** @description 平台 */
+            platform?: string;
+            /**
+             * Format: int32
+             * @description 状态：0 禁用，1 启用
+             */
+            status?: number;
+            /**
+             * Format: int64
+             * @description 发布人用户 ID
+             */
+            publishedByUserId?: number;
+            /**
+             * Format: int64
+             * @description 用于发布的 API Key ID
+             */
+            publishedByApiKeyId?: number;
+            /** @description 发布来源：JWT / USER_API_KEY / LEGACY_API_KEY / UNKNOWN */
+            publishSource?: string;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt?: string;
+            /** @description 逻辑删除 */
+            isDeleted?: boolean;
+        };
+        HealthWeightLogs: {
+            /**
+             * Format: int64
+             * @description 体重记录独立主键，自增 BIGINT
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 关联的用户ID
+             */
+            userId?: number;
+            /**
+             * Format: date
+             * @description 记录日期
+             */
+            recordDate?: string;
+            /** @description 体重（千克） */
+            weightKg?: number;
+            /** @description 体脂率（百分比） */
+            bodyFatPercentage?: number;
+            /** @description 身体质量指数（BMI） */
+            bmi?: number;
+            /**
+             * Format: date-time
+             * @description 数据写入时间
+             */
+            createdAt?: string;
+        };
+        HealthUserProfiles: {
+            /**
+             * Format: int64
+             * @description 画像记录独立主键，自增 BIGINT
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 关联主用户表的唯一标识
+             */
+            userId?: number;
+            /**
+             * Format: date
+             * @description 出生日期，用于动态计算年龄和基础代谢
+             */
+            birthDate?: string;
+            /** @description 性别生理特征，影响卡路里计算公式 */
+            gender?: string;
+            /** @description 身高（厘米） */
+            heightCm?: number;
+            /** @description 初始体重（千克） */
+            baselineWeightKg?: number;
+            /** @description 目标体重（千克） */
+            targetWeightKg?: number;
+            /** @description 健康特征与偏好的向量表示（vector 文本，1024 维） */
+            healthProfileEmbedding?: number[];
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt?: string;
+        };
+        HealthySleepLogs: {
+            /**
+             * Format: int64
+             * @description 睡眠记录主键，自增 BIGINT
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 关联的用户ID
+             */
+            userId?: number;
+            /**
+             * Format: date
+             * @description 睡眠日期（入睡那天）
+             */
+            sleepDate?: string;
+            /**
+             * Format: date-time
+             * @description 上床时间
+             */
+            bedTime?: string;
+            /**
+             * Format: date-time
+             * @description 起床时间
+             */
+            wakeTime?: string;
+            /**
+             * Format: int32
+             * @description 总睡眠时长（分钟）
+             */
+            durationMinutes?: number;
+            /**
+             * Format: int32
+             * @description 睡眠质量评分 (1-10)
+             */
+            qualityScore?: number;
+            /**
+             * Format: int32
+             * @description 深睡时长（分钟）
+             */
+            deepSleepMinutes?: number;
+            /**
+             * Format: int32
+             * @description 浅睡时长（分钟）
+             */
+            lightSleepMinutes?: number;
+            /**
+             * Format: int32
+             * @description 清醒时长（分钟）
+             */
+            awakeMinutes?: number;
+            /** @description 备注 */
+            notes?: string;
+            /**
+             * Format: date-time
+             * @description 数据写入时间
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description 数据更新时间
+             */
+            updatedAt?: string;
+        };
+        HealthPsyProfiles: {
+            /**
+             * Format: int64
+             * @description 档案记录独立主键，自增 BIGINT
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 关联的用户ID
+             */
+            userId?: number;
+            /** @description MBTI性格类型 */
+            mbtiType?: string;
+            /** @description 九型人格类型 */
+            enneagramType?: string;
+            /**
+             * Format: int32
+             * @description 基线压力水平（0-10）
+             */
+            baselineStressLevel?: number;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt?: string;
+        };
+        HealthPsyKnowledgeBase: {
+            /**
+             * Format: int64
+             * @description 知识库记录独立主键，自增 BIGINT
+             */
+            id?: number;
+            /** @description 知识标题 */
+            title?: string;
+            /** @description 知识分类 */
+            category?: string;
+            /** @description 知识内容 */
+            content?: string;
+            /** @description 内容向量（vector 文本，1536 维） */
+            contentVector?: number[];
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt?: string;
+        };
+        HealthPsyDailyMoods: {
+            /**
+             * Format: int64
+             * @description 心情记录独立主键，自增 BIGINT
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 关联的用户ID
+             */
+            userId?: number;
+            /**
+             * Format: int32
+             * @description 心情评分（1-10）
+             */
+            moodScore?: number;
+            /** @description 主要情绪 */
+            primaryEmotion?: string;
+            /** @description 日记文本 */
+            journalText?: string;
+            /**
+             * Format: date
+             * @description 记录日期
+             */
+            recordDate?: string;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+        };
+        HealthPsyChatMemories: {
+            /**
+             * Format: int64
+             * @description 聊天记录独立主键，自增 BIGINT
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 关联的用户ID
+             */
+            userId?: number;
+            /** @description 角色（user/assistant/system） */
+            role?: string;
+            /** @description 聊天内容 */
+            content?: string;
+            /** @description 情绪标签 */
+            emotionTags?: string;
+            /** @description 内容向量（vector 文本，1536 维） */
+            contentVector?: number[];
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+        };
+        HealthPsyAssessments: {
+            /**
+             * Format: int64
+             * @description 评估记录独立主键，自增 BIGINT
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 关联的用户ID
+             */
+            userId?: number;
+            /** @description 评估量表名称 */
+            scaleName?: string;
+            /**
+             * Format: int32
+             * @description 总分
+             */
+            totalScore?: number;
+            /** @description 严重程度 */
+            severityLevel?: string;
+            /** @description 结果分析 */
+            resultAnalysis?: string;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+        };
+        HealthGoals: {
+            /**
+             * Format: int64
+             * @description 目标记录独立主键，自增 BIGINT
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 关联的用户ID
+             */
+            userId?: number;
+            /** @description 目标类型（如 weight_loss、step_goal、muscle_gain） */
+            goalType?: string;
+            /** @description 目标数值 */
+            targetValue?: number;
+            /**
+             * Format: date
+             * @description 期望达成日期
+             */
+            deadline?: string;
+            /** @description 状态（active、achieved、abandoned） */
+            status?: string;
+            /** @description 目标语义向量（vector 文本，1024 维） */
+            goalEmbedding?: number[];
+            /**
+             * Format: date-time
+             * @description 数据写入时间
+             */
+            createdAt?: string;
+        };
+        HealthDietLogs: {
+            /**
+             * Format: int64
+             * @description 饮食记录独立主键，自增 BIGINT
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 关联的用户ID
+             */
+            userId?: number;
+            /**
+             * Format: date-time
+             * @description 进餐具体时间
+             */
+            mealTime?: string;
+            /** @description 餐别（如 breakfast、lunch、dinner、snack） */
+            mealType?: string;
+            /** @description 食物明细文本 */
+            foodItems?: string;
+            /** @description 总摄入热量（千卡） */
+            totalCalories?: number;
+            /** @description 蛋白质摄入量（克） */
+            proteinG?: number;
+            /** @description 碳水化合物摄入量（克） */
+            carbsG?: number;
+            /** @description 脂肪摄入量（克） */
+            fatG?: number;
+            /** @description 食物明细向量（vector 文本，256 维） */
+            foodEmbedding?: number[];
+            /**
+             * Format: date-time
+             * @description 数据写入时间
+             */
+            createdAt?: string;
+        };
+        HealthDailySummaries: {
+            /**
+             * Format: int64
+             * @description 汇总记录独立主键，自增 BIGINT
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 关联的用户ID
+             */
+            userId?: number;
+            /**
+             * Format: date
+             * @description 记录日期
+             */
+            recordDate?: string;
+            /**
+             * Format: int32
+             * @description 当日累计总步数
+             */
+            totalSteps?: number;
+            /** @description 活动消耗卡路里（千卡） */
+            activeCaloriesKcal?: number;
+            /** @description 静息/基础代谢消耗卡路里（千卡） */
+            restingCaloriesKcal?: number;
+            /** @description 当日累计估算距离（米） */
+            totalDistanceMeters?: number;
+            /**
+             * Format: int32
+             * @description 当日活跃/运动总时长（分钟）
+             */
+            activeMinutes?: number;
+            /** @description 当日活动自然语言总结向量（vector 文本，1024 维） */
+            dailyContextEmbedding?: number[];
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt?: string;
+        };
+        HealthAgentUserPreferences: {
+            /** Format: int64 */
+            id?: number;
+            /** Format: int64 */
+            userId?: number;
+            preferredDietStyle?: string;
+            dislikedFoods?: string;
+            preferredExerciseTypes?: string;
+            preferredSupportStyle?: string;
+            routinePattern?: string;
+            motivationTags?: string;
+            habitProfile?: string;
+            preferenceVector?: number[];
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            updatedAt?: string;
+        };
+        HealthAgentFollowupPlans: {
+            /** Format: int64 */
+            id?: number;
+            /** Format: int64 */
+            userId?: number;
+            planType?: string;
+            title?: string;
+            planJson?: string;
+            goalSummary?: string;
+            /** Format: int64 */
+            relatedAdviceId?: number;
+            status?: string;
+            /** Format: date */
+            startDate?: string;
+            /** Format: date */
+            endDate?: string;
+            followupVector?: number[];
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            updatedAt?: string;
+        };
+        HealthAgentCheckins: {
+            /** Format: int64 */
+            id?: number;
+            /** Format: int64 */
+            userId?: number;
+            /** Format: int64 */
+            adviceRecordId?: number;
+            /** Format: int64 */
+            followupPlanId?: number;
+            /** Format: date */
+            checkinDate?: string;
+            completionStatus?: string;
+            /** Format: int32 */
+            adherenceScore?: number;
+            /** Format: int32 */
+            effectScore?: number;
+            userFeedback?: string;
+            blockerReason?: string;
+            checkinVector?: number[];
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            updatedAt?: string;
+        };
+        HealthAgentAdviceRecords: {
+            /** Format: int64 */
+            id?: number;
+            /** Format: int64 */
+            userId?: number;
+            agentType?: string;
+            adviceType?: string;
+            title?: string;
+            content?: string;
+            sourceSummary?: string;
+            sourceSnapshot?: string;
+            priorityLevel?: string;
+            status?: string;
+            /** Format: date */
+            validUntil?: string;
+            adviceVector?: number[];
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            updatedAt?: string;
+        };
+        HealthActivities: {
+            /**
+             * Format: int64
+             * @description 运动记录独立主键，自增 BIGINT
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 关联的用户ID
+             */
+            userId?: number;
+            /** @description 运动类型（如 running、swimming、weightlifting） */
+            activityType?: string;
+            /**
+             * Format: date-time
+             * @description 运动开始时间
+             */
+            startTime?: string;
+            /**
+             * Format: int32
+             * @description 运动时长（分钟）
+             */
+            durationMinutes?: number;
+            /** @description 消耗卡路里评估（千卡） */
+            caloriesBurned?: number;
+            /** @description 运动详情文本描述 */
+            description?: string;
+            /** @description 运动详情向量（vector 文本，512 维） */
+            activityEmbedding?: number[];
+            /**
+             * Format: date-time
+             * @description 数据写入时间
+             */
+            createdAt?: string;
         };
         FinTransTags: {
             /**
@@ -2274,6 +5233,67 @@ export interface components {
              * @description 更新时间
              */
             updatedAt?: string;
+        };
+        /** @description 分录请求 */
+        EntryRequest: {
+            /**
+             * Format: int64
+             * @description 科目ID
+             * @example 100
+             */
+            accountId: number;
+            /**
+             * @description 借贷方向：DEBIT(借)/CREDIT(贷)
+             * @example DEBIT
+             */
+            direction: string;
+            /**
+             * @description 交易金额（绝对值，必须为正数）
+             * @example 100
+             */
+            amount: string;
+            /** @description 分录备注 */
+            memo?: string;
+            /** @description 资产数量（如股票股数） */
+            quantity?: string;
+            /** @description 价格 */
+            price?: string;
+            /** @description 商品代码 */
+            commodityCode?: string;
+        };
+        /** @description 修改交易记录请求 */
+        UpdateTransactionDTO: {
+            /**
+             * Format: int64
+             * @deprecated
+             * @description 交易记录ID（已废弃，请使用路径参数）
+             * @example 123
+             */
+            transId?: number;
+            /**
+             * Format: date-time
+             * @description 交易日期
+             * @example 2026-03-06T12:00:00
+             */
+            transDate?: string;
+            /**
+             * @description 交易描述
+             * @example 周末超市采购
+             */
+            description?: string;
+            /** @description 附件ID（关联文件对象） */
+            attachmentId?: string;
+            /** @description 分录列表（必填，更新时会删除旧行分录并创建新分录） */
+            entries: components["schemas"]["EntryRequest"][];
+            /**
+             * @description 标签ID列表
+             * @example [
+             *       1,
+             *       2,
+             *       3
+             *     ]
+             */
+            tagIds?: number[];
         };
         FinTags: {
             /**
@@ -2501,42 +5521,206 @@ export interface components {
              * @description 排序
              */
             sortOrder?: number;
-            /** @enum {string} */
-            balanceDirectionEnum?: "借" | "贷";
+            /**
+             * Format: int32
+             * @description 用户设置的排序，倒序
+             */
+            sortWeight?: number;
             /** @enum {string} */
             accountTypeEnum?: "资产" | "负债" | "权益" | "收入" | "支出";
-            asset?: boolean;
-            equity?: boolean;
-            income?: boolean;
+            /** @enum {string} */
+            balanceDirectionEnum?: "借" | "贷";
             liability?: boolean;
+            equity?: boolean;
+            asset?: boolean;
             expense?: boolean;
+            income?: boolean;
         };
-        /** @description 分录请求 */
-        EntryRequest: {
+        /** @description 单个科目排序项 */
+        SortItem: {
             /**
              * Format: int64
              * @description 科目ID
-             * @example 100
              */
-            accountId: number;
+            id: number;
             /**
-             * @description 借贷方向：DEBIT(借)/CREDIT(贷)
-             * @example DEBIT
+             * Format: int32
+             * @description 排序权重（倒序，值越大越靠前，>=1000为置顶）
              */
-            direction: string;
+            sortWeight?: number;
+        };
+        /** @description 批量更新科目排序权重请求 */
+        SortWeightUpdateDTO: {
             /**
-             * @description 交易金额（绝对值，必须为正数）
-             * @example 100
+             * Format: int64
+             * @description 账本ID
              */
-            amount: string;
-            /** @description 分录备注 */
-            memo?: string;
-            /** @description 资产数量（如股票股数） */
-            quantity?: string;
-            /** @description 价格 */
-            price?: string;
-            /** @description 商品代码 */
-            commodityCode?: string;
+            bookId: number;
+            /** @description 排序项列表 */
+            items: components["schemas"]["SortItem"][];
+        };
+        /** @description Health chat stream request */
+        HealthChatStreamRequest: {
+            /** @description User message */
+            message: string;
+            /**
+             * Format: int32
+             * @description History message count
+             * @default 10
+             */
+            historyLimit: number;
+            /** @description Optional system prompt */
+            systemPrompt?: string;
+            /** @description Use Python Agent (default: true) */
+            useAgent?: boolean;
+            /** @description User ID for Python Agent (optional) */
+            userIdForAgent?: string;
+        };
+        ServerSentEventHealthChatStreamChunk: unknown;
+        /** @description Health Agent sync response */
+        HealthAgentResponse: {
+            /** @description Complete agent execution state */
+            state?: {
+                [key: string]: unknown;
+            };
+            /** @description Quick summary for business logic */
+            summary?: {
+                [key: string]: unknown;
+            };
+            /** @description Structured payload for database recording */
+            record_payload?: {
+                [key: string]: unknown;
+            };
+        };
+        ResponseResultHealthAgentResponse: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthAgentResponse"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        /** @description 创建 API Key 请求 */
+        SysUserApiKeyCreateRequest: {
+            /** @description Key 名称 */
+            keyName: string;
+            /** @description 用途说明 */
+            description?: string;
+            /** @description 允许访问的接口路径范围，支持精确路径和 /** 前缀匹配 */
+            allowedPaths?: string[];
+            /**
+             * Format: date-time
+             * @description 过期时间，可选
+             */
+            expiresAt?: string;
+        };
+        ResponseResultSysUserApiKeyCreateResponse: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["SysUserApiKeyCreateResponse"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        /** @description 创建 API Key 响应 */
+        SysUserApiKeyCreateResponse: {
+            /**
+             * Format: int64
+             * @description API Key ID
+             */
+            id?: number;
+            /** @description 明文 API Key，仅创建时返回一次 */
+            apiKey?: string;
+            /** @description Key 名称 */
+            keyName?: string;
+            /** @description 前缀 */
+            keyPrefix?: string;
+            /** @description 允许访问的接口路径范围 */
+            allowedPaths?: string[];
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+        };
+        AssignUserRoleReqVO: {
+            /** Format: int64 */
+            userId: number;
+            roleIds: number[];
+        };
+        AssignRoleMenuReqVO: {
+            /** Format: int64 */
+            roleId: number;
+            menuIds: number[];
+        };
+        /** @description 平台 */
+        FormFieldPart: unknown;
+        ResponseResultSysAppVersion: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["SysAppVersion"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        HealthyWaterLogs: {
+            /**
+             * Format: int64
+             * @description 饮水记录主键，自增 BIGINT
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 关联的用户ID
+             */
+            userId?: number;
+            /**
+             * Format: date-time
+             * @description 记录时间
+             */
+            recordTime?: string;
+            /**
+             * Format: int32
+             * @description 饮水量（毫升）
+             */
+            amountMl?: number;
+            /** @description 饮品类型：water/tea/coffee/other */
+            drinkType?: string;
+            /**
+             * Format: date-time
+             * @description 数据写入时间
+             */
+            createdAt?: string;
+        };
+        ResponseResultHealthyWaterLogs: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthyWaterLogs"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultHealthySleepLogs: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthySleepLogs"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListHealthAgentAdviceRecords: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthAgentAdviceRecords"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
         };
         /** @description 交易及分录统一记账请求 */
         TransactionEntryDTO: {
@@ -2593,13 +5777,68 @@ export interface components {
             /** @description 交易描述 */
             description?: string;
         };
-        LoginRequest: {
-            username: string;
-            password: string;
+        /** @description 账户余额调整请求 */
+        BalanceAdjustmentDTO: {
+            /**
+             * Format: int64
+             * @description 账户ID
+             * @example 1001
+             */
+            accountId: number;
+            /**
+             * @description 目标余额
+             * @example 1000
+             */
+            targetBalance: number;
+            /**
+             * @description 交易描述
+             * @example 余额调整
+             */
+            description?: string;
+            /**
+             * Format: int64
+             * @description 权益科目ID（余额调整科目，用于记录权益变动）
+             * @example 200
+             */
+            equityAccountId?: number;
+        };
+        ResponseResultLong: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            /** Format: int64 */
+            data?: number;
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        WxLoginRequest: {
+            code?: string;
+        };
+        AuthLoginPayload: {
+            token?: string;
+            user?: components["schemas"]["AuthUserProfile"];
+        };
+        AuthUserProfile: {
+            /** Format: int64 */
+            id?: number;
+            username?: string;
+            nickname?: string;
+            avatar?: string;
+        };
+        ResponseResultAuthLoginPayload: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["AuthLoginPayload"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
         };
         LoginResponse: {
             token?: string;
             tokenType?: string;
+            refreshToken?: string;
             /** Format: int64 */
             expiresIn?: number;
             username?: string;
@@ -2610,6 +5849,64 @@ export interface components {
             code?: number;
             message?: string;
             data?: components["schemas"]["LoginResponse"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultVoid: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: unknown;
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultMapStringObject: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: {
+                [key: string]: unknown;
+            };
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        LoginRequest: {
+            username: string;
+            password: string;
+        };
+        FinanceChatRequest: {
+            message: string;
+            /** Format: int64 */
+            bookId?: number;
+        };
+        /** @description 财务智能分析报告 */
+        FinanceInsightReport: {
+            /** @description 周期 */
+            period?: string;
+            /**
+             * Format: int32
+             * @description 财务健康评分 (0-100)
+             */
+            healthScore?: number;
+            /** @description AI 解读叙述 */
+            narrative?: string;
+            /** @description 关键发现 (3-5 条) */
+            keyFindings?: string[];
+            /** @description 理财建议 (3-5 条) */
+            recommendations?: string[];
+            /** @description 支出异常警示 */
+            warnings?: string[];
+            /** @description 下月预算建议 */
+            budgetSuggestion?: string;
+        };
+        ResponseResultFinanceInsightReport: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["FinanceInsightReport"];
             /** Format: int64 */
             timestamp?: number;
             success?: boolean;
@@ -2928,6 +6225,48 @@ export interface components {
             timestamp?: number;
             success?: boolean;
         };
+        ResponseResultListSysUserApiKeyView: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["SysUserApiKeyView"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        /** @description 用户 API Key 列表项 */
+        SysUserApiKeyView: {
+            /**
+             * Format: int64
+             * @description API Key ID
+             */
+            id?: number;
+            /** @description Key 名称 */
+            keyName?: string;
+            /** @description 脱敏后的 Key */
+            maskedKey?: string;
+            /** @description 用途说明 */
+            description?: string;
+            /** @description 允许访问的接口路径范围 */
+            allowedPaths?: string[];
+            /** @description 状态 */
+            status?: string;
+            /**
+             * Format: date-time
+             * @description 最后使用时间
+             */
+            lastUsedAt?: string;
+            /**
+             * Format: date-time
+             * @description 过期时间
+             */
+            expiresAt?: string;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt?: string;
+        };
         ResponseResultListSysRolePermission: {
             /** Format: int32 */
             code?: number;
@@ -2942,24 +6281,6 @@ export interface components {
             code?: number;
             message?: string;
             data?: components["schemas"]["SysRolePermission"];
-            /** Format: int64 */
-            timestamp?: number;
-            success?: boolean;
-        };
-        ResponseResultListSysPermission: {
-            /** Format: int32 */
-            code?: number;
-            message?: string;
-            data?: components["schemas"]["SysPermission"][];
-            /** Format: int64 */
-            timestamp?: number;
-            success?: boolean;
-        };
-        ResponseResult: {
-            /** Format: int32 */
-            code?: number;
-            message?: string;
-            data?: unknown;
             /** Format: int64 */
             timestamp?: number;
             success?: boolean;
@@ -3008,6 +6329,87 @@ export interface components {
             code?: number;
             message?: string;
             data?: components["schemas"]["SysPermissionApi"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PermissionItem: {
+            permissionKey?: string;
+            name?: string;
+        };
+        ResponseResultUserPermissionVO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["UserPermissionVO"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        UserPermissionVO: {
+            /** Format: int64 */
+            userId?: number;
+            isSuperAdmin?: boolean;
+            roles?: components["schemas"]["SysRole"][];
+            permissions?: components["schemas"]["PermissionItem"][];
+        };
+        MenuTreeModel: {
+            /** Format: int64 */
+            id?: number;
+            /** Format: int64 */
+            parentId?: number;
+            menuName?: string;
+            /** Format: int32 */
+            level?: number;
+            icon?: string;
+            /** Format: int32 */
+            sort?: number;
+            path?: string;
+            component?: string;
+            /** Format: int32 */
+            menuType?: number;
+            visible?: boolean;
+            permission?: string;
+            routerName?: string;
+            status?: boolean;
+            children?: components["schemas"]["MenuTreeModel"][];
+        };
+        PermissionInfoVO: {
+            user?: components["schemas"]["UserInfoVO"];
+            roles?: string[];
+            permissions?: string[];
+            menus?: components["schemas"]["MenuTreeModel"][];
+        };
+        ResponseResultPermissionInfoVO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PermissionInfoVO"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        UserInfoVO: {
+            /** Format: int64 */
+            userId?: number;
+            username?: string;
+            nickname?: string;
+            avatar?: string;
+        };
+        ResponseResultSetLong: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: number[];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListSysPermission: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["SysPermission"][];
             /** Format: int64 */
             timestamp?: number;
             success?: boolean;
@@ -3076,27 +6478,6 @@ export interface components {
             timestamp?: number;
             success?: boolean;
         };
-        MenuTreeModel: {
-            /** Format: int64 */
-            id?: number;
-            /** Format: int64 */
-            parentId?: number;
-            menuName?: string;
-            /** Format: int32 */
-            level?: number;
-            icon?: string;
-            /** Format: int32 */
-            sort?: number;
-            path?: string;
-            component?: string;
-            /** Format: int32 */
-            menuType?: number;
-            visible?: boolean;
-            permission?: string;
-            routerName?: string;
-            status?: boolean;
-            children?: components["schemas"]["MenuTreeModel"][];
-        };
         ResponseResultListMenuTreeModel: {
             /** Format: int32 */
             code?: number;
@@ -3124,29 +6505,944 @@ export interface components {
             timestamp?: number;
             success?: boolean;
         };
-        PingDTO: {
-            message?: string;
+        PageSysAppVersion: {
+            records?: components["schemas"]["SysAppVersion"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageSysAppVersion"];
+            searchCount?: components["schemas"]["PageSysAppVersion"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
         };
-        ResponseResultPingDTO: {
+        ResponseResultPageSysAppVersion: {
             /** Format: int32 */
             code?: number;
             message?: string;
-            data?: components["schemas"]["PingDTO"];
+            data?: components["schemas"]["PageSysAppVersion"];
             /** Format: int64 */
             timestamp?: number;
             success?: boolean;
         };
-        HealthCheckDTO: {
-            status?: string;
-            version?: string;
-            /** Format: int64 */
-            timestamp?: number;
-        };
-        ResponseResultHealthCheckDTO: {
+        ResponseResultVersionCheckResponse: {
             /** Format: int32 */
             code?: number;
             message?: string;
-            data?: components["schemas"]["HealthCheckDTO"];
+            data?: components["schemas"]["VersionCheckResponse"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        /** @description 版本检查响应 */
+        VersionCheckResponse: {
+            /** @description 是否有更新 */
+            hasUpdate?: boolean;
+            /**
+             * Format: int32
+             * @description 最新版本号
+             */
+            versionCode?: number;
+            /** @description 版本名称 */
+            versionName?: string;
+            /** @description 文件下载地址 */
+            fileUrl?: string;
+            /**
+             * Format: int64
+             * @description 文件大小（字节）
+             */
+            fileSize?: number;
+            /** @description 文件MD5校验 */
+            fileMd5?: string;
+            /** @description 更新日志 */
+            updateLog?: string;
+            /**
+             * Format: int32
+             * @description 是否强制更新
+             */
+            isForce?: number;
+            /** @description 平台类型 */
+            platform?: string;
+        };
+        ResponseResultListHealthWeightLogs: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthWeightLogs"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultHealthWeightLogs: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthWeightLogs"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageHealthWeightLogs: {
+            records?: components["schemas"]["HealthWeightLogs"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageHealthWeightLogs"];
+            searchCount?: components["schemas"]["PageHealthWeightLogs"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageHealthWeightLogs: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageHealthWeightLogs"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultInteger: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            /** Format: int32 */
+            data?: number;
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListHealthyWaterLogs: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthyWaterLogs"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultHealthUserProfiles: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthUserProfiles"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListHealthySleepLogs: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthySleepLogs"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultHealthPsyProfiles: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthPsyProfiles"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListHealthPsyKnowledgeBase: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthPsyKnowledgeBase"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultHealthPsyKnowledgeBase: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthPsyKnowledgeBase"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageHealthPsyKnowledgeBase: {
+            records?: components["schemas"]["HealthPsyKnowledgeBase"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageHealthPsyKnowledgeBase"];
+            searchCount?: components["schemas"]["PageHealthPsyKnowledgeBase"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageHealthPsyKnowledgeBase: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageHealthPsyKnowledgeBase"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListHealthPsyDailyMoods: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthPsyDailyMoods"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultHealthPsyDailyMoods: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthPsyDailyMoods"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageHealthPsyDailyMoods: {
+            records?: components["schemas"]["HealthPsyDailyMoods"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageHealthPsyDailyMoods"];
+            searchCount?: components["schemas"]["PageHealthPsyDailyMoods"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageHealthPsyDailyMoods: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageHealthPsyDailyMoods"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListHealthPsyChatMemories: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthPsyChatMemories"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultHealthPsyChatMemories: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthPsyChatMemories"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageHealthPsyChatMemories: {
+            records?: components["schemas"]["HealthPsyChatMemories"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageHealthPsyChatMemories"];
+            searchCount?: components["schemas"]["PageHealthPsyChatMemories"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageHealthPsyChatMemories: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageHealthPsyChatMemories"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListHealthPsyAssessments: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthPsyAssessments"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultHealthPsyAssessments: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthPsyAssessments"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageHealthPsyAssessments: {
+            records?: components["schemas"]["HealthPsyAssessments"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageHealthPsyAssessments"];
+            searchCount?: components["schemas"]["PageHealthPsyAssessments"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageHealthPsyAssessments: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageHealthPsyAssessments"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListHealthGoals: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthGoals"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultHealthGoals: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthGoals"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageHealthGoals: {
+            records?: components["schemas"]["HealthGoals"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageHealthGoals"];
+            searchCount?: components["schemas"]["PageHealthGoals"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageHealthGoals: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageHealthGoals"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListHealthDietLogs: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthDietLogs"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultHealthDietLogs: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthDietLogs"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageHealthDietLogs: {
+            records?: components["schemas"]["HealthDietLogs"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageHealthDietLogs"];
+            searchCount?: components["schemas"]["PageHealthDietLogs"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageHealthDietLogs: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageHealthDietLogs"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListHealthDailySummaries: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthDailySummaries"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultHealthDailySummaries: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthDailySummaries"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageHealthDailySummaries: {
+            records?: components["schemas"]["HealthDailySummaries"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageHealthDailySummaries"];
+            searchCount?: components["schemas"]["PageHealthDailySummaries"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageHealthDailySummaries: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageHealthDailySummaries"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListHealthAgentUserPreferences: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthAgentUserPreferences"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultHealthAgentUserPreferences: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthAgentUserPreferences"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        /** @description 分项评分 */
+        DimensionScores: {
+            /** Format: int32 */
+            exercise?: number;
+            /** Format: int32 */
+            diet?: number;
+            /** Format: int32 */
+            sleep?: number;
+            /** Format: int32 */
+            psychology?: number;
+            /** Format: int32 */
+            weight?: number;
+        };
+        /** @description 智能健康报告 */
+        HealthReport: {
+            /** @description 周期：weekly / monthly */
+            period?: string;
+            /**
+             * Format: date
+             * @description 起始日期
+             */
+            startDate?: string;
+            /**
+             * Format: date
+             * @description 结束日期
+             */
+            endDate?: string;
+            /**
+             * Format: int32
+             * @description 综合健康评分 (0-100)
+             */
+            overallScore?: number;
+            /** @description 分项评分（运动/饮食/睡眠/心理/体重 0-100） */
+            scores?: components["schemas"]["DimensionScores"];
+            /** @description 数据指标汇总 */
+            metrics?: components["schemas"]["Metrics"];
+            /** @description AI 生成的解读分析 */
+            aiNarrative?: string;
+            /** @description AI 生成的关键洞察（3-5 条） */
+            keyInsights?: string[];
+            /** @description AI 生成的下阶段建议（3-5 条） */
+            recommendations?: string[];
+            /** @description 对比上一周期的变化趋势 */
+            trends?: components["schemas"]["TrendComparison"];
+        };
+        /** @description 指标汇总 */
+        Metrics: {
+            /** Format: int32 */
+            totalSteps?: number;
+            /** Format: double */
+            totalActiveCalories?: number;
+            /** Format: int32 */
+            totalActiveMinutes?: number;
+            /** Format: int32 */
+            activityCount?: number;
+            /** Format: int32 */
+            dietLogCount?: number;
+            /** Format: double */
+            avgCaloriesIntake?: number;
+            /** Format: int32 */
+            weightLogCount?: number;
+            /** Format: double */
+            weightChange?: number;
+            /** Format: double */
+            currentWeight?: number;
+            /** Format: int32 */
+            moodLogCount?: number;
+            /** Format: double */
+            avgMoodScore?: number;
+            /** Format: int32 */
+            sleepLogCount?: number;
+            /** Format: double */
+            avgSleepHours?: number;
+            /** Format: double */
+            avgSleepQuality?: number;
+        };
+        ResponseResultHealthReport: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthReport"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        /** @description 趋势对比 */
+        TrendComparison: {
+            stepsTrend?: string;
+            /** Format: double */
+            stepsChangePercent?: number;
+            moodTrend?: string;
+            /** Format: double */
+            moodChangePercent?: number;
+            weightTrend?: string;
+            /** Format: double */
+            weightChangeKg?: number;
+        };
+        ResponseResultListHealthAgentFollowupPlans: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthAgentFollowupPlans"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultHealthAgentFollowupPlans: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthAgentFollowupPlans"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageHealthAgentFollowupPlans: {
+            records?: components["schemas"]["HealthAgentFollowupPlans"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageHealthAgentFollowupPlans"];
+            searchCount?: components["schemas"]["PageHealthAgentFollowupPlans"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageHealthAgentFollowupPlans: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageHealthAgentFollowupPlans"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListHealthAgentCheckins: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthAgentCheckins"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultHealthAgentCheckins: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthAgentCheckins"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageHealthAgentCheckins: {
+            records?: components["schemas"]["HealthAgentCheckins"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageHealthAgentCheckins"];
+            searchCount?: components["schemas"]["PageHealthAgentCheckins"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageHealthAgentCheckins: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageHealthAgentCheckins"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultHealthAgentAdviceRecords: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthAgentAdviceRecords"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageHealthAgentAdviceRecords: {
+            records?: components["schemas"]["HealthAgentAdviceRecords"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageHealthAgentAdviceRecords"];
+            searchCount?: components["schemas"]["PageHealthAgentAdviceRecords"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageHealthAgentAdviceRecords: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageHealthAgentAdviceRecords"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        AdminUserSummaryVO: {
+            /** Format: int64 */
+            userId?: number;
+            username?: string;
+            nickname?: string;
+            latestWeight?: number;
+            /** Format: int32 */
+            latestMoodScore?: number;
+            /** Format: date */
+            lastActiveDate?: string;
+            /** Format: int64 */
+            totalRecords?: number;
+        };
+        PageAdminUserSummaryVO: {
+            records?: components["schemas"]["AdminUserSummaryVO"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageAdminUserSummaryVO"];
+            searchCount?: components["schemas"]["PageAdminUserSummaryVO"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageAdminUserSummaryVO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageAdminUserSummaryVO"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        AdminUserDetailVO: {
+            /** Format: int64 */
+            userId?: number;
+            username?: string;
+            nickname?: string;
+            profile?: unknown;
+            activities?: unknown[];
+            dietLogs?: unknown[];
+            weightLogs?: unknown[];
+            goals?: unknown[];
+            assessments?: unknown[];
+            dailyMoods?: unknown[];
+        };
+        ResponseResultAdminUserDetailVO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["AdminUserDetailVO"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        AdminTrendVO: {
+            /** Format: date */
+            date?: string;
+            /** Format: int64 */
+            activeUsers?: number;
+            /** Format: int64 */
+            newRecords?: number;
+            /** Format: double */
+            avgSteps?: number;
+            /** Format: double */
+            avgMoodScore?: number;
+        };
+        ResponseResultListAdminTrendVO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["AdminTrendVO"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        AdminOverviewVO: {
+            /** Format: int64 */
+            totalUsers?: number;
+            /** Format: int64 */
+            todayActiveUsers?: number;
+            /** Format: int64 */
+            totalHealthRecords?: number;
+            /** Format: double */
+            avgMoodScore?: number;
+            /** Format: int64 */
+            totalActivities?: number;
+            /** Format: int64 */
+            totalDietLogs?: number;
+            /** Format: int64 */
+            totalWeightLogs?: number;
+            /** Format: int64 */
+            totalAssessments?: number;
+            recentActiveUsers?: components["schemas"]["RecentActiveUserVO"][];
+        };
+        RecentActiveUserVO: {
+            /** Format: int64 */
+            userId?: number;
+            username?: string;
+            nickname?: string;
+            /** Format: date-time */
+            lastActiveTime?: string;
+            /** Format: int64 */
+            totalRecords?: number;
+        };
+        ResponseResultAdminOverviewVO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["AdminOverviewVO"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PsychologyAlertVO: {
+            /** Format: int64 */
+            userId?: number;
+            username?: string;
+            nickname?: string;
+            scaleName?: string;
+            /** Format: int32 */
+            totalScore?: number;
+            severityLevel?: string;
+            /** Format: date-time */
+            assessmentDate?: string;
+        };
+        ResponseResultListPsychologyAlertVO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PsychologyAlertVO"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListHealthActivities: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthActivities"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultHealthActivities: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthActivities"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        PageHealthActivities: {
+            records?: components["schemas"]["HealthActivities"][];
+            /** Format: int64 */
+            total?: number;
+            /** Format: int64 */
+            size?: number;
+            /** Format: int64 */
+            current?: number;
+            orders?: components["schemas"]["OrderItem"][];
+            optimizeCountSql?: components["schemas"]["PageHealthActivities"];
+            searchCount?: components["schemas"]["PageHealthActivities"];
+            optimizeJoinOfCountSql?: boolean;
+            /** Format: int64 */
+            maxLimit?: number;
+            countId?: string;
+            /**
+             * Format: int64
+             * @deprecated
+             */
+            pages?: number;
+        };
+        ResponseResultPageHealthActivities: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["PageHealthActivities"];
             /** Format: int64 */
             timestamp?: number;
             success?: boolean;
@@ -3312,6 +7608,94 @@ export interface components {
             /** Format: int64 */
             timestamp?: number;
             success?: boolean;
+        };
+        /** @description 账户科目 DTO */
+        AccountSubjectDTO: {
+            /**
+             * Format: int64
+             * @description 账户科目 ID
+             */
+            id?: number;
+            /** @description 账户科目名称 */
+            name?: string;
+            /** @description 账户科目编码 */
+            code?: string;
+            /** @description 账户类型 */
+            accountType?: string;
+            /** @description 图标 */
+            icon?: string;
+            /**
+             * Format: int64
+             * @description 默认排序，正序
+             */
+            sortOrder?: number;
+            /**
+             * Format: int32
+             * @description 用户设置排序，倒序
+             */
+            sortWeight?: number;
+            /**
+             * Format: int32
+             * @description 后端计算后的最终排序，前端按正序使用
+             */
+            userSort?: number;
+        };
+        /** @description Default book info */
+        DefaultBookDTO: {
+            /**
+             * Format: int64
+             * @description Book ID
+             */
+            id?: number;
+            /** @description Book name */
+            name?: string;
+            /** @description Book description */
+            description?: string;
+            /** @description Default currency */
+            defaultCurrency?: string;
+            /** @description Cover URL */
+            coverUrl?: string;
+            /** @description Whether the book comes from user config */
+            fromUserConfig?: boolean;
+        };
+        /** @description 支出科目分类 */
+        ExpenseCategories: {
+            /** @description 发生科目（支出类科目） */
+            occurrenceSubjects?: components["schemas"]["AccountSubjectDTO"][];
+            /** @description 付款科目（资产类科目） */
+            paymentSubjects?: components["schemas"]["AccountSubjectDTO"][];
+        };
+        /** @description 收入科目分类 */
+        IncomeCategories: {
+            /** @description 发生科目（收入类科目） */
+            occurrenceSubjects?: components["schemas"]["AccountSubjectDTO"][];
+            /** @description 收款科目（资产类科目） */
+            receiptSubjects?: components["schemas"]["AccountSubjectDTO"][];
+        };
+        ResponseResultSkillBookkeepingContextDTO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["SkillBookkeepingContextDTO"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        /** @description Skills bookkeeping context */
+        SkillBookkeepingContextDTO: {
+            /** @description Resolved default book */
+            defaultBook?: components["schemas"]["DefaultBookDTO"];
+            /** @description Subject categories under the selected book */
+            subjectCategories?: components["schemas"]["SubjectCategoriesDTO"];
+        };
+        /** @description 科目分类响应 */
+        SubjectCategoriesDTO: {
+            /** @description 支出科目分类 */
+            expense?: components["schemas"]["ExpenseCategories"];
+            /** @description 收入科目分类 */
+            income?: components["schemas"]["IncomeCategories"];
+            /** @description 全部科目列表 */
+            allSubjects?: components["schemas"]["AccountSubjectDTO"][];
         };
         ResponseResultListFinPrices: {
             /** Format: int32 */
@@ -3483,6 +7867,8 @@ export interface components {
             totalLiabilities?: number;
             /** @description 净资产（总资产 - 总负债） */
             netAssets?: number;
+            /** @description 可用余额 */
+            availableBalance?: number;
         };
         ResponseResultBookAssetSummaryDTO: {
             /** Format: int32 */
@@ -3667,6 +8053,64 @@ export interface components {
             code?: number;
             message?: string;
             data?: components["schemas"]["PageFinAccounts"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListAccountSubjectDTO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["AccountSubjectDTO"][];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultSubjectCategoriesDTO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["SubjectCategoriesDTO"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        QrCodeLoginInfo: {
+            status?: string;
+            /** Format: int64 */
+            userId?: number;
+            token?: string;
+            refreshToken?: string;
+            /** Format: int64 */
+            expiresIn?: number;
+            username?: string;
+            avatar?: string;
+        };
+        ResponseResultQrCodeLoginInfo: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["QrCodeLoginInfo"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultAuthUserProfile: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["AuthUserProfile"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        ResponseResultListMapStringObject: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: {
+                [key: string]: unknown;
+            }[];
             /** Format: int64 */
             timestamp?: number;
             success?: boolean;
@@ -3896,11 +8340,26 @@ export interface components {
             timestamp?: number;
             success?: boolean;
         };
-        ResponseResultVoid: {
+        PingDTO: {
+            message?: string;
+        };
+        ResponseResultPingDTO: {
             /** Format: int32 */
             code?: number;
             message?: string;
-            data?: unknown;
+            data?: components["schemas"]["PingDTO"];
+            /** Format: int64 */
+            timestamp?: number;
+            success?: boolean;
+        };
+        HealthCheckDTO: {
+            status?: string;
+        };
+        ResponseResultHealthCheckDTO: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            data?: components["schemas"]["HealthCheckDTO"];
             /** Format: int64 */
             timestamp?: number;
             success?: boolean;
@@ -4506,74 +8965,6 @@ export interface operations {
             };
         };
     };
-    listAll_5: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultListSysPermission"];
-                };
-            };
-        };
-    };
-    update_9: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysPermission"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultSysPermission"];
-                };
-            };
-        };
-    };
-    create_5: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SysPermission"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultSysPermission"];
-                };
-            };
-        };
-    };
     list_1: {
         parameters: {
             query?: never;
@@ -4594,7 +8985,7 @@ export interface operations {
             };
         };
     };
-    update_10: {
+    update_9: {
         parameters: {
             query?: never;
             header?: never;
@@ -4662,7 +9053,7 @@ export interface operations {
             };
         };
     };
-    update_11: {
+    update_10: {
         parameters: {
             query?: never;
             header?: never;
@@ -4706,6 +9097,74 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ResponseResultSysPermissionApi"];
+                };
+            };
+        };
+    };
+    listAll_5: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListSysPermission"];
+                };
+            };
+        };
+    };
+    update_11: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysPermission"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultSysPermission"];
+                };
+            };
+        };
+    };
+    create_5: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysPermission"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultSysPermission"];
                 };
             };
         };
@@ -4846,6 +9305,57 @@ export interface operations {
             };
         };
     };
+    listVersions: {
+        parameters: {
+            query?: {
+                /** @description 页码 */
+                current?: number;
+                /** @description 页大小 */
+                size?: number;
+                /** @description 平台 */
+                platform?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageSysAppVersion"];
+                };
+            };
+        };
+    };
+    updateVersion: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysAppVersion"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
     list_3: {
         parameters: {
             query?: never;
@@ -4861,7 +9371,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultListFinTransTags"];
+                    "*/*": components["schemas"]["ResponseResultListHealthWeightLogs"];
                 };
             };
         };
@@ -4875,7 +9385,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinTransTags"];
+                "application/json": components["schemas"]["HealthWeightLogs"];
             };
         };
         responses: {
@@ -4899,7 +9409,151 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinTransTags"];
+                "application/json": components["schemas"]["HealthWeightLogs"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    update_15: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthUserProfiles"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_8: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthUserProfiles"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    update_16: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthySleepLogs"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_9: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthySleepLogs"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthySleepLogs"];
+                };
+            };
+        };
+    };
+    update_17: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthPsyProfiles"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_10: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthPsyProfiles"];
             };
         };
         responses: {
@@ -4916,10 +9570,7 @@ export interface operations {
     };
     list_4: {
         parameters: {
-            query: {
-                /** @description 账本ID */
-                bookId: number;
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
@@ -4932,12 +9583,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultListFinTransactions"];
+                    "*/*": components["schemas"]["ResponseResultListHealthPsyKnowledgeBase"];
                 };
             };
         };
     };
-    update_15: {
+    update_18: {
         parameters: {
             query?: never;
             header?: never;
@@ -4946,7 +9597,31 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinTransactions"];
+                "application/json": components["schemas"]["HealthPsyKnowledgeBase"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_11: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthPsyKnowledgeBase"];
             };
         };
         responses: {
@@ -4976,12 +9651,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultListFinTags"];
+                    "*/*": components["schemas"]["ResponseResultListHealthPsyDailyMoods"];
                 };
             };
         };
     };
-    update_16: {
+    update_19: {
         parameters: {
             query?: never;
             header?: never;
@@ -4990,7 +9665,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinTags"];
+                "application/json": components["schemas"]["HealthPsyDailyMoods"];
             };
         };
         responses: {
@@ -5005,7 +9680,7 @@ export interface operations {
             };
         };
     };
-    add_8: {
+    add_12: {
         parameters: {
             query?: never;
             header?: never;
@@ -5014,7 +9689,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinTags"];
+                "application/json": components["schemas"]["HealthPsyDailyMoods"];
             };
         };
         responses: {
@@ -5044,12 +9719,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultListFinPrices"];
+                    "*/*": components["schemas"]["ResponseResultListHealthPsyChatMemories"];
                 };
             };
         };
     };
-    update_17: {
+    update_20: {
         parameters: {
             query?: never;
             header?: never;
@@ -5058,7 +9733,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinPrices"];
+                "application/json": components["schemas"]["HealthPsyChatMemories"];
             };
         };
         responses: {
@@ -5073,7 +9748,7 @@ export interface operations {
             };
         };
     };
-    add_9: {
+    add_13: {
         parameters: {
             query?: never;
             header?: never;
@@ -5082,7 +9757,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinPrices"];
+                "application/json": components["schemas"]["HealthPsyChatMemories"];
             };
         };
         responses: {
@@ -5099,10 +9774,7 @@ export interface operations {
     };
     list_7: {
         parameters: {
-            query: {
-                /** @description 账本ID */
-                bookId: number;
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
@@ -5115,12 +9787,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultListFinEntries"];
+                    "*/*": components["schemas"]["ResponseResultListHealthPsyAssessments"];
                 };
             };
         };
     };
-    update_18: {
+    update_21: {
         parameters: {
             query?: never;
             header?: never;
@@ -5129,7 +9801,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinEntries"];
+                "application/json": components["schemas"]["HealthPsyAssessments"];
             };
         };
         responses: {
@@ -5144,7 +9816,7 @@ export interface operations {
             };
         };
     };
-    add_10: {
+    add_14: {
         parameters: {
             query?: never;
             header?: never;
@@ -5153,7 +9825,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinEntries"];
+                "application/json": components["schemas"]["HealthPsyAssessments"];
             };
         };
         responses: {
@@ -5183,12 +9855,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultListFinBudgets"];
+                    "*/*": components["schemas"]["ResponseResultListHealthGoals"];
                 };
             };
         };
     };
-    update_19: {
+    update_22: {
         parameters: {
             query?: never;
             header?: never;
@@ -5197,7 +9869,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinBudgets"];
+                "application/json": components["schemas"]["HealthGoals"];
             };
         };
         responses: {
@@ -5212,7 +9884,7 @@ export interface operations {
             };
         };
     };
-    add_11: {
+    add_15: {
         parameters: {
             query?: never;
             header?: never;
@@ -5221,9 +9893,82 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinBudgets"];
+                "application/json": components["schemas"]["HealthGoals"];
             };
         };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    getById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 目标ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthGoals"];
+                };
+            };
+        };
+    };
+    updateById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 目标ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthGoals"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 目标ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
         responses: {
             /** @description OK */
             200: {
@@ -5251,12 +9996,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultListFinBooks"];
+                    "*/*": components["schemas"]["ResponseResultListHealthDietLogs"];
                 };
             };
         };
     };
-    update_20: {
+    update_23: {
         parameters: {
             query?: never;
             header?: never;
@@ -5265,7 +10010,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinBooks"];
+                "application/json": components["schemas"]["HealthDietLogs"];
             };
         };
         responses: {
@@ -5280,7 +10025,7 @@ export interface operations {
             };
         };
     };
-    add_12: {
+    add_16: {
         parameters: {
             query?: never;
             header?: never;
@@ -5289,7 +10034,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinBooks"];
+                "application/json": components["schemas"]["HealthDietLogs"];
             };
         };
         responses: {
@@ -5319,12 +10064,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultListFinBookMembers"];
+                    "*/*": components["schemas"]["ResponseResultListHealthDailySummaries"];
                 };
             };
         };
     };
-    update_21: {
+    update_24: {
         parameters: {
             query?: never;
             header?: never;
@@ -5333,7 +10078,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinBookMembers"];
+                "application/json": components["schemas"]["HealthDailySummaries"];
             };
         };
         responses: {
@@ -5348,7 +10093,7 @@ export interface operations {
             };
         };
     };
-    add_13: {
+    add_17: {
         parameters: {
             query?: never;
             header?: never;
@@ -5357,7 +10102,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["FinBookMembers"];
+                "application/json": components["schemas"]["HealthDailySummaries"];
             };
         };
         responses: {
@@ -5373,6 +10118,899 @@ export interface operations {
         };
     };
     list_11: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthAgentUserPreferences"];
+                };
+            };
+        };
+    };
+    update_25: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthAgentUserPreferences"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_18: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthAgentUserPreferences"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_12: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthAgentFollowupPlans"];
+                };
+            };
+        };
+    };
+    update_26: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthAgentFollowupPlans"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_19: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthAgentFollowupPlans"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_13: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthAgentCheckins"];
+                };
+            };
+        };
+    };
+    update_27: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthAgentCheckins"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_20: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthAgentCheckins"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_14: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthAgentAdviceRecords"];
+                };
+            };
+        };
+    };
+    update_28: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthAgentAdviceRecords"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_21: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthAgentAdviceRecords"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_15: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthActivities"];
+                };
+            };
+        };
+    };
+    update_29: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthActivities"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_22: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthActivities"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_16: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinTransTags"];
+                };
+            };
+        };
+    };
+    update_30: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinTransTags"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_23: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinTransTags"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_17: {
+        parameters: {
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinTransactions"];
+                };
+            };
+        };
+    };
+    update_31: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinTransactions"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    updateWithEntries: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 交易记录ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateTransactionDTO"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_18: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinTags"];
+                };
+            };
+        };
+    };
+    update_32: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinTags"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_24: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinTags"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_19: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinPrices"];
+                };
+            };
+        };
+    };
+    update_33: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinPrices"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_25: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinPrices"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_20: {
+        parameters: {
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinEntries"];
+                };
+            };
+        };
+    };
+    update_34: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinEntries"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_26: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinEntries"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_21: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinBudgets"];
+                };
+            };
+        };
+    };
+    update_35: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinBudgets"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_27: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinBudgets"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_22: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinBooks"];
+                };
+            };
+        };
+    };
+    update_36: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinBooks"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_28: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinBooks"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_23: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListFinBookMembers"];
+                };
+            };
+        };
+    };
+    update_37: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinBookMembers"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    add_29: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinBookMembers"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    list_24: {
         parameters: {
             query: {
                 /** @description 账本ID */
@@ -5395,7 +11033,7 @@ export interface operations {
             };
         };
     };
-    update_22: {
+    update_38: {
         parameters: {
             query?: never;
             header?: never;
@@ -5419,7 +11057,7 @@ export interface operations {
             };
         };
     };
-    add_14: {
+    add_30: {
         parameters: {
             query?: never;
             header?: never;
@@ -5439,6 +11077,126 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    updateSortWeights: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SortWeightUpdateDTO"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    streamChat: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthChatStreamRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/event-stream": components["schemas"]["ServerSentEventHealthChatStreamChunk"][];
+                };
+            };
+        };
+    };
+    streamChat_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthChatStreamRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/event-stream": components["schemas"]["ServerSentEventHealthChatStreamChunk"][];
+                };
+            };
+        };
+    };
+    callAgent: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthChatStreamRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthAgentResponse"];
+                };
+            };
+        };
+    };
+    callAgent_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthChatStreamRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthAgentResponse"];
                 };
             };
         };
@@ -5496,6 +11254,263 @@ export interface operations {
             };
         };
     };
+    list_25: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListSysUserApiKeyView"];
+                };
+            };
+        };
+    };
+    create_7: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SysUserApiKeyCreateRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultSysUserApiKeyCreateResponse"];
+                };
+            };
+        };
+    };
+    assignUserRole: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AssignUserRoleReqVO"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    assignRoleMenu: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AssignRoleMenuReqVO"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    quickPublish: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    versionCode: components["schemas"]["FormFieldPart"];
+                    versionName: components["schemas"]["FormFieldPart"];
+                    /**
+                     * Format: binary
+                     * @description 安装包文件
+                     */
+                    file: string;
+                    updateLog?: components["schemas"]["FormFieldPart"];
+                    isForce?: components["schemas"]["FormFieldPart"];
+                    platform?: components["schemas"]["FormFieldPart"];
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultSysAppVersion"];
+                };
+            };
+        };
+    };
+    publishVersion: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    versionCode: components["schemas"]["FormFieldPart"];
+                    versionName: components["schemas"]["FormFieldPart"];
+                    /**
+                     * Format: binary
+                     * @description 安装包文件
+                     */
+                    file: string;
+                    updateLog?: components["schemas"]["FormFieldPart"];
+                    isForce?: components["schemas"]["FormFieldPart"];
+                    platform?: components["schemas"]["FormFieldPart"];
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultSysAppVersion"];
+                };
+            };
+        };
+    };
+    add_31: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthyWaterLogs"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthyWaterLogs"];
+                };
+            };
+        };
+    };
+    initOrUpdateProfile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthUserProfiles"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    initOrUpdateProfile_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthPsyProfiles"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    analyze: {
+        parameters: {
+            query?: {
+                /** @description 分析维度：diet/exercise/psychology/sleep/general */
+                agentType?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthAgentAdviceRecords"];
+                };
+            };
+        };
+    };
     createWithEntries: {
         parameters: {
             query?: never;
@@ -5520,7 +11535,7 @@ export interface operations {
             };
         };
     };
-    add_15: {
+    add_32: {
         parameters: {
             query?: never;
             header?: never;
@@ -5567,6 +11582,164 @@ export interface operations {
             };
         };
     };
+    adjustBalance: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BalanceAdjustmentDTO"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultLong"];
+                };
+            };
+        };
+    };
+    wxLogin: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WxLoginRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultAuthLoginPayload"];
+                };
+            };
+        };
+    };
+    refreshToken: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": string;
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultLoginResponse"];
+                };
+            };
+        };
+    };
+    scanQrCode: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                qrCodeId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultVoid"];
+                };
+            };
+        };
+    };
+    generateQrCode: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultMapStringObject"];
+                };
+            };
+        };
+    };
+    confirmQrCode: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                qrCodeId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultVoid"];
+                };
+            };
+        };
+    };
+    cancelQrCode: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                qrCodeId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultVoid"];
+                };
+            };
+        };
+    };
     login: {
         parameters: {
             query?: never;
@@ -5586,7 +11759,58 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultLoginResponse"];
+                    "*/*": components["schemas"]["ResponseResultAuthLoginPayload"];
+                };
+            };
+        };
+    };
+    streamChat_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FinanceChatRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/event-stream": components["schemas"]["ServerSentEventHealthChatStreamChunk"][];
+                };
+            };
+        };
+    };
+    analyzeMonthly: {
+        parameters: {
+            query?: {
+                /** @description 账本ID */
+                bookId?: number;
+                /** @description 年份 */
+                year?: number;
+                /** @description 月份 */
+                month?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultFinanceInsightReport"];
                 };
             };
         };
@@ -5615,7 +11839,7 @@ export interface operations {
             };
         };
     };
-    getById: {
+    getById_1: {
         parameters: {
             query?: never;
             header?: never;
@@ -5637,7 +11861,7 @@ export interface operations {
             };
         };
     };
-    delete: {
+    delete_1: {
         parameters: {
             query?: never;
             header?: never;
@@ -5768,7 +11992,7 @@ export interface operations {
             };
         };
     };
-    getById_1: {
+    getById_2: {
         parameters: {
             query?: never;
             header?: never;
@@ -5790,7 +12014,7 @@ export interface operations {
             };
         };
     };
-    delete_1: {
+    delete_2: {
         parameters: {
             query?: never;
             header?: never;
@@ -5921,7 +12145,7 @@ export interface operations {
             };
         };
     };
-    getById_2: {
+    getById_3: {
         parameters: {
             query?: never;
             header?: never;
@@ -5943,7 +12167,7 @@ export interface operations {
             };
         };
     };
-    delete_2: {
+    delete_3: {
         parameters: {
             query?: never;
             header?: never;
@@ -6008,7 +12232,7 @@ export interface operations {
             };
         };
     };
-    getById_3: {
+    getById_4: {
         parameters: {
             query?: never;
             header?: never;
@@ -6030,7 +12254,7 @@ export interface operations {
             };
         };
     };
-    delete_3: {
+    delete_4: {
         parameters: {
             query?: never;
             header?: never;
@@ -6074,7 +12298,7 @@ export interface operations {
             };
         };
     };
-    getById_4: {
+    getById_5: {
         parameters: {
             query?: never;
             header?: never;
@@ -6097,7 +12321,7 @@ export interface operations {
             };
         };
     };
-    delete_4: {
+    delete_5: {
         parameters: {
             query?: never;
             header?: never;
@@ -6145,7 +12369,7 @@ export interface operations {
             };
         };
     };
-    getById_5: {
+    getById_6: {
         parameters: {
             query?: never;
             header?: never;
@@ -6167,7 +12391,7 @@ export interface operations {
             };
         };
     };
-    delete_5: {
+    delete_6: {
         parameters: {
             query?: never;
             header?: never;
@@ -6189,11 +12413,12 @@ export interface operations {
             };
         };
     };
-    getById_6: {
+    getById_7: {
         parameters: {
             query?: never;
             header?: never;
             path: {
+                /** @description 用户编号 */
                 id: number;
             };
             cookie?: never;
@@ -6211,11 +12436,12 @@ export interface operations {
             };
         };
     };
-    delete_6: {
+    delete_7: {
         parameters: {
             query?: never;
             header?: never;
             path: {
+                /** @description 用户编号 */
                 id: number;
             };
             cookie?: never;
@@ -6229,26 +12455,6 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ResponseResultBoolean"];
-                };
-            };
-        };
-    };
-    test_3: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultString"];
                 };
             };
         };
@@ -6276,50 +12482,6 @@ export interface operations {
             };
         };
     };
-    getById_7: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultSysTemplate"];
-                };
-            };
-        };
-    };
-    delete_7: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultBoolean"];
-                };
-            };
-        };
-    };
     getById_8: {
         parameters: {
             query?: never;
@@ -6337,7 +12499,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultSysRolePermission"];
+                    "*/*": components["schemas"]["ResponseResultSysTemplate"];
                 };
             };
         };
@@ -6381,7 +12543,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultSysRole"];
+                    "*/*": components["schemas"]["ResponseResultSysRolePermission"];
                 };
             };
         };
@@ -6403,16 +12565,17 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultVoid"];
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
                 };
             };
         };
     };
-    getPermissionsByRoleId: {
+    getById_10: {
         parameters: {
             query?: never;
             header?: never;
             path: {
+                /** @description 角色编号 */
                 id: number;
             };
             cookie?: never;
@@ -6425,12 +12588,35 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResultListSysPermission"];
+                    "*/*": components["schemas"]["ResponseResultSysRole"];
                 };
             };
         };
     };
-    test_4: {
+    delete_10: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 角色编号 */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultVoid"];
+                };
+            };
+        };
+    };
+    getSimpleList: {
         parameters: {
             query?: never;
             header?: never;
@@ -6445,7 +12631,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ResponseResult"];
+                    "*/*": components["schemas"]["ResponseResultListSysRole"];
                 };
             };
         };
@@ -6473,7 +12659,7 @@ export interface operations {
             };
         };
     };
-    getById_10: {
+    getById_11: {
         parameters: {
             query?: never;
             header?: never;
@@ -6495,7 +12681,7 @@ export interface operations {
             };
         };
     };
-    delete_10: {
+    delete_11: {
         parameters: {
             query?: never;
             header?: never;
@@ -6517,7 +12703,7 @@ export interface operations {
             };
         };
     };
-    getById_11: {
+    getById_12: {
         parameters: {
             query?: never;
             header?: never;
@@ -6539,7 +12725,7 @@ export interface operations {
             };
         };
     };
-    delete_11: {
+    delete_12: {
         parameters: {
             query?: never;
             header?: never;
@@ -6561,7 +12747,116 @@ export interface operations {
             };
         };
     };
-    getById_12: {
+    getUserPermissions: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 用户编号 */
+                userId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultUserPermissionVO"];
+                };
+            };
+        };
+    };
+    getCurrentUserPermissions: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultUserPermissionVO"];
+                };
+            };
+        };
+    };
+    getPermissionInfo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPermissionInfoVO"];
+                };
+            };
+        };
+    };
+    listUserRoles: {
+        parameters: {
+            query: {
+                /** @description 用户编号 */
+                userId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultSetLong"];
+                };
+            };
+        };
+    };
+    getRoleMenuList: {
+        parameters: {
+            query: {
+                /** @description 角色编号 */
+                roleId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultSetLong"];
+                };
+            };
+        };
+    };
+    getById_13: {
         parameters: {
             query?: never;
             header?: never;
@@ -6583,7 +12878,7 @@ export interface operations {
             };
         };
     };
-    delete_12: {
+    delete_13: {
         parameters: {
             query?: never;
             header?: never;
@@ -6690,7 +12985,7 @@ export interface operations {
             };
         };
     };
-    getById_13: {
+    getById_14: {
         parameters: {
             query?: never;
             header?: never;
@@ -6712,11 +13007,12 @@ export interface operations {
             };
         };
     };
-    delete_13: {
+    delete_14: {
         parameters: {
             query?: never;
             header?: never;
             path: {
+                /** @description 菜单编号 */
                 id: number;
             };
             cookie?: never;
@@ -6774,7 +13070,7 @@ export interface operations {
             };
         };
     };
-    getById_14: {
+    getById_15: {
         parameters: {
             query?: never;
             header?: never;
@@ -6796,97 +13092,11 @@ export interface operations {
             };
         };
     };
-    delete_14: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultBoolean"];
-                };
-            };
-        };
-    };
-    ping: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultPingDTO"];
-                };
-            };
-        };
-    };
-    check: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultHealthCheckDTO"];
-                };
-            };
-        };
-    };
-    getById_15: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 标签ID */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ResponseResultFinTransTags"];
-                };
-            };
-        };
-    };
     delete_15: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                /** @description 标签ID */
                 id: number;
             };
             cookie?: never;
@@ -6900,6 +13110,192 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    getVersionById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultSysAppVersion"];
+                };
+            };
+        };
+    };
+    deleteVersion: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    getLatestVersion: {
+        parameters: {
+            query?: {
+                /** @description 平台 */
+                platform?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultSysAppVersion"];
+                };
+            };
+        };
+    };
+    getLatestVersionForClient: {
+        parameters: {
+            query?: {
+                /** @description 平台 */
+                platform?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultVersionCheckResponse"];
+                };
+            };
+        };
+    };
+    checkUpdate: {
+        parameters: {
+            query: {
+                /** @description 当前版本编码 */
+                versionCode: number;
+                /** @description 平台 */
+                platform?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultVersionCheckResponse"];
+                };
+            };
+        };
+    };
+    getById_16: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 记录ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthWeightLogs"];
+                };
+            };
+        };
+    };
+    delete_16: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 记录ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    getWeightLogsByRange: {
+        parameters: {
+            query: {
+                /** @description 开始日期 */
+                startDate: string;
+                /** @description 结束日期 */
+                endDate: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthWeightLogs"];
                 };
             };
         };
@@ -6924,12 +13320,1792 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    "*/*": components["schemas"]["ResponseResultPageHealthWeightLogs"];
+                };
+            };
+        };
+    };
+    getMyWeightLogs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthWeightLogs"];
+                };
+            };
+        };
+    };
+    getLatestWeightLog: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthWeightLogs"];
+                };
+            };
+        };
+    };
+    getWeightLogByDate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 记录日期 */
+                recordDate: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthWeightLogs"];
+                };
+            };
+        };
+    };
+    getTodayTotal: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultInteger"];
+                };
+            };
+        };
+    };
+    getWaterLogsByDate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 查询日期 */
+                date: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthyWaterLogs"];
+                };
+            };
+        };
+    };
+    getById_17: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 档案ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthUserProfiles"];
+                };
+            };
+        };
+    };
+    delete_17: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 档案ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    getMyProfile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthUserProfiles"];
+                };
+            };
+        };
+    };
+    getSleepLogsByRange: {
+        parameters: {
+            query: {
+                /** @description 开始日期 */
+                startDate: string;
+                /** @description 结束日期 */
+                endDate: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthySleepLogs"];
+                };
+            };
+        };
+    };
+    getMySleepLogs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthySleepLogs"];
+                };
+            };
+        };
+    };
+    getLatestSleepLog: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthySleepLogs"];
+                };
+            };
+        };
+    };
+    getSleepLogByDate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 睡眠日期 */
+                sleepDate: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthySleepLogs"];
+                };
+            };
+        };
+    };
+    getById_18: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 档案ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthPsyProfiles"];
+                };
+            };
+        };
+    };
+    delete_18: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 档案ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    getMyProfile_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthPsyProfiles"];
+                };
+            };
+        };
+    };
+    getById_19: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 记录ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthPsyKnowledgeBase"];
+                };
+            };
+        };
+    };
+    delete_19: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 记录ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    searchByTitle: {
+        parameters: {
+            query: {
+                /** @description 标题关键词 */
+                title: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthPsyKnowledgeBase"];
+                };
+            };
+        };
+    };
+    page_2: {
+        parameters: {
+            query: {
+                /** @description 页码 */
+                pageNum: number;
+                /** @description 每页数量 */
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageHealthPsyKnowledgeBase"];
+                };
+            };
+        };
+    };
+    getByCategory: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 分类 */
+                category: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthPsyKnowledgeBase"];
+                };
+            };
+        };
+    };
+    getById_20: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 记录ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthPsyDailyMoods"];
+                };
+            };
+        };
+    };
+    delete_20: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 记录ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    getMoodsByRange: {
+        parameters: {
+            query: {
+                /** @description 开始日期 */
+                startDate: string;
+                /** @description 结束日期 */
+                endDate: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthPsyDailyMoods"];
+                };
+            };
+        };
+    };
+    page_3: {
+        parameters: {
+            query: {
+                /** @description 页码 */
+                pageNum: number;
+                /** @description 每页数量 */
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageHealthPsyDailyMoods"];
+                };
+            };
+        };
+    };
+    getMyMoods: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthPsyDailyMoods"];
+                };
+            };
+        };
+    };
+    getLatestMood: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthPsyDailyMoods"];
+                };
+            };
+        };
+    };
+    getMoodByDate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 记录日期 */
+                recordDate: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthPsyDailyMoods"];
+                };
+            };
+        };
+    };
+    getById_21: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 记录ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthPsyChatMemories"];
+                };
+            };
+        };
+    };
+    delete_21: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 记录ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    getRecentChatMemories: {
+        parameters: {
+            query?: {
+                /** @description 记录数量 */
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthPsyChatMemories"];
+                };
+            };
+        };
+    };
+    page_4: {
+        parameters: {
+            query: {
+                /** @description 页码 */
+                pageNum: number;
+                /** @description 每页数量 */
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageHealthPsyChatMemories"];
+                };
+            };
+        };
+    };
+    getMyChatMemories: {
+        parameters: {
+            query?: {
+                /** @description 角色 */
+                role?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthPsyChatMemories"];
+                };
+            };
+        };
+    };
+    getById_22: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 评估记录ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthPsyAssessments"];
+                };
+            };
+        };
+    };
+    delete_22: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 评估记录ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    page_5: {
+        parameters: {
+            query: {
+                /** @description 页码 */
+                pageNum: number;
+                /** @description 每页数量 */
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageHealthPsyAssessments"];
+                };
+            };
+        };
+    };
+    getMyAssessments: {
+        parameters: {
+            query?: {
+                /** @description 量表名称 */
+                scaleName?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthPsyAssessments"];
+                };
+            };
+        };
+    };
+    getLatestAssessment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthPsyAssessments"];
+                };
+            };
+        };
+    };
+    page_6: {
+        parameters: {
+            query: {
+                /** @description 页码 */
+                pageNum: number;
+                /** @description 每页数量 */
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageHealthGoals"];
+                };
+            };
+        };
+    };
+    getMyGoals: {
+        parameters: {
+            query?: {
+                /** @description 状态 */
+                status?: string;
+                /** @description 目标类型 */
+                goalType?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthGoals"];
+                };
+            };
+        };
+    };
+    getById_23: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 日志ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthDietLogs"];
+                };
+            };
+        };
+    };
+    delete_23: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 日志ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    page_7: {
+        parameters: {
+            query: {
+                /** @description 页码 */
+                pageNum: number;
+                /** @description 每页数量 */
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageHealthDietLogs"];
+                };
+            };
+        };
+    };
+    getMyDietLogs: {
+        parameters: {
+            query?: {
+                /** @description 用餐类型 */
+                mealType?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthDietLogs"];
+                };
+            };
+        };
+    };
+    getDietLogsByDate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 日期 */
+                date: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthDietLogs"];
+                };
+            };
+        };
+    };
+    getById_24: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 汇总ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthDailySummaries"];
+                };
+            };
+        };
+    };
+    delete_24: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 汇总ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    getSummariesByRange: {
+        parameters: {
+            query: {
+                /** @description 开始日期 */
+                startDate: string;
+                /** @description 结束日期 */
+                endDate: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthDailySummaries"];
+                };
+            };
+        };
+    };
+    page_8: {
+        parameters: {
+            query: {
+                /** @description 页码 */
+                pageNum: number;
+                /** @description 每页数量 */
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageHealthDailySummaries"];
+                };
+            };
+        };
+    };
+    getMySummaries: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthDailySummaries"];
+                };
+            };
+        };
+    };
+    getSummaryByDate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 记录日期 */
+                recordDate: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthDailySummaries"];
+                };
+            };
+        };
+    };
+    getById_25: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthAgentUserPreferences"];
+                };
+            };
+        };
+    };
+    delete_25: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    my: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthAgentUserPreferences"];
+                };
+            };
+        };
+    };
+    getReport: {
+        parameters: {
+            query?: {
+                /** @description 周期：weekly / monthly */
+                period?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthReport"];
+                };
+            };
+        };
+    };
+    getById_26: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthAgentFollowupPlans"];
+                };
+            };
+        };
+    };
+    delete_26: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    page_9: {
+        parameters: {
+            query: {
+                pageNum: number;
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageHealthAgentFollowupPlans"];
+                };
+            };
+        };
+    };
+    my_1: {
+        parameters: {
+            query?: {
+                activeOnly?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthAgentFollowupPlans"];
+                };
+            };
+        };
+    };
+    getById_27: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthAgentCheckins"];
+                };
+            };
+        };
+    };
+    delete_27: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    page_10: {
+        parameters: {
+            query: {
+                pageNum: number;
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageHealthAgentCheckins"];
+                };
+            };
+        };
+    };
+    my_2: {
+        parameters: {
+            query?: {
+                followupPlanId?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthAgentCheckins"];
+                };
+            };
+        };
+    };
+    getById_28: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthAgentAdviceRecords"];
+                };
+            };
+        };
+    };
+    delete_28: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    page_11: {
+        parameters: {
+            query: {
+                pageNum: number;
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageHealthAgentAdviceRecords"];
+                };
+            };
+        };
+    };
+    my_3: {
+        parameters: {
+            query?: {
+                agentType?: string;
+                activeOnly?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthAgentAdviceRecords"];
+                };
+            };
+        };
+    };
+    getUserList: {
+        parameters: {
+            query?: {
+                /** @description 页码 */
+                pageNum?: number;
+                /** @description 每页数量 */
+                pageSize?: number;
+                /** @description 搜索关键字 */
+                keyword?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageAdminUserSummaryVO"];
+                };
+            };
+        };
+    };
+    getUserDetail: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 用户ID */
+                userId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultAdminUserDetailVO"];
+                };
+            };
+        };
+    };
+    getTrends: {
+        parameters: {
+            query?: {
+                /** @description 天数 */
+                days?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListAdminTrendVO"];
+                };
+            };
+        };
+    };
+    getOverview: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultAdminOverviewVO"];
+                };
+            };
+        };
+    };
+    getPsychologyAlerts: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListPsychologyAlertVO"];
+                };
+            };
+        };
+    };
+    getById_29: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 活动ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthActivities"];
+                };
+            };
+        };
+    };
+    delete_29: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 活动ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    page_12: {
+        parameters: {
+            query: {
+                /** @description 页码 */
+                pageNum: number;
+                /** @description 每页数量 */
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPageHealthActivities"];
+                };
+            };
+        };
+    };
+    getMyActivities: {
+        parameters: {
+            query?: {
+                /** @description 活动类型 */
+                activityType?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListHealthActivities"];
+                };
+            };
+        };
+    };
+    getById_30: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 标签ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultFinTransTags"];
+                };
+            };
+        };
+    };
+    delete_30: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 标签ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    page_13: {
+        parameters: {
+            query: {
+                /** @description 页码 */
+                pageNum: number;
+                /** @description 每页数量 */
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
                     "*/*": components["schemas"]["ResponseResultPageFinTransTags"];
                 };
             };
         };
     };
-    getById_16: {
+    getById_31: {
         parameters: {
             query: {
                 /** @description 账本ID */
@@ -6955,15 +15131,12 @@ export interface operations {
             };
         };
     };
-    delete_16: {
+    delete_31: {
         parameters: {
-            query: {
-                /** @description 账本ID */
-                bookId: number;
-            };
+            query?: never;
             header?: never;
             path: {
-                /** @description 财务交易记录ID */
+                /** @description 交易记录ID */
                 id: number;
             };
             cookie?: never;
@@ -6981,7 +15154,7 @@ export interface operations {
             };
         };
     };
-    page_2: {
+    page_14: {
         parameters: {
             query: {
                 /** @description 页码 */
@@ -7035,7 +15208,7 @@ export interface operations {
             };
         };
     };
-    getById_17: {
+    getById_32: {
         parameters: {
             query?: never;
             header?: never;
@@ -7058,7 +15231,7 @@ export interface operations {
             };
         };
     };
-    delete_17: {
+    delete_32: {
         parameters: {
             query?: never;
             header?: never;
@@ -7081,7 +15254,7 @@ export interface operations {
             };
         };
     };
-    page_3: {
+    page_15: {
         parameters: {
             query: {
                 /** @description 页码 */
@@ -7106,7 +15279,27 @@ export interface operations {
             };
         };
     };
-    getById_18: {
+    getBookkeepingContext: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultSkillBookkeepingContextDTO"];
+                };
+            };
+        };
+    };
+    getById_33: {
         parameters: {
             query?: never;
             header?: never;
@@ -7129,7 +15322,7 @@ export interface operations {
             };
         };
     };
-    delete_18: {
+    delete_33: {
         parameters: {
             query?: never;
             header?: never;
@@ -7152,7 +15345,7 @@ export interface operations {
             };
         };
     };
-    page_4: {
+    page_16: {
         parameters: {
             query: {
                 /** @description 页码 */
@@ -7177,7 +15370,7 @@ export interface operations {
             };
         };
     };
-    getById_19: {
+    getById_34: {
         parameters: {
             query: {
                 /** @description 账本ID */
@@ -7203,7 +15396,7 @@ export interface operations {
             };
         };
     };
-    delete_19: {
+    delete_34: {
         parameters: {
             query: {
                 /** @description 账本ID */
@@ -7229,7 +15422,7 @@ export interface operations {
             };
         };
     };
-    page_5: {
+    page_17: {
         parameters: {
             query: {
                 /** @description 页码 */
@@ -7256,7 +15449,7 @@ export interface operations {
             };
         };
     };
-    getById_20: {
+    getById_35: {
         parameters: {
             query?: never;
             header?: never;
@@ -7279,7 +15472,7 @@ export interface operations {
             };
         };
     };
-    delete_20: {
+    delete_35: {
         parameters: {
             query?: never;
             header?: never;
@@ -7302,7 +15495,7 @@ export interface operations {
             };
         };
     };
-    page_6: {
+    page_18: {
         parameters: {
             query?: {
                 /** @description 页码 */
@@ -7327,7 +15520,7 @@ export interface operations {
             };
         };
     };
-    getById_21: {
+    getById_36: {
         parameters: {
             query?: never;
             header?: never;
@@ -7350,7 +15543,7 @@ export interface operations {
             };
         };
     };
-    delete_21: {
+    delete_36: {
         parameters: {
             query?: never;
             header?: never;
@@ -7396,7 +15589,7 @@ export interface operations {
             };
         };
     };
-    page_7: {
+    page_19: {
         parameters: {
             query: {
                 /** @description 页码 */
@@ -7441,7 +15634,7 @@ export interface operations {
             };
         };
     };
-    getById_22: {
+    getById_37: {
         parameters: {
             query?: never;
             header?: never;
@@ -7464,7 +15657,7 @@ export interface operations {
             };
         };
     };
-    delete_22: {
+    delete_37: {
         parameters: {
             query?: never;
             header?: never;
@@ -7487,7 +15680,7 @@ export interface operations {
             };
         };
     };
-    page_8: {
+    page_20: {
         parameters: {
             query: {
                 /** @description 页码 */
@@ -7512,7 +15705,7 @@ export interface operations {
             };
         };
     };
-    getById_23: {
+    getById_38: {
         parameters: {
             query: {
                 /** @description 账本ID */
@@ -7538,7 +15731,7 @@ export interface operations {
             };
         };
     };
-    delete_23: {
+    delete_38: {
         parameters: {
             query: {
                 /** @description 账本ID */
@@ -7614,7 +15807,7 @@ export interface operations {
             };
         };
     };
-    page_9: {
+    page_21: {
         parameters: {
             query: {
                 /** @description 页码 */
@@ -7637,6 +15830,117 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ResponseResultPageFinAccounts"];
+                };
+            };
+        };
+    };
+    listExpenseSubjects: {
+        parameters: {
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListAccountSubjectDTO"];
+                };
+            };
+        };
+    };
+    getSubjectCategories: {
+        parameters: {
+            query: {
+                /** @description 账本ID */
+                bookId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultSubjectCategoriesDTO"];
+                };
+            };
+        };
+    };
+    getQrCodeStatus: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                qrCodeId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultQrCodeLoginInfo"];
+                };
+            };
+        };
+    };
+    profile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultAuthUserProfile"];
+                };
+            };
+        };
+    };
+    trend: {
+        parameters: {
+            query?: {
+                bookId?: number;
+                days?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListMapStringObject"];
                 };
             };
         };
@@ -7805,6 +16109,288 @@ export interface operations {
             };
         };
     };
+    records: {
+        parameters: {
+            query?: {
+                bookId?: number;
+                page?: number;
+                pageSize?: number;
+                startDate?: string;
+                endDate?: string;
+                date?: string;
+                accountId?: number;
+                category?: string;
+                minAmount?: number;
+                maxAmount?: number;
+                keyword?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultMapStringObject"];
+                };
+            };
+        };
+    };
+    overview: {
+        parameters: {
+            query?: {
+                bookId?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultMapStringObject"];
+                };
+            };
+        };
+    };
+    monthlySummary: {
+        parameters: {
+            query?: {
+                bookId?: number;
+                year?: number;
+                month?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultMapStringObject"];
+                };
+            };
+        };
+    };
+    monthlyReport: {
+        parameters: {
+            query?: {
+                bookId?: number;
+                year?: number;
+                month?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultMapStringObject"];
+                };
+            };
+        };
+    };
+    monthlyRank: {
+        parameters: {
+            query?: {
+                bookId?: number;
+                year?: number;
+                month?: number;
+                type?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListMapStringObject"];
+                };
+            };
+        };
+    };
+    expenseCategories: {
+        parameters: {
+            query?: {
+                bookId?: number;
+                startDate?: string;
+                endDate?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListMapStringObject"];
+                };
+            };
+        };
+    };
+    categories: {
+        parameters: {
+            query?: {
+                bookId?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultMapStringObject"];
+                };
+            };
+        };
+    };
+    calendarSummary: {
+        parameters: {
+            query?: {
+                bookId?: number;
+                year?: number;
+                month?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultMapStringObject"];
+                };
+            };
+        };
+    };
+    detectAnomalies: {
+        parameters: {
+            query?: {
+                /** @description 账本ID */
+                bookId?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultFinanceInsightReport"];
+                };
+            };
+        };
+    };
+    accounts: {
+        parameters: {
+            query?: {
+                bookId?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultListMapStringObject"];
+                };
+            };
+        };
+    };
+    ping: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultPingDTO"];
+                };
+            };
+        };
+    };
+    check: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultHealthCheckDTO"];
+                };
+            };
+        };
+    };
     health: {
         parameters: {
             query?: never;
@@ -7821,6 +16407,75 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ResponseResultString"];
+                };
+            };
+        };
+    };
+    revoke: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description API Key ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    delete_39: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 记录ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
+                };
+            };
+        };
+    };
+    delete_40: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 记录ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseResultBoolean"];
                 };
             };
         };

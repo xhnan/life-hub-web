@@ -1,4 +1,5 @@
 import { http } from "@/utils/http";
+import type { MenuTreeNode } from "@/router/transform";
 
 const prefix = '/auth'
 
@@ -62,6 +63,32 @@ export const getProfileApi = () => {
 
 export const logoutApi = () => {
 	return http.post<void>(`${prefix}/logout`);
+};
+
+// ========== 聚合权限信息（对齐 yudao get-permission-info） ==========
+
+/** 聚合接口中的当前用户基础信息 */
+export interface PermissionInfoUser {
+	userId: string; // 后端 Long 经 json-bigint storeAsString 始终为字符串
+	username: string;
+	nickname: string;
+	avatar: string;
+}
+
+/** 聚合权限信息 */
+export interface PermissionInfo {
+	user: PermissionInfoUser;
+	roles: string[];        // 角色码（大写 roleCode）
+	permissions: string[];  // 权限码（含按钮码；超管为 ["*:*:*"]）
+	menus: MenuTreeNode[];  // 路由菜单树（不含按钮）
+}
+
+/**
+ * 获取当前用户的聚合权限信息（用户/角色/权限/路由菜单树）。
+ * 一次调用完成权限初始化，替代 /sys/permission/user/current + /sys/menu/user/tree 两次调用。
+ */
+export const getPermissionInfoApi = () => {
+	return http.get<PermissionInfo>('/sys/permission/permission-info');
 };
 
 // ========== 扫码登录 ==========

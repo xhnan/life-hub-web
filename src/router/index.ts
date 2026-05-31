@@ -1,155 +1,141 @@
-import {createRouter, createWebHashHistory, type RouteRecordRaw} from "vue-router";
-import {formatRouter} from "@/router/utils.ts";
+import { createRouter, createWebHashHistory, type RouteRecordRaw } from "vue-router";
+import loginRoutes from "./modules/login";
+import homeRoute from "./modules/home";
 import remainingRouter from "./modules/remaining";
 
-const modules: Record<string, any> = import.meta.glob(
-    ["./modules/**/*.ts", "!./modules/**/remaining.ts"],
-    {
-        eager: true
-    }
-);
+// ========== 常量路由（单一来源：业务路由全部来自后端菜单树） ==========
+// 仅保留登录、OAuth2 回调、首页/布局、403/404/错误页等与业务菜单无关的固定路由。
+const homeRouteList: RouteRecordRaw[] = Array.isArray(homeRoute)
+    ? (homeRoute as RouteRecordRaw[])
+    : [homeRoute as RouteRecordRaw];
 
-const constantRouteList: RouteRecordRaw[] = [];
-const asyncRouteList: RouteRecordRaw[] = [];
-
-Object.keys(modules).forEach((key) => {
-    const name = key.match(/\.\/modules\/(.*)\.ts$/)?.[1];
-    const mod = modules[key]?.default;
-    if (!mod) return;
-    const modList = Array.isArray(mod) ? mod : [mod];
-
-    if (name === 'login' || name === 'home') {
-        constantRouteList.push(...modList);
-    } else {
-        asyncRouteList.push(...modList);
-    }
-});
-
-constantRouteList.push(...remainingRouter);
-
-export const constantRoutes: Array<RouteRecordRaw> = formatRouter(constantRouteList);
-export const asyncRoutes: Array<RouteRecordRaw> = formatRouter(asyncRouteList);
+export const constantRoutes: Array<RouteRecordRaw> = [
+    ...(loginRoutes as RouteRecordRaw[]),
+    ...homeRouteList,
+    ...remainingRouter
+];
 
 const router = createRouter({
     history: createWebHashHistory(),
     routes: constantRoutes,
 });
 
-import { getUserInfoApi } from "@/api/authApi";
-import { userStore, setUserInfo } from "@/store/user";
-import { generateRoutes, getMenuPermissions } from "@/store/permission";
+import { getPermissionInfoApi } from "@/api/authApi";
+import {
+    permissionStore,
+    setPermissionInfo,
+    generateRoutes,
+    restoreFromCache
+} from "@/store/permission";
 import { hasPermission, clearAuthData } from "@/utils/auth";
 import { STORAGE_KEYS } from "@/utils/constants";
+import { ElMessage } from "element-plus";
 
-const whiteList = ['/login'];
+const whiteList = ['/login', '/oauth2/redirect', '/error'];
+const CATCH_ALL_NAME = 'CatchAll';
+const MAX_INIT_ATTEMPTS = 2;
+
+/**
+ * 确保 404 兜底路由始终注册在所有动态路由之后。
+ */
+function ensureCatchAllLast() {
+    if (router.hasRoute(CATCH_ALL_NAME)) {
+        router.removeRoute(CATCH_ALL_NAME);
+    }
+    router.addRoute({
+        path: '/:pathMatch(.*)*',
+        name: CATCH_ALL_NAME,
+        redirect: '/404',
+        meta: { hidden: true }
+    } as RouteRecordRaw);
+}
+
+/**
+ * 将动态路由注册到 router。
+ */
+function registerDynamicRoutes(routes: RouteRecordRaw[]) {
+    routes.forEach(route => router.addRoute(route));
+    ensureCatchAllLast();
+}
+
+/**
+ * 权限初始化：拉取聚合权限信息 → 生成并注册动态路由。
+ * 失败时有限重试；重试耗尽后尝试缓存降级，仍无则跳转错误页。
+ * 返回 next() 的目标（重定向对象或字符串路径）。
+ */
+async function initPermission(toFullPath: any): Promise<any> {
+    for (let attempt = 0; attempt < MAX_INIT_ATTEMPTS; attempt++) {
+        try {
+            const { data } = await getPermissionInfoApi();
+            setPermissionInfo(data);
+            const routes = generateRoutes(data.menus);
+            registerDynamicRoutes(routes);
+            return { ...toFullPath, replace: true };
+        } catch (e) {
+            console.error(`[router] 权限初始化失败（第 ${attempt + 1} 次）`, e);
+        }
+    }
+
+    // 重试耗尽：尝试缓存降级
+    const cached = restoreFromCache();
+    if (cached) {
+        setPermissionInfo(cached);
+        const routes = generateRoutes(cached.menus);
+        registerDynamicRoutes(routes);
+        ElMessage.warning('使用本地缓存，数据可能非最新');
+        return { ...toFullPath, replace: true };
+    }
+
+    // 无缓存：跳转错误页（不清除 token，避免循环重定向）
+    return '/error';
+}
 
 router.beforeEach(async (to, _, next) => {
     const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
     const tokenExpiresAt = localStorage.getItem(STORAGE_KEYS.TOKEN_EXPIRES_AT);
 
-    // 检查是否过期
+    // 过期判定
     let isExpired = false;
-    if (token && tokenExpiresAt) {
-        if (Date.now() > Number(tokenExpiresAt)) {
-            isExpired = true;
-            clearAuthData();
-        }
+    if (token && tokenExpiresAt && Date.now() > Number(tokenExpiresAt)) {
+        isExpired = true;
+        clearAuthData();
     }
 
-    if (token && !isExpired) {
-        if (to.path === '/login') {
-            next('/');
-        } else {
-            // 判断是否已加载权限路由
-            if (userStore.roles && userStore.roles.length > 0) {
-                if (to.meta?.permissions && !hasPermission(to.meta.permissions as string[])) {
-                     next('/403');
-                     return;
-                }
-                next();
-            } else {
-                try {
-                    // 尝试从 sessionStorage 获取角色信息
-                    const storedRoles = sessionStorage.getItem(STORAGE_KEYS.USER_ROLES);
-                    const storedPermissions = sessionStorage.getItem(STORAGE_KEYS.USER_PERMISSIONS);
-
-                    let roles: string[] = [];
-                    let permissions: string[] = [];
-                    let isSuperAdmin = false;
-
-                    if (storedRoles && storedPermissions) {
-                        roles = JSON.parse(storedRoles);
-                        permissions = JSON.parse(storedPermissions);
-                        // 兼容旧的 sessionStorage 数据结构（假设没有 isSuperAdmin 字段则为 false，或者需要清理旧缓存）
-                    } else {
-                        // 调用接口获取
-                        const { data } = await getUserInfoApi();
-                        // 提取角色 code 列表
-                        roles = data.roles.map(r => r.roleCode);
-                        // 提取权限 code 列表 (后端返回的是 permissionKey)
-                        permissions = data.permissions.map(p => p.permissionKey);
-                        isSuperAdmin = data.isSuperAdmin;
-
-                        // 如果是超级管理员，赋予一个特殊角色标识，方便后续权限判断
-                        if (isSuperAdmin) {
-                            roles.push('super_admin');
-                            permissions.push('*:*:*'); // 超级权限标识
-                        }
-
-                        // 存入 sessionStorage
-                        sessionStorage.setItem(STORAGE_KEYS.USER_ROLES, JSON.stringify(roles));
-                        sessionStorage.setItem(STORAGE_KEYS.USER_PERMISSIONS, JSON.stringify(permissions));
-                    }
-                    
-                    setUserInfo(roles, permissions);
-                    
-                    // 生成并添加路由
-                    const accessRoutes = await generateRoutes(roles);
-
-                    // 合并菜单树中提取的权限标识（新 RBAC 模型的 menuCode）
-                    const menuPerms = getMenuPermissions();
-                    if (menuPerms.length > 0) {
-                        const mergedPermissions = [...new Set([...permissions, ...menuPerms])];
-                        setUserInfo(roles, mergedPermissions);
-                        sessionStorage.setItem(STORAGE_KEYS.USER_PERMISSIONS, JSON.stringify(mergedPermissions));
-                    }
-
-                    accessRoutes.forEach(route => {
-                        // 移除之前的 router.hasRoute 检查，因为 addRoute 会自动覆盖同名路由（但最好还是保持单一来源）
-                        // 由于 permissionStore 已经做了去重，这里直接添加即可
-                        // 注意：如果路由名称重复，Vue Router 会覆盖旧路由，并输出警告
-                        router.addRoute(route);
-                    });
-                    
-                    // 确保 404 路由最后添加
-                    const catchAllRouteName = 'CatchAll';
-                    // 先移除旧的 404 路由（如果存在），确保它始终在最后
-                    if (router.hasRoute(catchAllRouteName)) {
-                        router.removeRoute(catchAllRouteName);
-                    }
-                    router.addRoute({ 
-                        path: '/:pathMatch(.*)*', 
-                        name: catchAllRouteName,
-                        redirect: '/404', 
-                        meta: { hidden: true } 
-                    } as any);
-
-                    next({ ...to, replace: true });
-                } catch (error) {
-                    console.error('Failed to generate routes:', error);
-                    // 出错需重置
-                    clearAuthData();
-                    next('/login');
-                }
-            }
-        }
-    } else {
+    // 未登录 / 已过期
+    if (!token || isExpired) {
         if (whiteList.includes(to.path)) {
             next();
         } else {
             next('/login');
         }
+        return;
     }
+
+    // 已登录访问登录页 → 跳首页
+    if (to.path === '/login') {
+        next('/');
+        return;
+    }
+
+    // 已完成权限初始化：按 meta.permissions 做 403 校验
+    if (permissionStore.isRoutesGenerated) {
+        if (to.meta?.permissions && !hasPermission(to.meta.permissions as string[])) {
+            next('/403');
+            return;
+        }
+        next();
+        return;
+    }
+
+    // 白名单页面（如错误页）即使未初始化也放行，避免在错误页再次触发初始化
+    if (whiteList.includes(to.path)) {
+        next();
+        return;
+    }
+
+    // 未初始化：执行权限初始化
+    const target = await initPermission(to);
+    next(target);
 });
 
 export default router;

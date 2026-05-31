@@ -52,7 +52,7 @@ service.interceptors.request.use(
             const now = Date.now();
             if (now > Number(tokenExpiresAt)) {
                  clearAuthData();
-                 window.location.href = '/#/login';
+                 window.location.hash = '#/login';
                  return Promise.reject(new Error('Token expired'));
              }
         }
@@ -91,7 +91,7 @@ service.interceptors.response.use(
                     type: 'warning'
                 }).then(() => {
                     clearAuthData();
-                    window.location.href = '/#/login';
+                    window.location.hash = '#/login';
                 });
             }
 
@@ -116,7 +116,7 @@ service.interceptors.response.use(
             case 401:
                 message = '未授权，请登录';
                 clearAuthData();
-                window.location.href = '/#/login';
+                window.location.hash = '#/login';
                 break;
             case 403:
                 message = '拒绝访问';

@@ -18,6 +18,15 @@ const remainingRouter: Array<RouteRecordRaw> = [
       title: "404",
       hidden: true
     }
+  },
+  {
+    path: "/error",
+    name: "AppError",
+    component: () => import("@/views/error/500.vue"),
+    meta: {
+      title: "错误",
+      hidden: true
+    }
   }
 ];
 

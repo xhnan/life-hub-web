@@ -64,7 +64,7 @@
 
 <script setup lang="ts">
 import { useNav } from '@/layout/hooks/useNav.ts';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import MenuItem from "@/layout/components/lay-navbar/MenuItem.vue";
 import ReIcon from "@/components/ReIcon/index.vue";
 import { logoutApi } from '@/api/authApi';
@@ -76,6 +76,7 @@ import { STORAGE_KEYS } from '@/utils/constants';
 
 const { handleOpen, handleClose, menuData } = useNav();
 const route = useRoute();
+const router = useRouter();
 const userInfo = ref<any>(null);
 
 onMounted(() => {
@@ -97,10 +98,12 @@ const handleLogout = async () => {
   } finally {
     clearAuthData();
     ElMessage.success('已安全退出');
-    window.location.href = '/#/login';
-    window.location.reload();
+    router.push('/login').finally(() => {
+      window.location.reload();
+    });
   }
 }
+
 
 defineOptions({
   name: 'LayNavbar'

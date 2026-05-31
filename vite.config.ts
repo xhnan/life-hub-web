@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import Icons from 'unplugin-icons/vite'; // 引入 unplugin-icons 插件
 import { resolve } from 'path'
 
+/// <reference types="vitest" />
 // https://vite.dev/config/
 export default defineConfig({
     plugins: [vue(),
@@ -15,6 +16,11 @@ export default defineConfig({
         alias: {
             '@': resolve(__dirname, 'src')
         }
+    },
+    test: {
+        environment: 'jsdom',
+        globals: true,
+        include: ['src/**/*.{test,spec}.ts']
     },
     server: {
         port: 5173,

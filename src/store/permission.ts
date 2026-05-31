@@ -1,250 +1,134 @@
-import { reactive, h } from 'vue';
-import { type RouteRecordRaw, RouterView } from 'vue-router';
-import { constantRoutes, asyncRoutes } from '@/router';
-import { getMenuTreeApi, type MenuRow } from '@/api/menuApi';
-import Layout from '@/layout/index.vue';
-
-// 导入所有视图组件
-const modules = import.meta.glob('../views/**/*.vue');
-
-// 简单的 RouterView 包装器，用于多级菜单（非根目录）
-const ParentView = {
-    name: 'ParentView',
-    render: () => h(RouterView)
-};
+import { reactive } from 'vue';
+import type { RouteRecordRaw } from 'vue-router';
+import { constantRoutes } from '@/router';
+import { generateRoutesFromMenus, type MenuTreeNode } from '@/router/transform';
+import type { PermissionInfo } from '@/api/authApi';
+import { STORAGE_KEYS, PERMISSION_CACHE_TTL_MS } from '@/utils/constants';
 
 interface PermissionState {
-    routes: RouteRecordRaw[];
-    addRoutes: RouteRecordRaw[];
-    menuPermissions: string[]; // 从菜单树提取的权限标识（menuCode）
+    roles: string[];
+    permissions: string[];
+    routes: RouteRecordRaw[];        // 完整路由（constant + dynamic），供 useNav 使用
+    dynamicRoutes: RouteRecordRaw[]; // 仅后端生成的动态路由
+    menus: MenuTreeNode[];           // 后端返回的路由菜单树
+    isRoutesGenerated: boolean;
 }
 
 export const permissionStore = reactive<PermissionState>({
+    roles: [],
+    permissions: [],
     routes: [],
-    addRoutes: [],
-    menuPermissions: []
+    dynamicRoutes: [],
+    menus: [],
+    isRoutesGenerated: false
 });
 
-function hasPermission(roles: string[], route: RouteRecordRaw) {
-    if (route.meta && route.meta.roles) {
-        const routeRoles = route.meta.roles as string[];
-        return roles.some(role => routeRoles.includes(role));
-    } else {
-        return true;
-    }
-}
+/**
+ * 向后兼容：旧代码以 userStore.roles / userStore.permissions 读取，
+ * 与 permissionStore 同源。
+ */
+export const userStore = permissionStore;
 
-export function filterAsyncRoutes(routes: RouteRecordRaw[], roles: string[]) {
-    const res: RouteRecordRaw[] = [];
-    routes.forEach(route => {
-        const tmp = { ...route };
-        if (hasPermission(roles, tmp)) {
-            if (tmp.children) {
-                tmp.children = filterAsyncRoutes(tmp.children, roles);
-            }
-            res.push(tmp);
-        }
-    });
-    return res;
+/**
+ * 兼容旧签名：仅设置角色码与权限码。
+ */
+export function setUserInfo(roles: string[], permissions: string[]): void {
+    permissionStore.roles = Array.isArray(roles) ? roles.map(String) : [];
+    permissionStore.permissions = Array.isArray(permissions) ? permissions.map(String) : [];
 }
 
 /**
- * 将后端菜单转换为路由对象
+ * 兼容旧导出：清空角色与权限。
  */
-function transformMenuToRoutes(menus: MenuRow[]): RouteRecordRaw[] {
-    const routes: RouteRecordRaw[] = [];
-    
-    menus.forEach(menu => {
-        // 忽略按钮类型
-        if (menu.menuType === 3) return;
-
-        // 如果没有 path，生成一个临时的（通常不应发生，除非是纯目录且无 path）
-        // 增加空值检查，防止后端返回 null 导致 crash
-        const rawPath = menu.path || `${menu.id}`;
-        const routePath = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
-        
-        const route: RouteRecordRaw = {
-            path: routePath,
-            name: menu.routerName || menu.menuName, // 优先使用 routerName，否则回退到 menuName
-            meta: {
-                title: menu.menuName,
-                icon: menu.icon,
-                permissions: getMenuPermissionCode(menu) ? [getMenuPermissionCode(menu)!] : undefined,
-                // rank: menu.sortOrder // 如果需要排序
-            },
-            component: undefined,
-            children: []
-        };
-
-        // 处理组件
-        // 逻辑更新：如果 component 字段为空，尝试使用 path 作为组件路径
-        let componentToResolve = menu.component;
-        if (!componentToResolve && menu.menuType === 2) {
-             // 如果是菜单类型且没配置组件，尝试用 path 找
-             componentToResolve = rawPath.startsWith('/') ? rawPath.slice(1) : rawPath;
-        }
-
-        if (componentToResolve) {
-            // 如果是 Layout
-            if (componentToResolve === 'Layout') {
-                route.component = Layout;
-            } else {
-                // 动态加载组件
-                // 标准化 component 路径，移除开头的 /
-                const rawComponent = componentToResolve.startsWith('/') ? componentToResolve.slice(1) : componentToResolve;
-                
-                const componentPath = `../views/${rawComponent}.vue`;
-                const componentIndexPath = `../views/${rawComponent}/index.vue`;
-
-                if (modules[componentPath]) {
-                    route.component = modules[componentPath];
-                } else if (modules[componentIndexPath]) {
-                    route.component = modules[componentIndexPath];
-                } else {
-                    console.warn(`Component not found: ${componentPath} or ${componentIndexPath}`);
-                    // 组件文件不存在时的兜底
-                    route.component = { 
-                        name: 'ComponentNotFound',
-                        render: () => h('div', { style: 'padding: 20px; color: red;' }, `Component not found: ${componentToResolve}`) 
-                    };
-                }
-            }
-        } else {
-            // 没有配置 component
-            if (menu.children && menu.children.length > 0) {
-                 // 有子节点，说明是目录
-                 if (!menu.parentId) {
-                     // 一级目录 -> Layout
-                     route.component = Layout;
-                 } else {
-                     // 多级目录 -> ParentView (渲染子路由)
-                     route.component = ParentView;
-                 }
-            } else {
-                // 既没 component 也没 children -> 无效路由 (叶子节点缺失组件)
-                // 给一个默认的提示组件，防止 Router 报错
-                route.component = { 
-                    name: 'EmptyMenu',
-                    render: () => h('div', { style: 'padding: 20px;' }, '该菜单暂无配置组件') 
-                };
-            }
-        }
-
-        // 处理子菜单
-        if (menu.children && menu.children.length > 0) {
-            route.children = transformMenuToRoutes(menu.children);
-        }
-
-        routes.push(route);
-    });
-
-    return routes;
+export function clearUserInfo(): void {
+    clearPermission();
 }
 
 /**
- * 获取菜单的权限标识（兼容两种后端返回格式）
- * - SysMenu 接口返回 menuCode
- * - MenuTreeModel 接口返回 permission
+ * 写入聚合权限信息到 store，并缓存（带时间戳）。
  */
-function getMenuPermissionCode(menu: MenuRow): string | undefined {
-    return menu.menuCode || menu.permission;
-}
+export function setPermissionInfo(info: PermissionInfo): void {
+    const roles = (info.roles || []).map(String);
+    const permissions = (info.permissions || []).map(String);
+    permissionStore.roles = roles;
+    permissionStore.permissions = permissions;
+    permissionStore.menus = Array.isArray(info.menus) ? info.menus : [];
 
-/**
- * 从菜单树中提取所有权限标识（menuCode / permission）
- * 新 RBAC 模型中，menuCode 即为权限标识
- */
-function extractPermissionsFromMenus(menus: MenuRow[]): string[] {
-    const permissions: string[] = [];
-    const traverse = (items: MenuRow[]) => {
-        items.forEach(item => {
-            const code = getMenuPermissionCode(item);
-            if (code) {
-                permissions.push(code);
-            }
-            if (item.children && item.children.length > 0) {
-                traverse(item.children);
-            }
-        });
-    };
-    traverse(menus);
-    return permissions;
-}
-
-/**
- * 获取从后端菜单树中提取的权限标识列表
- * 在路由生成后可用，供外部使用
- */
-export const getMenuPermissions = (): string[] => {
-    return permissionStore.menuPermissions || [];
-}
-
-/**
- * 生成路由
- */
-export const generateRoutes = async (roles: string[]) => {
     try {
-        // 1. 获取后端菜单
-        const { data: menuTree } = await getMenuTreeApi();
-        
-        console.log('Backend Menu Tree:', menuTree); // DEBUG LOG
-
-        if (!Array.isArray(menuTree)) {
-             console.warn('Backend returned invalid menu data:', menuTree);
-             // 即使后端失败，也应该继续处理前端静态路由
-        }
-        
-        // 2. 转换为路由配置 (后端路由)
-        const backendRoutes = transformMenuToRoutes(menuTree || []);
-        console.log('Transformed Backend Routes:', backendRoutes); // DEBUG LOG
-
-        // 2.1 提取菜单权限标识（用于前端按钮级权限控制）
-        permissionStore.menuPermissions = extractPermissionsFromMenus(menuTree || []);
-
-        // 3. 处理前端静态异步路由 (src/router/modules)
-        let frontendRoutes: RouteRecordRaw[] = [];
-        if (roles.includes('admin')) {
-            frontendRoutes = asyncRoutes || [];
-        } else {
-            frontendRoutes = filterAsyncRoutes(asyncRoutes, roles);
-        }
-
-        // 4. 合并路由 (后端 + 前端) 并去重
-        const allRoutes = [...backendRoutes, ...frontendRoutes];
-        
-        // 使用 Map 进行去重，优先保留后端路由（假设后端配置优先级更高，或者根据实际需求调整）
-        // 键使用路由名称（name）或路径（path）
-        const uniqueRoutesMap = new Map<string, RouteRecordRaw>();
-        
-        allRoutes.forEach(route => {
-            // 优先使用 name 作为唯一标识，其次是 path
-            const key = (route.name as string) || route.path;
-            if (!uniqueRoutesMap.has(key)) {
-                uniqueRoutesMap.set(key, route);
-            } else {
-                // 如果已存在，可以选择合并或跳过。这里选择保留第一个（即 backendRoutes 优先）
-                console.warn(`Duplicate route detected and skipped: ${key}`);
-            }
-        });
-
-        const accessedRoutes = Array.from(uniqueRoutesMap.values());
-
-        permissionStore.addRoutes = accessedRoutes;
-        permissionStore.routes = constantRoutes.concat(accessedRoutes);
-        return accessedRoutes;
-    } catch (error) {
-        console.error('Failed to generate routes:', error);
-        
-        // 出错时，至少返回前端静态路由作为兜底
-        let frontendRoutes: RouteRecordRaw[] = [];
-        if (roles.includes('admin')) {
-            frontendRoutes = asyncRoutes || [];
-        } else {
-            frontendRoutes = filterAsyncRoutes(asyncRoutes, roles);
-        }
-        
-        permissionStore.addRoutes = frontendRoutes;
-        permissionStore.routes = constantRoutes.concat(frontendRoutes);
-        return frontendRoutes;
+        sessionStorage.setItem(STORAGE_KEYS.USER_ROLES, JSON.stringify(roles));
+        sessionStorage.setItem(STORAGE_KEYS.USER_PERMISSIONS, JSON.stringify(permissions));
+        // 原始后端菜单树写入独立的 MENU_TREE，避免与 useNav 写入 MENU_DATA 的前端菜单产生冲突
+        sessionStorage.setItem(STORAGE_KEYS.MENU_TREE, JSON.stringify(permissionStore.menus));
+        sessionStorage.setItem(STORAGE_KEYS.CACHE_TIMESTAMP, String(Date.now()));
+    } catch (e) {
+        console.warn('[permission] 缓存权限信息失败', e);
     }
-};
+}
+
+/**
+ * 清空 store 与缓存（登出/凭证过期时调用）。
+ */
+export function clearPermission(): void {
+    permissionStore.roles = [];
+    permissionStore.permissions = [];
+    permissionStore.routes = [];
+    permissionStore.dynamicRoutes = [];
+    permissionStore.menus = [];
+    permissionStore.isRoutesGenerated = false;
+    try {
+        sessionStorage.removeItem(STORAGE_KEYS.USER_ROLES);
+        sessionStorage.removeItem(STORAGE_KEYS.USER_PERMISSIONS);
+        sessionStorage.removeItem(STORAGE_KEYS.MENU_DATA);
+        sessionStorage.removeItem(STORAGE_KEYS.MENU_TREE);
+        sessionStorage.removeItem(STORAGE_KEYS.CACHE_TIMESTAMP);
+    } catch {
+        // ignore
+    }
+}
+
+/**
+ * 从缓存恢复聚合权限信息（仅用于接口不可达时的降级）。
+ * 缓存超过 PERMISSION_CACHE_TTL_MS 视为过期，返回 null。
+ */
+export function restoreFromCache(): PermissionInfo | null {
+    try {
+        const ts = Number(sessionStorage.getItem(STORAGE_KEYS.CACHE_TIMESTAMP) || 0);
+        if (!ts || Date.now() - ts > PERMISSION_CACHE_TTL_MS) {
+            return null;
+        }
+        const rolesRaw = sessionStorage.getItem(STORAGE_KEYS.USER_ROLES);
+        const permsRaw = sessionStorage.getItem(STORAGE_KEYS.USER_PERMISSIONS);
+        const menusRaw = sessionStorage.getItem(STORAGE_KEYS.MENU_TREE);
+        if (!rolesRaw || !permsRaw) {
+            return null;
+        }
+        return {
+            user: { userId: '', username: '', nickname: '', avatar: '' },
+            roles: JSON.parse(rolesRaw),
+            permissions: JSON.parse(permsRaw),
+            menus: menusRaw ? JSON.parse(menusRaw) : []
+        };
+    } catch {
+        return null;
+    }
+}
+
+/**
+ * 由后端菜单树生成动态路由，写入 store。
+ * 空/非数组 menus → 告警并返回空动态路由（仅常量路由生效）。
+ */
+export function generateRoutes(menus: MenuTreeNode[]): RouteRecordRaw[] {
+    if (!Array.isArray(menus) || menus.length === 0) {
+        console.warn('[permission] 后端菜单树为空或非数组，仅注册常量路由');
+        permissionStore.dynamicRoutes = [];
+        permissionStore.routes = [...constantRoutes];
+        permissionStore.isRoutesGenerated = true;
+        return [];
+    }
+
+    const dynamicRoutes = generateRoutesFromMenus(menus);
+    permissionStore.dynamicRoutes = dynamicRoutes;
+    permissionStore.routes = [...constantRoutes, ...dynamicRoutes];
+    permissionStore.isRoutesGenerated = true;
+    return dynamicRoutes;
+}
